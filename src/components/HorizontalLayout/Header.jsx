@@ -15,16 +15,21 @@ const Header = (props) => {
   const [menu, setMenu] = useState(false);
   const {
     channels,
+    playlists,
     activeChannel,
     setActiveChannel,
     onGetChannels,
+    onGetPlaylist
   } = props
 
   useEffect(() => {
     if (channels === null) {
       onGetChannels()
     }
-  }, [channels, onGetChannels, activeChannel])
+    if(playlists === null) {
+      onGetPlaylist()
+    }
+  }, [channels, playlists, onGetChannels, activeChannel, onGetPlaylist])
 
   function toggleFullscreen() {
     if (
@@ -160,6 +165,7 @@ const mapStatetoProps = state => {
     leftMenu,
     channels: selectors.channels.channels(state),
     activeChannel: selectors.channels.activeChannel(state),
+    playlists: selectors.playlists.playlists(state)
   };
 };
 
@@ -168,6 +174,7 @@ const mapDispatchToProps = (dispatch) => ({
   toggleLeftmenu: (value) => dispatch(toggleLeftmenu(value)),
   onGetChannels: () => dispatch(Actions.channels.getChannelsRequest()),
   setActiveChannel: (data) => dispatch(Actions.channels.setActiveChannel(data)),
+  onGetPlaylist: () => dispatch(Actions.playlists.getPlaylistsRequest())
 })
 
 export default connect(mapStatetoProps, mapDispatchToProps)(withNamespaces()(Header));

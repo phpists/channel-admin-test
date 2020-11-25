@@ -12,6 +12,7 @@ import CreateChannel from "./pages/Channels/CreateChannel";
 import ChannelSettings from "./pages//Channels/ChannelSettings";
 import HorizontalLayout from "./components/HorizontalLayout";
 import GettingStarted from './pages/Channels/GettingStarted';
+import Content from './pages/Content/Content';
 import { LastLocationProvider } from 'react-router-last-location'
 import "./assets/scss/theme.scss";
 
@@ -60,6 +61,7 @@ export const Routes = () => {
           <Route path="/register" component={Register} />
           <PrivateRoute path="/profile" component={UserProfile} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/content" component={Content} />
           <PrivateRoute path="/channels/create" component={CreateChannel} />
           <PrivateRoute path="/channels/getting-started" component={GettingStarted} />
           <PrivateRoute path="/channels/settings" component={ChannelSettings} />

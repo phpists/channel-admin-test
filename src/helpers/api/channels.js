@@ -75,7 +75,6 @@ export default {
     }).catch(error => ({ error }))
   },
 
-  
   getChannels: async () => {
     const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null 
     if(!authData) return false
