@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -20,46 +20,76 @@ import {
   Label,
   Form,
   CardSubtitle,
+  Table,
 } from "reactstrap";
 import "./content.scss";
 import CreatePlaylist from "./CreatePlaylist";
 import selectors from "../../selectors";
-import Actions from '../../store/actions'
+import Actions from "../../store/actions";
+import { withNamespaces } from "react-i18next";
+import { DeletePlaylistModal } from "./DeletePlaylistModal";
+import EditPlaylistModal from "./EditPlaylistModal";
 
 const Content = React.memo((props) => {
-  const {activeChannel, onAddPlaylist} = props;
+  const {
+    activeChannel,
+    onAddPlaylist,
+    playlists,
+    onPlaylistDelete,
+    onUpdatePlaylist,
+  } = props;
+  const [playlistName, setPlaylistName] = useState("");
+  const [playlistId, setPlaylistId] = useState("");
   const [newPlaylist, setnewPlaylist] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
+
+  const toggleDelete = () => setModalDelete(!modalDelete);
+  const toggleEdit = () => setModalEdit(!modalEdit);
 
   const renderContent = () => {
     return (
       <Row className="align-items-start">
-        <Col xs="12" sm="4" md="3" lg="2" className="bg-white">
-          <Nav className="border-0" vertical pills tabs>
-            <NavItem>
-              <Button className="w-100 mx-2" color="success">
-                Upload
-              </Button>
-            </NavItem>
-            <NavItem className="d-flex justify-content-between align-items-center">
-              <NavLink><i className="dripicons-star"></i> Playlists</NavLink>
-              <span>(12)</span>
-            </NavItem>
-            <NavItem className="d-flex justify-content-between align-items-center">
-              <NavLink><i className=" dripicons-jewel mr-2"></i> Videos</NavLink>
-              <span>(4)</span>
-            </NavItem>
-          </Nav>
+        <Col xs="12" sm="4" md="3" lg="2">
+          <Card>
+            <CardBody>
+              <Nav className="border-0" vertical pills tabs>
+                <NavItem>
+                  <Button className="w-100 mb-4" color="success">
+                    Upload
+                  </Button>
+                </NavItem>
+                <NavItem className="d-flex justify-content-between align-items-baseline">
+                  <NavLink className="px-0">
+                    <i className="dripicons-star mr-2"></i> Playlists
+                  </NavLink>
+                  <span>({playlists?.length})</span>
+                </NavItem>
+                <NavItem className="d-flex justify-content-between align-items-baseline">
+                  <NavLink className="px-0">
+                    <i className=" dripicons-jewel mr-2"></i> Videos
+                  </NavLink>
+                  <span>({0})</span>
+                </NavItem>
+              </Nav>
+            </CardBody>
+          </Card>
         </Col>
         <Col xs="12" sm="8" md="9" lg="10">
           {newPlaylist ? (
-            <CreatePlaylist activeChannel={activeChannel} onAddPlaylist={onAddPlaylist} />
+            <CreatePlaylist
+              activeChannel={activeChannel}
+              onAddPlaylist={onAddPlaylist}
+            />
           ) : (
             <TabContent activeTab="1">
               <TabPane tabId="1">
                 <Card className="flex-column align-items-start">
-                  <CardBody>
+                  <CardBody className="w-100">
                     <CardTitle>Playlists</CardTitle>
-                    <CardSubtitle className="mb-3">21 Total</CardSubtitle>
+                    <CardSubtitle className="mb-3">
+                      {playlists?.length} Total
+                    </CardSubtitle>
                     <Nav>
                       <NavItem>
                         <Button
@@ -70,40 +100,67 @@ const Content = React.memo((props) => {
                         </Button>
                       </NavItem>
                       <NavItem>
-                        <Button
-                          color="primary mr-2"
-                        >
+                        <Button color="primary mr-2" onClick={toggleEdit}>
                           Edit
                         </Button>
+                        <EditPlaylistModal
+                          {...{
+                            playlistName,
+                            modalEdit,
+                            setPlaylistName,
+                            toggleEdit,
+                            playlistId,
+                            onUpdatePlaylist
+                          }}
+                        />
                       </NavItem>
                       <NavItem>
-                        <Button
-                          color="primary"
-                        >
+                        <Button color="primary" onClick={toggleDelete}>
                           Delete
                         </Button>
+                        <DeletePlaylistModal
+                          {...{
+                            playlistName,
+                            modalDelete,
+                            toggleDelete,
+                            playlistId,
+                            onPlaylistDelete,
+                          }}
+                        />
                       </NavItem>
                     </Nav>
-                    <Form className="d-flex flex-column">
-
-                      <FormGroup
-                        check
-                        className="d-flex justify-content-between w-100"
-                      >
-                        <Label check>
-                          <Input type="checkbox" /> Playlist Name Here 01
-                        </Label>
-                        <span>4 items</span>
-                      </FormGroup>
-                      <FormGroup
-                        check
-                        className="d-flex justify-content-between w-100"
-                      >
-                        <Label check>
-                          <Input type="checkbox" /> Playlist Name Here 02
-                        </Label>
-                        <span>4 items</span>
-                      </FormGroup>
+                    <Form>
+                      <Table hover>
+                        <tbody>
+                          {playlists?.length
+                            ? playlists?.map((p) => {
+                                return (
+                                  <tr key={p.id}>
+                                    <th>
+                                      <FormGroup check id={p.id}>
+                                        <Label check>
+                                          <Input
+                                            type="checkbox"
+                                            value={playlistName}
+                                            onChange={() => {
+                                              setPlaylistName(p.name);
+                                              setPlaylistId(p.id);
+                                            }}
+                                            id={playlistId}
+                                          />{" "}
+                                          {p.name}
+                                        </Label>
+                                      </FormGroup>
+                                    </th>
+                                    <th>
+                                      <span>4 items</span>
+                                    </th>
+                                  </tr>
+                                );
+                              })
+                            : null}
+                        </tbody>
+                      </Table>
                     </Form>
                   </CardBody>
                 </Card>
@@ -153,6 +210,13 @@ const mapStatetoProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onAddPlaylist: (data) => dispatch(Actions.playlists.addPlaylistRequest(data)),
+  onPlaylistDelete: (data) =>
+    dispatch(Actions.playlists.deletePlaylistRequest(data)),
+  onUpdatePlaylist: (data) =>
+    dispatch(Actions.playlists.updatePlaylistRequest(data)),
 });
 
-export default connect(mapStatetoProps, mapDispatchToProps)(Content);
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps
+)(withNamespaces()(Content));

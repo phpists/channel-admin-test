@@ -19,10 +19,6 @@ import {
   Form,
   CardSubtitle,
 } from "reactstrap";
-import { withNamespaces } from "react-i18next";
-import { connect } from "react-redux";
-import selectors from './../../selectors/index'
-import Actions from "../../store/actions";
 import Select from "react-select";
 
 const CreatePlaylist = (props) => {
@@ -244,13 +240,4 @@ const CreatePlaylist = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-});
-
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withNamespaces()(CreatePlaylist));
+export default CreatePlaylist;

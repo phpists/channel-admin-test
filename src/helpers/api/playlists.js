@@ -50,7 +50,6 @@ export default {
     const jsonData = JSON.stringify(data);
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
-
     formData.append("jsonData", jsonData);
 
     const config = {
@@ -92,9 +91,8 @@ export default {
     const jsonData = JSON.stringify({ fields: data });
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
-
     formData.append("jsonData", jsonData);
-
+    
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
