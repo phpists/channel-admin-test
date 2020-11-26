@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, ModalHeader, ModalFooter, ModalBody, Input } from "reactstrap";
 
 export const EditPlaylistModal = (props) => {
-  const { modalEdit, toggleEdit, onUpdatePlaylist, check, onGetPlaylist } = props;
+  const { modalEdit, toggleEdit, onUpdatePlaylist, check, onGetPlaylist, checkSet } = props;
 
   const onEdit = () => {
     onUpdatePlaylist({ id: check?.id, name: editName});
     toggleEdit();
     onGetPlaylist();
+    if(check?.name !== editName) {
+      checkSet("")
+    }
   };
 
   const [editName, setEditName] = useState(check?.name || '')

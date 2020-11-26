@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import classnames from "classnames";
 import {
   TabContent,
   TabPane,
@@ -31,14 +32,6 @@ import { DeletePlaylistModal } from "./DeletePlaylistModal";
 import EditPlaylistModal from "./EditPlaylistModal";
 
 const Content = React.memo((props) => {
-  const checkRef = useRef();
-  const usePrevious = (value) => {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  };
   const {
     activeChannel,
     onAddPlaylist,
@@ -47,44 +40,57 @@ const Content = React.memo((props) => {
     onUpdatePlaylist,
     onGetPlaylist,
   } = props;
-  const [playlistName, setPlaylistName] = useState("");
   const [newPlaylist, setnewPlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
   const [check, checkSet] = useState("");
+  const [activeTab, setActiveTab] = useState("1");
 
   const toggleDelete = () => setModalDelete(!modalDelete);
   const toggleEdit = () => setModalEdit(!modalEdit);
 
-  const prevPlaylists = usePrevious(playlistName);
+  const toggleTab = (tab) => {
+    if (activeTab !== tab) {
+      setActiveTab(tab);
+    }
+  };
 
-  // useEffect(() => {
-  //   if (prevPlaylists !== playlistName) {
-  //     onGetPlaylist(playlistName);
-  //   }
-  //   console.log();
-  // }, [prevPlaylists, playlistName, onGetPlaylist]);
+ 
 
   const renderContent = () => {
     return (
       <Row className="align-items-start">
-        <Col xs="12" sm="4" md="3" lg="2">
+        <Col xs="12" sm="5" md="4" lg="3">
           <Card>
             <CardBody>
-              <Nav className="border-0" vertical pills tabs>
+              <Nav className="border-0 navi" vertical>
                 <NavItem>
                   <Button className="w-100 mb-4" color="success">
                     Upload
                   </Button>
                 </NavItem>
                 <NavItem className="d-flex justify-content-between align-items-baseline">
-                  <NavLink className="px-0">
+                  <NavLink className="px-0"
+                   className={classnames({
+                    active: activeTab === "1",
+                  })}
+                  onClick={() => {
+                    toggleTab("1");
+                  }}
+                  >
                     <i className="dripicons-star mr-2"></i> Playlists
                   </NavLink>
                   <span>({playlists?.length})</span>
                 </NavItem>
                 <NavItem className="d-flex justify-content-between align-items-baseline">
-                  <NavLink className="px-0">
+                  <NavLink className="px-0"
+                     className={classnames({
+                      active: activeTab === "2",
+                    })}
+                    onClick={() => {
+                      toggleTab("2");
+                    }}
+                  >
                     <i className=" dripicons-jewel mr-2"></i> Videos
                   </NavLink>
                   <span>({0})</span>
@@ -93,14 +99,13 @@ const Content = React.memo((props) => {
             </CardBody>
           </Card>
         </Col>
-        <Col xs="12" sm="8" md="9" lg="10">
+        <Col xs="12" sm="7" md="8" lg="9">
           {newPlaylist ? (
             <CreatePlaylist
-              activeChannel={activeChannel}
-              onAddPlaylist={onAddPlaylist}
+              {...{ activeChannel, onAddPlaylist, setnewPlaylist, onGetPlaylist }}
             />
           ) : (
-            <TabContent activeTab="1">
+            <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
                 <Card className="flex-column align-items-start">
                   <CardBody className="w-100">
@@ -112,37 +117,48 @@ const Content = React.memo((props) => {
                       <NavItem>
                         <Button
                           color="primary mr-2"
-                          onClick={() => setnewPlaylist({ newPlaylist: true })}
+                          onClick={() => setnewPlaylist( true )}
+                          className="d-flex"
                         >
-                          New Playlist
+                          <i className="dripicons-plus plus mr-2"></i> New
+                          Playlist
                         </Button>
                       </NavItem>
                       <NavItem>
                         <Button color="primary mr-2" onClick={toggleEdit}>
-                          Edit
+                          Edit{" "}
+                          <i
+                            class="fa fa-ellipsis-v font-size-11 ml-2"
+                            aria-hidden="true"
+                          ></i>
                         </Button>
                         <EditPlaylistModal
                           {...{
                             check,
                             checkSet,
                             modalEdit,
-                            setPlaylistName,
                             toggleEdit,
                             onUpdatePlaylist,
-                            onGetPlaylist
+                            onGetPlaylist,
                           }}
                         />
                       </NavItem>
                       <NavItem>
                         <Button color="primary" onClick={toggleDelete}>
-                          Delete
+                          Delete{" "}
+                          <i
+                            className="fa fa-trash ml-2"
+                            aria-hidden="true"
+                          ></i>
                         </Button>
                         <DeletePlaylistModal
                           {...{
                             check,
+                            checkSet,
                             modalDelete,
                             toggleDelete,
                             onPlaylistDelete,
+                            onGetPlaylist,
                           }}
                         />
                       </NavItem>
@@ -153,16 +169,21 @@ const Content = React.memo((props) => {
                           {playlists?.length
                             ? playlists?.map((p) => {
                                 return (
-                                  <tr key={p.id} className="d-flex justify-content-between playlist">
+                                  <tr
+                                    key={p.id}
+                                    className="d-flex justify-content-between align-items-center playlist"
+                                  >
                                     <th className="border-0 px-0">
                                       <FormGroup check>
                                         <Label check>
                                           <Input
                                             type="checkbox"
                                             value={check.name}
-                                            checked={check.id == p.id ? true : false}
+                                            checked={
+                                              check.id == p.id ? true : false
+                                            }
                                             onChange={() => {
-                                              checkSet(p)
+                                              checkSet(p);
                                             }}
                                           />{" "}
                                           {p.name}
@@ -223,7 +244,7 @@ const Content = React.memo((props) => {
 const mapStatetoProps = (state) => ({
   playlists: selectors.playlists.playlists(state),
   activeChannel: selectors.channels.activeChannel(state),
-  activePlaylist: selectors.playlists.activePlaylist(state)
+  activePlaylist: selectors.playlists.activePlaylist(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

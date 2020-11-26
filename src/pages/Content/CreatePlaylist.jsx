@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./content.scss";
 import classnames from "classnames";
+import i18n from "../../i18n";
+import { validate } from "./../../helpers/validation";
+import {
+  AvForm,
+  AvField,
+  AvGroup,
+  AvInput,
+} from "availity-reactstrap-validation";
 import {
   TabContent,
   TabPane,
@@ -22,40 +30,58 @@ import {
 import Select from "react-select";
 
 const CreatePlaylist = (props) => {
-  const { onAddPlaylist, activeChannel } = props;
+  const { onAddPlaylist, activeChannel, setnewPlaylist, onGetPlaylist } = props;
 
-  const state = {
-    activeTab: "1",
-    activeTab1: "5",
-    activeTab2: "9",
-    activeTab3: "13",
-    customActiveTab: "1",
-    activeTabJustify: "5",
-    col1: true,
-    col2: false,
-    col3: false,
-    col5: true,
-  };
-
+  const [activeTab, setActiveTab] = useState("2");
   const [playlistName, setplaylistName] = useState("");
   const [playlistDescription, setplaylistDescription] = useState("");
+  const [lng, setLng] = useState("English");
+
+  function changeLanguageAction(lng) {
+    //set language as i18n
+    i18n.changeLanguage(lng);
+
+    if (lng === "sp") {
+      setLng("Spanish");
+    } else if (lng === "gr") {
+      setLng("German");
+    } else if (lng === "rs") {
+      setLng("Russian");
+    } else if (lng === "it") {
+      setLng("Italian");
+    } else if (lng === "eng") {
+      setLng("English");
+    }
+  }
 
   function onSubmit(e) {
     e.preventDefault();
-
     onAddPlaylist({
       name: playlistName,
       description: playlistDescription,
-      channel_id: activeChannel.id
+      channel_id: activeChannel.id,
     });
+    // setnewPlaylist(false);
+    onGetPlaylist();
   }
 
   const toggleCustomJustified = (tab) => {
-    if (state.activeTabJustify !== tab) {
-      state({
-        activeTabJustify: tab,
-      });
+    if (activeTab !== tab) {
+      setActiveTab(tab);
     }
+  };
+
+  useEffect(() => {
+    if (activeChannel) {
+      setplaylistName(playlistName);
+      // setChannelDomain(playlistDescription)
+    }
+  }, [activeChannel]);
+
+  const customValidation = (value) => {
+    return validate.isChannelNameValid(value)
+      ? true
+      : `The field must not contain spaces.`;
   };
 
   return (
@@ -68,36 +94,11 @@ const CreatePlaylist = (props) => {
                 <NavLink
                   style={{ cursor: "pointer" }}
                   className={classnames({
-                    active: state.activeTabJustify === "4",
+                    active: activeTab === "1",
                   })}
                   onClick={() => {
-                    toggleCustomJustified("4");
-                  }}
-                >
-                  <span className="d-none d-sm-block">Ukrainian</span>
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  style={{ cursor: "pointer" }}
-                  className={classnames({
-                    active: state.activeTabJustify === "5",
-                  })}
-                  onClick={() => {
-                    toggleCustomJustified("5");
-                  }}
-                >
-                  <span className="d-none d-sm-block">English</span>
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  style={{ cursor: "pointer" }}
-                  className={classnames({
-                    active: state.activeTabJustify === "6",
-                  })}
-                  onClick={() => {
-                    toggleCustomJustified("6");
+                    changeLanguageAction("rs");
+                    toggleCustomJustified("1");
                   }}
                 >
                   <span className="d-none d-sm-block">Russian</span>
@@ -107,23 +108,53 @@ const CreatePlaylist = (props) => {
                 <NavLink
                   style={{ cursor: "pointer" }}
                   className={classnames({
-                    active: state.activeTabJustify === "7",
+                    active: activeTab === "2",
                   })}
                   onClick={() => {
-                    toggleCustomJustified("7");
+                    changeLanguageAction("eng");
+                    toggleCustomJustified("2");
                   }}
                 >
-                  <span className="d-none d-sm-block">Deutsch</span>
+                  <span className="d-none d-sm-block">English</span>
                 </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink
                   style={{ cursor: "pointer" }}
                   className={classnames({
-                    active: state.activeTabJustify === "8",
+                    active: activeTab === "3",
                   })}
                   onClick={() => {
-                    toggleCustomJustified("8");
+                    changeLanguageAction("it");
+                    toggleCustomJustified("3");
+                  }}
+                >
+                  <span className="d-none d-sm-block">Italy</span>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  style={{ cursor: "pointer" }}
+                  className={classnames({
+                    active: activeTab === "4",
+                  })}
+                  onClick={() => {
+                    changeLanguageAction("gr");
+                    toggleCustomJustified("4");
+                  }}
+                >
+                  <span className="d-none d-sm-block">German</span>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  style={{ cursor: "pointer" }}
+                  className={classnames({
+                    active: activeTab === "5",
+                  })}
+                  onClick={() => {
+                    changeLanguageAction("sp");
+                    toggleCustomJustified("5");
                   }}
                 >
                   <span className="d-none d-sm-block">Espanol</span>
@@ -131,52 +162,50 @@ const CreatePlaylist = (props) => {
               </NavItem>
             </Nav>
 
-            <TabContent activeTab={state.activeTabJustify}>
+            <TabContent activeTab={activeTab}>
+              <TabPane tabId="1" className="p-3"></TabPane>
+              <TabPane tabId="2" className="p-3"></TabPane>
+              <TabPane tabId="3" className="p-3"></TabPane>
               <TabPane tabId="4" className="p-3"></TabPane>
               <TabPane tabId="5" className="p-3"></TabPane>
-              <TabPane tabId="6" className="p-3"></TabPane>
-              <TabPane tabId="7" className="p-3"></TabPane>
-              <TabPane tabId="8" className="p-3"></TabPane>
             </TabContent>
-            <Form>
-              <FormGroup>
-                <Label htmlFor="name">Title</Label>
-                <Input
-                  id="name"
-                  placeholder="title"
-                  name="name"
-                  type="text"
-                  className="form-control"
-                  value={playlistName}
-                  onChange={(e) => {
-                    setplaylistName(e.target.value);
-                  }}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label htmlFor="productdesc">Description</Label>
-                <textarea
-                  className="form-control"
-                  id="productdesc"
-                  rows="5"
-                  placeholder="description"
-                  value={playlistDescription}
-                  onChange={(e) => {
-                    setplaylistDescription(e.target.value);
-                  }}
-                ></textarea>
-              </FormGroup>
-              <FormGroup className="select2-container">
-                <Label className="control-label">Playlist</Label>
-                <Select
-                  classNamePrefix="select2-selection"
-                  placeholder="Chose..."
-                  title="orderby"
-                  // options={options}
-                  isMulti
-                />
-              </FormGroup>
-            </Form>
+            <AvForm onValidSubmit={customValidation}>
+              <AvField
+                name="title"
+                className="form-control"
+                placeholder="title"
+                type="text"
+                required
+                label="Title"
+                value={playlistName}
+                onChange={(e) => {
+                  setplaylistName(e.target.value);
+                }}
+                validate={{ customValidation }}
+              />
+              <AvField
+                className="form-control"
+                type="textarea"
+                rows="5"
+                label="Description"
+                name="description"
+                required
+                placeholder="description"
+                value={playlistDescription}
+                onChange={(e) => {
+                  setplaylistDescription(e.target.value);
+                }}
+              />
+              <AvField
+                className="form-control"
+                type="select"
+                label="Playlist"
+                name="playlist"
+                placeholder="Choose..."
+                required
+                isMulti
+              ></AvField>
+            </AvForm>
           </CardBody>
         </Card>
         <Card>
@@ -186,53 +215,57 @@ const CreatePlaylist = (props) => {
               Fill all information below
             </CardSubtitle>
 
-            <Form>
+            <AvForm>
               <Row>
                 <Col sm={6}>
-                  <FormGroup>
-                    <Label htmlFor="metatitle">Meta title</Label>
-                    <Input
-                      id="metatitle"
-                      name="productname"
-                      type="text"
-                      className="form-control"
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label htmlFor="metakeywords">Meta Keywords</Label>
-                    <Input
-                      id="metakeywords"
-                      name="manufacturername"
-                      type="text"
-                      className="form-control"
-                    />
-                  </FormGroup>
+                  <AvField
+                    id="metatitle"
+                    label="Meta title"
+                    name="productname"
+                    required
+                    type="text"
+                    className="form-control"
+                  />
+                  <AvField
+                    label="Meta Keyword"
+                    id="metakeywords"
+                    name="manufacturername"
+                    required
+                    type="text"
+                    className="form-control"
+                  />
                 </Col>
 
                 <Col sm={6}>
-                  <FormGroup>
-                    <Label htmlFor="metadescription">Meta Description</Label>
-                    <textarea
+                    <AvField
+                    label="Meta Description"
+                    type="textarea"
                       className="form-control"
                       id="metadescription"
+                      required
+                      name="Meta Description"
                       rows="5"
-                    ></textarea>
-                  </FormGroup>
+                    />
                 </Col>
               </Row>
-
-              <Button
+                <FormGroup>
+                <Button
                 type="submit"
                 color="primary"
                 className="mr-1 waves-effect waves-light"
-                onClick={onSubmit}
               >
                 Save Changes
               </Button>
-              <Button type="submit" color="secondary" className="waves-effect">
+              <Button
+                onClick={() => setnewPlaylist(false)}
+                type="button"
+                color="secondary"
+                className="waves-effect"
+              >
                 Cancel
               </Button>
-            </Form>
+                </FormGroup>
+            </AvForm>
           </CardBody>
         </Card>
       </TabPane>

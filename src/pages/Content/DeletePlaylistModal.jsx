@@ -2,11 +2,13 @@ import React from "react";
 import { Button, Modal, ModalHeader, ModalFooter } from "reactstrap";
 
 export const DeletePlaylistModal = (props) => {
-  const { modalDelete, toggleDelete, onPlaylistDelete, check } = props;
+  const { modalDelete, toggleDelete, onPlaylistDelete, check, onGetPlaylist, checkSet } = props;
 
   const onDelete = () => {
     onPlaylistDelete({ id: check.id });
     toggleDelete();
+    onGetPlaylist();
+    checkSet("");
   };
 
   return (

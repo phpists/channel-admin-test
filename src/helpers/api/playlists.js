@@ -51,7 +51,6 @@ export default {
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
     formData.append("jsonData", jsonData);
-
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -72,6 +71,7 @@ export default {
       axiosInstance
         .post(`?${queryString}`, formData, config)
         .then((response) => {
+          console.log(response)
           return response;
         })
         .catch((error) => ({ error }))
@@ -113,6 +113,7 @@ export default {
       axiosInstance
         .post(`?${queryString}`, formData, config)
         .then((response) => {
+          console.log(response)
           return response;
         })
         .catch((error) => ({ error }))
