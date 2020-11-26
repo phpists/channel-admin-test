@@ -8,8 +8,8 @@ import Actions from '../../store/actions'
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import selectors from './../../selectors'
 
-const Login = (props) => {
-	const { history, authData, errorMessgae } = props
+const LoginPage = (props) => {
+	const { history, authData, errorMessage } = props
 	const [isSent, setSentStatus] = useState(false)
 
 	function onFormSubmit(event, values) {
@@ -20,17 +20,19 @@ const Login = (props) => {
 		props.loginUser(data);
 	}
 
-	useEffect(()=>{
-		if(authData !== null){
+	useEffect(() => {
+		if (errorMessage) {
+			setSentStatus(false)
+		}
+		if (authData !== null) {
 			history.push('/dashboard')
 		}
-		setSentStatus(false)
-	}, [authData, history, errorMessgae])
+	}, [authData, history, errorMessage])
 
 	return (
 		<React.Fragment>
 			<div className="home-btn d-none d-sm-block">
-				<Link to="/" className="text-dark"><i className="fas fa-home h2"></i></Link>
+				<i className="fas fa-home h2"></i>
 			</div>
 			<div className="account-pages my-5 pt-sm-5">
 				<Container>
@@ -52,34 +54,32 @@ const Login = (props) => {
 								</div>
 								<CardBody className="pt-0">
 									<div>
-										<Link to="/">
-											<div className="avatar-md profile-user-wid mb-4">
-												<span className="avatar-title rounded-circle bg-light">
-													<img src={logo} alt="" className="rounded-circle" height="34" />
-												</span>
-											</div>
-										</Link>
+										<div className="avatar-md profile-user-wid mb-4">
+											<span className="avatar-title rounded-circle bg-light">
+												<img src={logo} alt="" className="rounded-circle" height="34" />
+											</span>
+										</div>
 									</div>
 									<div className="p-2">
 										<AvForm className="form-horizontal" onValidSubmit={(e, v) => { onFormSubmit(e, v) }}>
 											{props.error && props.error ? <Alert color="danger">{props.error}</Alert> : null}
 											<div className="form-group">
-												<AvField 
-													name="email" 
-													label="Email"  
-													className="form-control" 
-													placeholder="Enter email" 
-													type="email" 
-													required 
+												<AvField
+													name="email"
+													label="Email"
+													className="form-control"
+													placeholder="Enter email"
+													type="email"
+													required
 												/>
 											</div>
 											<div className="form-group">
-												<AvField 
-													name="password" 
-													label="Password"  
-													type="password" 
-													placeholder="Enter Password" 
-													required 
+												<AvField
+													name="password"
+													label="Password"
+													type="password"
+													placeholder="Enter Password"
+													required
 												/>
 											</div>
 											<div className="mt-3">
@@ -112,8 +112,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-		loginUser: (data)=> dispatch(Actions.authorization.loginRequest(data))
+	loginUser: (data) => dispatch(Actions.authorization.loginRequest(data))
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
-
+export default withRouter(
+	connect(mapStateToProps, mapDispatchToProps)(LoginPage)
+);

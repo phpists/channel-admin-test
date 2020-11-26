@@ -18,8 +18,9 @@ const addChannelRequest = (payload) => ({
   payload
 })
 
-const addChannelSucces = () => ({
+const addChannelSucces = (payload) => ({
   type: Types.ADD_CHANNEL_SUCCESS,
+  payload
 })
 
 const getChannelsRequest = () => ({

@@ -9,6 +9,9 @@ export const Types = {
   FORGOT_PASSWORD_REQUEST: 'FORGOT_PASSWORD_REQUEST',
   FORGOT_PASSWORD_SUCCESS: 'FORGOT_PASSWORD_SUCCESS',
 
+  SEND_NEW_PASSAWORD_REQUEST: 'SEND_NEW_PASSAWORD_REQUEST',
+  SEND_NEW_PASSAWORD_SUCCESS: 'SEND_NEW_PASSAWORD_SUCCESS',
+
   LOG_OUT: 'LOG_OUT',
 
   GET_USER_PROFILE_REQUEST: 'GET_USER_PROFILE_REQUEST',
@@ -70,6 +73,11 @@ const changeUserProfileSucces = () => ({
   type: Types.CHANGE_USER_PROFILE_SUCCESS,
 })
 
+const sendNewPasswordRequest = (payload) => ({
+  type: Types.SEND_NEW_PASSAWORD_REQUEST,
+  payload
+})
+
 
 export default {
   loginRequest,
@@ -83,4 +91,5 @@ export default {
   getUserProfileSucces,
   changeUserProfileRequest,
   changeUserProfileSucces,
+  sendNewPasswordRequest,
 }

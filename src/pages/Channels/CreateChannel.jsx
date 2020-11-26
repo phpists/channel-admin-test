@@ -10,12 +10,26 @@ import { validate } from './../../helpers/validation'
 import "./channels.scss";
 
 const CreateChannel = (props) => {
-	const { onAddChannel, errorMessgae } = props
+	
+	const { 
+		onAddChannel, 
+		errorMessgae, 
+		history, 
+		isChannelAddedSuccessfuly,
+		resetIsChannelAddedValue,
+	 } = props
+	 
 	const [isSent, setSentStatus] = useState(false)
 
 	useEffect(()=>{
 		setSentStatus(false)
-	}, [errorMessgae])
+
+		if(isChannelAddedSuccessfuly){
+			history.push('/channels/getting-started')
+			resetIsChannelAddedValue()
+		}
+		
+	}, [errorMessgae, isChannelAddedSuccessfuly])
 
 	const customValidation = value => validate.isChannelNameValid(value) ? true : `The field must not contain spaces.`;
 
@@ -25,7 +39,7 @@ const CreateChannel = (props) => {
 
 		const data = {
 			name: values.name,
-			subdomain: values.name,
+			subdomain: values.name.replace(/\s/g, ''),
 		}
 
 		setSentStatus(true)
@@ -72,10 +86,12 @@ const CreateChannel = (props) => {
 
 const mapStateToProps = state => ({
 	errorMessgae: selectors.common.errorMessage(state),
+	isChannelAddedSuccessfuly: selectors.channels.isChannelAddedSuccessfuly(state),
 })
 
 const mapDispatchToProps = dispatch => ({
 	onAddChannel: (data) => dispatch(Actions.channels.addChannelRequest(data)),
+	resetIsChannelAddedValue: () => dispatch(Actions.channels.addChannelSucces(false)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNamespaces()(CreateChannel));

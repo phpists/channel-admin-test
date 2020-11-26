@@ -2,7 +2,6 @@ import axios from 'axios'
 import authorization from  './authorization'
 import profile from  './profile'
 import channels from  './channels'
-import playlists from './playlists'
 
 // @ts-ignore
 const URL = 'https://bringstream.com/Engine/api/api.php'
@@ -15,5 +14,4 @@ export const API = {
   authorization,
   profile,
   channels,
-  playlists
 }

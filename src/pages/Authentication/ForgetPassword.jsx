@@ -19,7 +19,7 @@ const ForgetPasswordPage = (props) => {
   return (
     <React.Fragment>
       <div className="home-btn d-none d-sm-block">
-        <Link to="/" className="text-dark"><i className="fas fa-home h2"></i></Link>
+        <i className="fas fa-home h2"></i>
       </div>
       <div className="account-pages my-5 pt-sm-5">
         <Container>
@@ -41,13 +41,11 @@ const ForgetPasswordPage = (props) => {
                 </div>
                 <CardBody className="pt-0">
                   <div>
-                    <Link to="/">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img src={logo} alt="" className="rounded-circle" height="34" />
-                        </span>
-                      </div>
-                    </Link>
+                    <div className="avatar-md profile-user-wid mb-4">
+                      <span className="avatar-title rounded-circle bg-light">
+                        <img src={logo} alt="" className="rounded-circle" height="34" />
+                      </span>
+                    </div>
                   </div>
                   <div className="p-2">
                     {props.forgetError && props.forgetError ? (
@@ -96,7 +94,7 @@ const ForgetPasswordPage = (props) => {
 
 
 const mapDispathcToProps = dispatch => ({
-  onForgotPassword: (data)=> dispatch(Actions.authorization.forgotPasswordRequest(data))
+  onForgotPassword: (data) => dispatch(Actions.authorization.forgotPasswordRequest(data))
 })
 
 

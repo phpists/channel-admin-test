@@ -32,6 +32,20 @@ export function* watchRegisterUser(action) {
   }
 }
 
+export function* watchNewPassword(action) {
+  const response = yield API.authorization.newPassword(action.payload)
+
+  if (response.status === 200) {
+    if (response.data.status === 'error') {
+      yield put(Actions.common.setErrorNotify(response?.data?.message || 'Server error' ))
+    } else {
+      yield put(Actions.common.setSuccessNotify('We sent you new password, pleas chek yout email'))
+    }
+  } else {
+    yield put(Actions.common.setErrorNotify(response.status + ' Server error'))
+  }
+}
+
 export function* watchForgotPassword(action) {
   const response = yield API.authorization.forgotPassword(action.payload)
 

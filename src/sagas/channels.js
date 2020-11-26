@@ -1,7 +1,6 @@
 import { put, select } from 'redux-saga/effects'
 import Actions from '../store/actions'
 import { API } from '../helpers/api'
-import { history } from './../routes'
 import selectors from './../selectors'
 
 export function* watchAddChannel(action) {
@@ -11,7 +10,7 @@ export function* watchAddChannel(action) {
     if (response.data.status === 'error') {
       yield put(Actions.common.setErrorNotify(response?.data?.message || 'Server error' ))
     } else {
-      history.push('/channels/getting-started')
+      yield put(Actions.channels.addChannelSucces(true))
       yield put(Actions.channels.getChannelsRequest())
       yield put(Actions.channels.setActiveChannel(response.data?.channel))
     }

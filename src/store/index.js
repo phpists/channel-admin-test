@@ -11,5 +11,3 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(sagaMidd
 sagaMiddleware.run(rootSaga);
 
 export default store;
-
-window.store = store;

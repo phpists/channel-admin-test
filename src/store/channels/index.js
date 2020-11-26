@@ -2,7 +2,8 @@ import { Types } from './actions'
 
 const initialState = {
   channels: null,
-  activeChannel: null
+  activeChannel: null,
+  isChannelAddedSuccessfuly: false,
 }
 
 const reducer = (state = initialState, action) => {
@@ -11,6 +12,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state, ...{
           channels: action.payload,
+        }
+      }
+    }
+    case Types.ADD_CHANNEL_SUCCESS: {
+      return {
+        ...state, ...{
+          isChannelAddedSuccessfuly: action.payload,
         }
       }
     }

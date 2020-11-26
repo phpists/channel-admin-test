@@ -65,8 +65,8 @@ const ChannelSettings = React.memo((props) => {
 		onChannelUpdate({
 			id: activeChannel.id,
 			name: channelName,
-			domain: channelDomain,
-			subdomain: channelSubDomain,
+			domain: channelDomain.replace(/\s/g, ''),
+			subdomain: channelSubDomain.replace(/\s/g, ''),
 		})
 	}
 

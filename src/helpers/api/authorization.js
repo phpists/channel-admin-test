@@ -45,4 +45,19 @@ export default {
       return response
     }).catch(error => ({ error }))
   },
+
+  newPassword: async (data) => {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+
+    const formData = new FormData()
+    formData.append('jsonData', JSON.stringify(data))
+
+    return await axiosInstance.post('?action=NewPassword', formData, config).then(response => {
+      return response
+    }).catch(error => ({ error }))
+  },
 }
