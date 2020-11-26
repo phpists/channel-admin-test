@@ -1,4 +1,4 @@
-import { put, select } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 import Actions from "../store/actions";
 import { API } from "../helpers/api";
 import { history } from "./../routes";

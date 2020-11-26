@@ -39,6 +39,7 @@ const Content = React.memo((props) => {
     onPlaylistDelete,
     onUpdatePlaylist,
     onGetPlaylist,
+    errorMessage,
   } = props;
   const [newPlaylist, setnewPlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
@@ -46,8 +47,20 @@ const Content = React.memo((props) => {
   const [check, checkSet] = useState("");
   const [activeTab, setActiveTab] = useState("1");
 
-  const toggleDelete = () => setModalDelete(!modalDelete);
-  const toggleEdit = () => setModalEdit(!modalEdit);
+  const toggleDelete = () => {
+    if (!check.name) {
+      return errorMessage("Please select a playlist");
+    } else {
+      setModalDelete(!modalDelete);
+    }
+  };
+  const toggleEdit = () => {
+    if (!check.name) {
+      return errorMessage("Please select a playlist");
+    } else {
+      setModalEdit(!modalEdit);
+    }
+  };
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -119,94 +132,88 @@ const Content = React.memo((props) => {
                     <CardSubtitle className="mb-3">
                       {playlists?.length} Total
                     </CardSubtitle>
-                    <Nav>
-                      <NavItem>
-                        <Button
-                          color="primary mr-2"
-                          onClick={() => setnewPlaylist(true)}
-                          className="d-flex"
-                        >
-                          <i className="dripicons-plus plus mr-2"></i> New
-                          Playlist
-                        </Button>
-                      </NavItem>
-                      <NavItem>
-                        <Button color="primary mr-2" onClick={toggleEdit}>
-                          Edit{" "}
-                          <i
-                            className="fa fa-ellipsis-v font-size-11 ml-2"
-                            aria-hidden="true"
-                          ></i>
-                        </Button>
-                        <EditPlaylistModal
-                          {...{
-                            check,
-                            checkSet,
-                            modalEdit,
-                            toggleEdit,
-                            onUpdatePlaylist,
-                            onGetPlaylist,
-                          }}
-                        />
-                      </NavItem>
-                      <NavItem>
-                        <Button color="primary" onClick={toggleDelete}>
-                          Delete{" "}
-                          <i
-                            className="fa fa-trash ml-2"
-                            aria-hidden="true"
-                          ></i>
-                        </Button>
-                        <DeletePlaylistModal
-                          {...{
-                            check,
-                            checkSet,
-                            modalDelete,
-                            toggleDelete,
-                            onPlaylistDelete,
-                            onGetPlaylist,
-                          }}
-                        />
-                      </NavItem>
-                    </Nav>
+                    <div className="btn-toolbar py-3" role="toolbar">
+                      <Button
+                        color="primary mr-2"
+                        onClick={() => setnewPlaylist(true)}
+                        className="d-flex"
+                      >
+                        <i className="dripicons-plus plus mr-2"></i> New
+                        Playlist
+                      </Button>
+                      <Button
+                        color="primary mr-2"
+                        onClick={toggleEdit}
+                        className="btn btn-primary waves-light waves-effect"
+                      >
+                        Edit <i className="mdi mdi-dots-vertical ml-2"></i>
+                      </Button>
+                      <EditPlaylistModal
+                        {...{
+                          check,
+                          checkSet,
+                          modalEdit,
+                          toggleEdit,
+                          onUpdatePlaylist,
+                          onGetPlaylist,
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        color="primary"
+                        onClick={toggleDelete}
+                        className="waves-light waves-effect"
+                      >
+                        {" "}
+                        Delete<i className="far fa-trash-alt ml-2"></i>
+                      </Button>
+                      <DeletePlaylistModal
+                        {...{
+                          check,
+                          checkSet,
+                          modalDelete,
+                          toggleDelete,
+                          onPlaylistDelete,
+                          onGetPlaylist,
+                        }}
+                      />
+                    </div>
                     <Form>
-                      <Table hover className="mt-3">
-                        <tbody>
-                          {playlists?.length
-                            ? playlists?.map((p) => {
-                                return (
-                                  <tr
-                                    key={p.id}
-                                    className="d-flex justify-content-between align-items-center playlist"
-                                  >
-                                    <th className="border-0 px-0">
-                                      <FormGroup check className="p-0">
-                                        <Label check className="checkContainer">
-                                          <Input
-                                            type="checkbox"
-                                            value={check.name}
-                                            checked={
-                                              check.id == p.id ? true : false
-                                            }
-                                            onChange={() => {
-                                              checkSet(p);
-                                            }}
-                                          />{" "}
-                                          {p.name}
-                                          <span className="checkboxProt"></span>
-                                          <i className="dripicons-checkmark checkmark"></i>
-                                        </Label>
-                                      </FormGroup>
-                                    </th>
-                                    <th className="border-0 px-0">
-                                      <span>4 items</span>
-                                    </th>
-                                  </tr>
-                                );
-                              })
-                            : null}
-                        </tbody>
-                      </Table>
+                      <ul className="message-list">
+                        {playlists?.length
+                          ? playlists?.map((p) => {
+                              return (
+                                <li key={p.id}>
+                                  <div className="col-mail col-mail-1">
+                                    <div className="checkbox-wrapper-mail mx-0">
+                                      <Input
+                                        type="checkbox"
+                                        value={check.name}
+                                        checked={
+                                          check.id == p.id ? true : false
+                                        }
+                                        onChange={() => {
+                                          checkSet(p);
+                                        }}
+                                        id={p.id}
+                                      />
+                                      <Label
+                                        className="toggle"
+                                        htmlFor={p.id}
+                                      ></Label>
+                                    </div>
+                                    <Link to="#" className="title">
+                                      {p.name}
+                                    </Link>
+                                  </div>
+                                  <div className="col-mail col-mail-2">
+                                    <div className="date">4 items</div>
+                                  </div>
+                                </li>
+                              );
+                            })
+                          : null}
+                      </ul>
                     </Form>
                   </CardBody>
                 </Card>
@@ -223,13 +230,12 @@ const Content = React.memo((props) => {
     <div className="overlay">
       <CardBody>
         <CardTitle className="text-center mb-3 mt-3">
-          You haven`t any videos yet.
+          Upload your first video to get started!
         </CardTitle>
         <div className="text-center mb-3">
           <Link to="/content">
-            <Button color="primary" className="waves-effect">
-              <i className="bx bx-plus font-size-16 align-middle mr-2" />
-              Creacte a new videos
+            <Button color="info" className="waves-effect">
+              Upload videos
             </Button>
           </Link>
         </div>
@@ -241,13 +247,16 @@ const Content = React.memo((props) => {
     <div className="overlay">
       <CardBody>
         <CardTitle className="text-center mb-3 mt-3">
-          You haven`t any playlist yet.
+          Upload your files, then organize them and started with distibution
         </CardTitle>
         <div className="text-center mb-3">
           <Link to="/content">
-            <Button color="primary" className="waves-effect">
-              <i className="bx bx-plus font-size-16 align-middle mr-2" />
-              Creacte a new playlist
+            <Button
+              color="info"
+              className="waves-effect"
+              onClick={setnewPlaylist(true)}
+            >
+              Playlists
             </Button>
           </Link>
         </div>
@@ -281,6 +290,7 @@ const mapDispatchToProps = (dispatch) => ({
   onUpdatePlaylist: (data) =>
     dispatch(Actions.playlists.updatePlaylistRequest(data)),
   onGetPlaylist: () => dispatch(Actions.playlists.getPlaylistsRequest()),
+  errorMessage: (data) => dispatch(Actions.common.setErrorNotify(data)),
 });
 
 export default connect(
