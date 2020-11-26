@@ -3,17 +3,16 @@ import { Button, Modal, ModalHeader, ModalFooter, ModalBody, Input } from "react
 
 export const EditPlaylistModal = (props) => {
   const { modalEdit, toggleEdit, onUpdatePlaylist, check, onGetPlaylist, checkSet } = props;
+  const [editName, setEditName] = useState(check?.name || '')
 
   const onEdit = () => {
     onUpdatePlaylist({ id: check?.id, name: editName});
     toggleEdit();
-    onGetPlaylist();
+    onGetPlaylist()
     if(check?.name !== editName) {
       checkSet("")
     }
   };
-
-  const [editName, setEditName] = useState(check?.name || '')
 
   useEffect(() => {
     if(check) {

@@ -52,10 +52,9 @@ const Content = React.memo((props) => {
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
+      setnewPlaylist(false);
     }
   };
-
- 
 
   const renderContent = () => {
     return (
@@ -70,21 +69,23 @@ const Content = React.memo((props) => {
                   </Button>
                 </NavItem>
                 <NavItem className="d-flex justify-content-between align-items-baseline">
-                  <NavLink className="px-0"
-                   className={classnames({
-                    active: activeTab === "1",
-                  })}
-                  onClick={() => {
-                    toggleTab("1");
-                  }}
+                  <NavLink
+                    className="px-0"
+                    className={classnames({
+                      active: activeTab === "1",
+                    })}
+                    onClick={() => {
+                      toggleTab("1");
+                    }}
                   >
                     <i className="dripicons-star mr-2"></i> Playlists
                   </NavLink>
                   <span>({playlists?.length})</span>
                 </NavItem>
                 <NavItem className="d-flex justify-content-between align-items-baseline">
-                  <NavLink className="px-0"
-                     className={classnames({
+                  <NavLink
+                    className="px-0"
+                    className={classnames({
                       active: activeTab === "2",
                     })}
                     onClick={() => {
@@ -102,7 +103,12 @@ const Content = React.memo((props) => {
         <Col xs="12" sm="7" md="8" lg="9">
           {newPlaylist ? (
             <CreatePlaylist
-              {...{ activeChannel, onAddPlaylist, setnewPlaylist, onGetPlaylist }}
+              {...{
+                activeChannel,
+                onAddPlaylist,
+                setnewPlaylist,
+                onGetPlaylist,
+              }}
             />
           ) : (
             <TabContent activeTab={activeTab}>
@@ -117,7 +123,7 @@ const Content = React.memo((props) => {
                       <NavItem>
                         <Button
                           color="primary mr-2"
-                          onClick={() => setnewPlaylist( true )}
+                          onClick={() => setnewPlaylist(true)}
                           className="d-flex"
                         >
                           <i className="dripicons-plus plus mr-2"></i> New
@@ -128,7 +134,7 @@ const Content = React.memo((props) => {
                         <Button color="primary mr-2" onClick={toggleEdit}>
                           Edit{" "}
                           <i
-                            class="fa fa-ellipsis-v font-size-11 ml-2"
+                            className="fa fa-ellipsis-v font-size-11 ml-2"
                             aria-hidden="true"
                           ></i>
                         </Button>
@@ -174,8 +180,8 @@ const Content = React.memo((props) => {
                                     className="d-flex justify-content-between align-items-center playlist"
                                   >
                                     <th className="border-0 px-0">
-                                      <FormGroup check>
-                                        <Label check>
+                                      <FormGroup check className="p-0">
+                                        <Label check className="checkContainer">
                                           <Input
                                             type="checkbox"
                                             value={check.name}
@@ -187,6 +193,8 @@ const Content = React.memo((props) => {
                                             }}
                                           />{" "}
                                           {p.name}
+                                          <span className="checkboxProt"></span>
+                                          <i className="dripicons-checkmark checkmark"></i>
                                         </Label>
                                       </FormGroup>
                                     </th>
@@ -203,7 +211,7 @@ const Content = React.memo((props) => {
                   </CardBody>
                 </Card>
               </TabPane>
-              <TabPane tabId="2"></TabPane>
+              <TabPane tabId="2">{renderEmptyContentMessageVideos()}</TabPane>
             </TabContent>
           )}
         </Col>
@@ -211,7 +219,25 @@ const Content = React.memo((props) => {
     );
   };
 
-  const renderEmptyContentMessage = () => (
+  const renderEmptyContentMessageVideos = () => (
+    <div className="overlay">
+      <CardBody>
+        <CardTitle className="text-center mb-3 mt-3">
+          You haven`t any videos yet.
+        </CardTitle>
+        <div className="text-center mb-3">
+          <Link to="/content">
+            <Button color="primary" className="waves-effect">
+              <i className="bx bx-plus font-size-16 align-middle mr-2" />
+              Creacte a new videos
+            </Button>
+          </Link>
+        </div>
+      </CardBody>
+    </div>
+  );
+
+  const renderEmptyContentMessagePlaylist = () => (
     <div className="overlay">
       <CardBody>
         <CardTitle className="text-center mb-3 mt-3">
@@ -234,7 +260,9 @@ const Content = React.memo((props) => {
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title={"Dashboard"} breadcrumbItem={"content"} />
-          {Boolean(true) ? renderContent() : renderEmptyContentMessage()}
+          {Boolean(true)
+            ? renderContent()
+            : renderEmptyContentMessagePlaylist()}
         </Container>
       </div>
     </>
@@ -244,7 +272,6 @@ const Content = React.memo((props) => {
 const mapStatetoProps = (state) => ({
   playlists: selectors.playlists.playlists(state),
   activeChannel: selectors.channels.activeChannel(state),
-  activePlaylist: selectors.playlists.activePlaylist(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -254,8 +281,6 @@ const mapDispatchToProps = (dispatch) => ({
   onUpdatePlaylist: (data) =>
     dispatch(Actions.playlists.updatePlaylistRequest(data)),
   onGetPlaylist: () => dispatch(Actions.playlists.getPlaylistsRequest()),
-  setActivePlaylist: (data) =>
-    dispatch(Actions.playlists.setActivePlaylis(data)),
 });
 
 export default connect(

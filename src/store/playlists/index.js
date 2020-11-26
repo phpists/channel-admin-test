@@ -2,7 +2,6 @@ import { Types } from "./actions";
 
 const initialState = {
   playlists: null,
-  activePlaylist: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -14,13 +13,6 @@ const reducer = (state = initialState, action) => {
           playlists: action.payload,
         },
       };
-    }
-    case Types.SET_ACTIVE_PLAYLIST: {
-      return {
-        ...state, ...{
-          activePlaylist: action.payload,
-        }
-      }
     }
     default:
       return state;
