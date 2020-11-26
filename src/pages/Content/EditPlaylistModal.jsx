@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, ModalHeader, ModalFooter, ModalBody, Input } from "reactstrap";
 
 export const EditPlaylistModal = (props) => {
-  const { modalEdit, toggleEdit, onUpdatePlaylist, playlistId, playlistName, setPlaylistName } = props;
+  const { modalEdit, toggleEdit, onUpdatePlaylist, check, onGetPlaylist } = props;
 
   const onEdit = () => {
-    onUpdatePlaylist({ id: playlistId, name: playlistName});
+    onUpdatePlaylist({ id: check?.id, name: editName});
     toggleEdit();
+    onGetPlaylist();
   };
+
+  const [editName, setEditName] = useState(check?.name || '')
+
+  useEffect(() => {
+    if(check) {
+        setEditName(check?.name)
+    }
+}, [check])
 
   return (
     <div>
@@ -16,7 +25,7 @@ export const EditPlaylistModal = (props) => {
         Еnter a new playlist name
         </ModalHeader>
         <ModalBody>
-            <Input value={playlistName} onChange={(e) => {setPlaylistName(e.target.value)}}/>
+            <Input value={editName} onChange={(e) => {setEditName(e.target.value)}}/>
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" className="w-sm" onClick={toggleEdit}>

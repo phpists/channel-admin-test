@@ -2,10 +2,10 @@ import React from "react";
 import { Button, Modal, ModalHeader, ModalFooter } from "reactstrap";
 
 export const DeletePlaylistModal = (props) => {
-  const { modalDelete, toggleDelete, onPlaylistDelete, playlistId, playlistName } = props;
+  const { modalDelete, toggleDelete, onPlaylistDelete, check } = props;
 
   const onDelete = () => {
-    onPlaylistDelete({ id: playlistId });
+    onPlaylistDelete({ id: check.id });
     toggleDelete();
   };
 
@@ -13,7 +13,7 @@ export const DeletePlaylistModal = (props) => {
     <div>
       <Modal isOpen={modalDelete} toggle={toggleDelete}>
         <ModalHeader toggle={toggleDelete}>
-          Are you sure you want to delete "{playlistName}" playlist?
+          Are you sure you want to delete "{check.name}" playlist?
         </ModalHeader>
         <ModalFooter>
           <Button color="secondary" className="w-sm" onClick={toggleDelete}>

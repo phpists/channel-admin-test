@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -31,21 +31,39 @@ import { DeletePlaylistModal } from "./DeletePlaylistModal";
 import EditPlaylistModal from "./EditPlaylistModal";
 
 const Content = React.memo((props) => {
+  const checkRef = useRef();
+  const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  };
   const {
     activeChannel,
     onAddPlaylist,
     playlists,
     onPlaylistDelete,
     onUpdatePlaylist,
+    onGetPlaylist,
   } = props;
   const [playlistName, setPlaylistName] = useState("");
-  const [playlistId, setPlaylistId] = useState("");
   const [newPlaylist, setnewPlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
+  const [check, checkSet] = useState("");
 
   const toggleDelete = () => setModalDelete(!modalDelete);
   const toggleEdit = () => setModalEdit(!modalEdit);
+
+  const prevPlaylists = usePrevious(playlistName);
+
+  // useEffect(() => {
+  //   if (prevPlaylists !== playlistName) {
+  //     onGetPlaylist(playlistName);
+  //   }
+  //   console.log();
+  // }, [prevPlaylists, playlistName, onGetPlaylist]);
 
   const renderContent = () => {
     return (
@@ -105,12 +123,13 @@ const Content = React.memo((props) => {
                         </Button>
                         <EditPlaylistModal
                           {...{
-                            playlistName,
+                            check,
+                            checkSet,
                             modalEdit,
                             setPlaylistName,
                             toggleEdit,
-                            playlistId,
-                            onUpdatePlaylist
+                            onUpdatePlaylist,
+                            onGetPlaylist
                           }}
                         />
                       </NavItem>
@@ -120,39 +139,37 @@ const Content = React.memo((props) => {
                         </Button>
                         <DeletePlaylistModal
                           {...{
-                            playlistName,
+                            check,
                             modalDelete,
                             toggleDelete,
-                            playlistId,
                             onPlaylistDelete,
                           }}
                         />
                       </NavItem>
                     </Nav>
                     <Form>
-                      <Table hover>
+                      <Table hover className="mt-3">
                         <tbody>
                           {playlists?.length
                             ? playlists?.map((p) => {
                                 return (
-                                  <tr key={p.id}>
-                                    <th>
-                                      <FormGroup check id={p.id}>
+                                  <tr key={p.id} className="d-flex justify-content-between playlist">
+                                    <th className="border-0 px-0">
+                                      <FormGroup check>
                                         <Label check>
                                           <Input
                                             type="checkbox"
-                                            value={playlistName}
+                                            value={check.name}
+                                            checked={check.id == p.id ? true : false}
                                             onChange={() => {
-                                              setPlaylistName(p.name);
-                                              setPlaylistId(p.id);
+                                              checkSet(p)
                                             }}
-                                            id={playlistId}
                                           />{" "}
                                           {p.name}
                                         </Label>
                                       </FormGroup>
                                     </th>
-                                    <th>
+                                    <th className="border-0 px-0">
                                       <span>4 items</span>
                                     </th>
                                   </tr>
@@ -206,6 +223,7 @@ const Content = React.memo((props) => {
 const mapStatetoProps = (state) => ({
   playlists: selectors.playlists.playlists(state),
   activeChannel: selectors.channels.activeChannel(state),
+  activePlaylist: selectors.playlists.activePlaylist(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -214,6 +232,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(Actions.playlists.deletePlaylistRequest(data)),
   onUpdatePlaylist: (data) =>
     dispatch(Actions.playlists.updatePlaylistRequest(data)),
+  onGetPlaylist: () => dispatch(Actions.playlists.getPlaylistsRequest()),
+  setActivePlaylist: (data) =>
+    dispatch(Actions.playlists.setActivePlaylis(data)),
 });
 
 export default connect(
