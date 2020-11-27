@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, ModalHeader, ModalFooter, ModalBody, Input } from "reactstrap";
 
 export const EditPlaylistModal = (props) => {
-  const { modalEdit, toggleEdit, onUpdatePlaylist, check, onGetPlaylist, checkSet } = props;
+  const { modalEdit, toggleEdit, onUpdatePlaylist, check, onGetPlaylist, setCheck } = props;
   const [editName, setEditName] = useState(check?.name || '')
 
   const onEdit = () => {
@@ -10,7 +10,7 @@ export const EditPlaylistModal = (props) => {
     toggleEdit();
     onGetPlaylist()
     if(check?.name !== editName) {
-      checkSet("")
+      setCheck("")
     }
   };
 

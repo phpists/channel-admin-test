@@ -28,7 +28,7 @@ import CreatePlaylist from "./CreatePlaylist";
 import selectors from "../../selectors";
 import Actions from "../../store/actions";
 import { withNamespaces } from "react-i18next";
-import { DeletePlaylistModal } from "./DeletePlaylistModal";
+import DeletePlaylistModal from "./DeletePlaylistModal";
 import EditPlaylistModal from "./EditPlaylistModal";
 
 const Content = React.memo((props) => {
@@ -44,8 +44,23 @@ const Content = React.memo((props) => {
   const [newPlaylist, setnewPlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
-  const [check, checkSet] = useState("");
+  const [check, setCheck] = useState("");
   const [activeTab, setActiveTab] = useState("1");
+  // const [change, setChange] = useState(true);
+  // const [choseButton, setChoseButton] = useState("");
+
+  // const toggleDelete = (e) => {
+  //   if (!check.name) {
+  //     return errorMessage("Please select a playlist");
+  //   } else {
+  //     setChange(true);
+  //     if (e.target.value === "delete") {
+  //       setChoseButton("delete");
+  //     } else {
+  //       setChoseButton("edit");
+  //     }
+  //   }
+  // };
 
   const toggleDelete = () => {
     if (!check.name) {
@@ -68,6 +83,12 @@ const Content = React.memo((props) => {
       setnewPlaylist(false);
     }
   };
+
+  useEffect(() => {
+    if (playlists === null) {
+      onGetPlaylist();
+    }
+  }, [playlists, onGetPlaylist]);
 
   const renderContent = () => {
     return (
@@ -145,13 +166,14 @@ const Content = React.memo((props) => {
                         color="primary mr-2"
                         onClick={toggleEdit}
                         className="btn btn-primary waves-light waves-effect"
+                        value="edit"
                       >
                         Edit <i className="mdi mdi-dots-vertical ml-2"></i>
                       </Button>
                       <EditPlaylistModal
                         {...{
                           check,
-                          checkSet,
+                          setCheck,
                           modalEdit,
                           toggleEdit,
                           onUpdatePlaylist,
@@ -163,6 +185,7 @@ const Content = React.memo((props) => {
                         color="primary"
                         onClick={toggleDelete}
                         className="waves-light waves-effect"
+                        value="delete"
                       >
                         {" "}
                         Delete<i className="far fa-trash-alt ml-2"></i>
@@ -170,7 +193,7 @@ const Content = React.memo((props) => {
                       <DeletePlaylistModal
                         {...{
                           check,
-                          checkSet,
+                          setCheck,
                           modalDelete,
                           toggleDelete,
                           onPlaylistDelete,
@@ -193,7 +216,7 @@ const Content = React.memo((props) => {
                                           check.id == p.id ? true : false
                                         }
                                         onChange={() => {
-                                          checkSet(p);
+                                          setCheck(p);
                                         }}
                                         id={p.id}
                                       />

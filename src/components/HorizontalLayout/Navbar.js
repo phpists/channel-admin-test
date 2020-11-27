@@ -94,6 +94,15 @@ useEffect(() => {
                                         </div>
                                     </li>
 
+                                    <li className="nav-item">
+                                        <Link 
+                                            className="nav-link arrow-none" 
+                                            to="/content"
+                                            >
+                                            <i className="bx bx-home-circle mr-2"></i>{props.t('Content')} 
+                                        </Link>
+                                    </li>
+
                                     {/* <li className="nav-item dropdown">
                                         <Link to="/#" onClick={e => { e.preventDefault(); setui(!ui); }} className="nav-link dropdown-toggle arrow-none">
                                             <i className="bx bx-tone mr-2"></i>{props.t('UI Elements')} <div className="arrow-down"></div>
