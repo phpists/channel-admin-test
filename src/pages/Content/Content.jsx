@@ -29,7 +29,6 @@ import selectors from "../../selectors";
 import Actions from "../../store/actions";
 import { withNamespaces } from "react-i18next";
 import DeletePlaylistModal from "./DeletePlaylistModal";
-import EditPlaylistModal from "./EditPlaylistModal";
 
 const Content = React.memo((props) => {
   const {
@@ -41,26 +40,25 @@ const Content = React.memo((props) => {
     onGetPlaylist,
     errorMessage,
   } = props;
-  const [newPlaylist, setnewPlaylist] = useState(false);
+  const [changePlaylist, setChangePlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
-  const [modalEdit, setModalEdit] = useState(false);
   const [check, setCheck] = useState("");
   const [activeTab, setActiveTab] = useState("1");
-  // const [change, setChange] = useState(true);
-  // const [choseButton, setChoseButton] = useState("");
+  const [valueButton, setValueButton] = useState("");
 
-  // const toggleDelete = (e) => {
-  //   if (!check.name) {
-  //     return errorMessage("Please select a playlist");
-  //   } else {
-  //     setChange(true);
-  //     if (e.target.value === "delete") {
-  //       setChoseButton("delete");
-  //     } else {
-  //       setChoseButton("edit");
-  //     }
-  //   }
-  // };
+  const change = (e) => {
+    if(e.target.value === "edit") {
+      if (!check.name) {
+        return errorMessage("Please select a playlist");
+      } else {
+        setChangePlaylist(true)
+        setValueButton(e.target.value)
+      }
+    } else {
+      setChangePlaylist(true)
+      setValueButton(e.target.value)
+    }
+  }
 
   const toggleDelete = () => {
     if (!check.name) {
@@ -69,18 +67,11 @@ const Content = React.memo((props) => {
       setModalDelete(!modalDelete);
     }
   };
-  const toggleEdit = () => {
-    if (!check.name) {
-      return errorMessage("Please select a playlist");
-    } else {
-      setModalEdit(!modalEdit);
-    }
-  };
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
-      setnewPlaylist(false);
+      setChangePlaylist(false);
     }
   };
 
@@ -135,13 +126,17 @@ const Content = React.memo((props) => {
           </Card>
         </Col>
         <Col xs="12" sm="7" md="8" lg="9">
-          {newPlaylist ? (
+          {changePlaylist ? (
             <CreatePlaylist
               {...{
                 activeChannel,
                 onAddPlaylist,
-                setnewPlaylist,
+                setChangePlaylist,
                 onGetPlaylist,
+                valueButton,
+                onUpdatePlaylist,
+                setCheck,
+                check
               }}
             />
           ) : (
@@ -156,36 +151,26 @@ const Content = React.memo((props) => {
                     <div className="btn-toolbar py-3" role="toolbar">
                       <Button
                         color="primary mr-2"
-                        onClick={() => setnewPlaylist(true)}
+                        onClick={(e) => change(e)}
                         className="d-flex"
+                        value="newPlaylist"
                       >
                         <i className="dripicons-plus plus mr-2"></i> New
                         Playlist
                       </Button>
                       <Button
                         color="primary mr-2"
-                        onClick={toggleEdit}
+                        onClick={(e) => change(e)}
                         className="btn btn-primary waves-light waves-effect"
                         value="edit"
                       >
                         Edit <i className="mdi mdi-dots-vertical ml-2"></i>
                       </Button>
-                      <EditPlaylistModal
-                        {...{
-                          check,
-                          setCheck,
-                          modalEdit,
-                          toggleEdit,
-                          onUpdatePlaylist,
-                          onGetPlaylist,
-                        }}
-                      />
                       <Button
                         type="button"
                         color="primary"
                         onClick={toggleDelete}
                         className="waves-light waves-effect"
-                        value="delete"
                       >
                         {" "}
                         Delete<i className="far fa-trash-alt ml-2"></i>
@@ -277,7 +262,7 @@ const Content = React.memo((props) => {
             <Button
               color="info"
               className="waves-effect"
-              onClick={setnewPlaylist(true)}
+              onClick={setChangePlaylist(true)}
             >
               Playlists
             </Button>

@@ -20,7 +20,16 @@ import {
 } from "reactstrap";
 
 const CreatePlaylist = (props) => {
-  const { onAddPlaylist, activeChannel, setnewPlaylist, onGetPlaylist } = props;
+  const {
+    onAddPlaylist,
+    onUpdatePlaylist,
+    activeChannel,
+    setChangePlaylist,
+    onGetPlaylist,
+    valueButton,
+    setCheck,
+    check
+  } = props;
 
   const [activeTab, setActiveTab] = useState("2");
   const [playlistName, setplaylistName] = useState("");
@@ -28,12 +37,20 @@ const CreatePlaylist = (props) => {
   const [lng, setLng] = useState("English");
 
   function onSubmit() {
-    onAddPlaylist({
-      name: playlistName,
-      description: playlistDescription,
-      channel_id: activeChannel.id,
-    });
-    setnewPlaylist(false);
+    if (valueButton === "edit") {
+      onUpdatePlaylist({ id: check?.id, name: playlistName });
+      onGetPlaylist();
+      if (check?.name !== playlistName) {
+        setCheck("");
+      }
+    } else {
+      onAddPlaylist({
+        name: playlistName,
+        description: playlistDescription,
+        channel_id: activeChannel.id,
+      });
+    }
+    setChangePlaylist(false);
     onGetPlaylist();
   }
 
@@ -145,7 +162,6 @@ const CreatePlaylist = (props) => {
                   onChange={(e) => {
                     setplaylistName(e.target.value);
                   }}
-                  // validate={{ customValidation }}
                 />
                 <AvField
                   className="form-control"
@@ -215,7 +231,7 @@ const CreatePlaylist = (props) => {
                   Save Changes
                 </Button>
                 <Button
-                  onClick={() => setnewPlaylist(false)}
+                  onClick={() => setChangePlaylist(false)}
                   type="button"
                   color="secondary"
                   className="waves-effect"

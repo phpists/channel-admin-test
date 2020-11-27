@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, ModalHeader, ModalFooter, ModalBody, Input } from "reactstrap";
+import { Button, Input, CardBody, CardTitle } from "reactstrap";
 
 export const EditPlaylistModal = (props) => {
   const { modalEdit, toggleEdit, onUpdatePlaylist, check, onGetPlaylist, setCheck } = props;
@@ -22,22 +22,20 @@ export const EditPlaylistModal = (props) => {
 
   return (
     <div>
-      <Modal isOpen={modalEdit} toggle={toggleEdit}>
-        <ModalHeader toggle={toggleEdit}>
+      <CardBody>
+        <CardTitle className="text-center mb-3 mt-3">
         Еnter a new playlist name
-        </ModalHeader>
-        <ModalBody>
-            <Input value={editName} onChange={(e) => {setEditName(e.target.value)}}/>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" className="w-sm" onClick={toggleEdit}>
+        </CardTitle>
+        <div className="text-center mb-3">
+        <Input value={editName} onChange={(e) => {setEditName(e.target.value)}}/>
+        <Button color="secondary" className="w-sm" onClick={toggleEdit}>
             Cancel
           </Button>
           <Button color="danger" className="w-sm" onClick={onEdit}>
             Edit
           </Button>
-        </ModalFooter>
-      </Modal>
+        </div>
+      </CardBody>
     </div>
   );
 };

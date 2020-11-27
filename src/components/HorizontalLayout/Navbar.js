@@ -93,7 +93,8 @@ useEffect(() => {
                                             <Link to="/dashboard" className="dropdown-item">{props.t('Default')}</Link>
                                         </div>
                                     </li>
-
+                                    
+                                    {/* ADD CONTENT PAGE */}
                                     <li className="nav-item">
                                         <Link 
                                             className="nav-link arrow-none" 
