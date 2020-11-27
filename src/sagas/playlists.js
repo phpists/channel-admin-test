@@ -53,6 +53,7 @@ export function* watchUpdatePlaylist(action) {
 
 export function* watchGetPlaylists() {
   const response = yield API.playlists.getPlaylists();
+  console.log(response)
   if (response.status === 200) {
     if (response.data.status === "error") {
       yield put(
@@ -60,6 +61,22 @@ export function* watchGetPlaylists() {
       );
     } else {
       yield put(Actions.playlists.getPlaylistsSuccess(response?.data));
+    }
+  } else {
+    yield put(Actions.common.setErrorNotify(response.status + " Server error"));
+  }
+}
+
+export function* watchGetOnePlaylist(action) {
+  const response = yield API.playlists.getOnePlaylist(action.payload);
+  console.log(response)
+  if (response.status === 200) {
+    if (response.data.status === "error") {
+      yield put(
+        Actions.common.setErrorNotify(response?.data?.message || "Server error")
+      );
+    } else {
+      yield put(Actions.playlists.getOnePlaylistSuccess(response?.data));
     }
   } else {
     yield put(Actions.common.setErrorNotify(response.status + " Server error"));

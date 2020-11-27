@@ -182,7 +182,6 @@ const CreatePlaylist = (props) => {
                   label="Playlist"
                   name="playlist"
                   placeholder="Choose..."
-                  isMulti
                 ></AvField>
               </FormGroup>
             </CardBody>

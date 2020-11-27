@@ -28,7 +28,8 @@ import {
     watchAddPlaylist,	
     watchGetPlaylists,	
     watchDeletePlaylist,	
-    watchUpdatePlaylist	
+    watchUpdatePlaylist,
+    watchGetOnePlaylist
 } from './playlists'
 
 export function* rootSaga() {
@@ -50,6 +51,7 @@ export function* rootSaga() {
         takeEvery(PlaylistsTypes.GET_PLAYLISTS_REQUEST, watchGetPlaylists),	
         takeEvery(PlaylistsTypes.DELETE_PLAYLIST_REQUEST, watchDeletePlaylist),	
         takeEvery(PlaylistsTypes.UPDATE_PLAYLIST_REQUEST, watchUpdatePlaylist),
+        takeEvery(PlaylistsTypes.GET_ONE_PLAYLIST_REQUEST, watchGetOnePlaylist),
         
         LayoutSaga(),
     ])

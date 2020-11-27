@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -15,13 +15,11 @@ import {
   Button,
   Row,
   Col,
-  FormGroup,
   Container,
   Input,
   Label,
   Form,
   CardSubtitle,
-  Table,
 } from "reactstrap";
 import "./content.scss";
 import CreatePlaylist from "./CreatePlaylist";
@@ -39,6 +37,7 @@ const Content = React.memo((props) => {
     onUpdatePlaylist,
     onGetPlaylist,
     errorMessage,
+    onGetOnePlaylist
   } = props;
   const [changePlaylist, setChangePlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
@@ -74,6 +73,14 @@ const Content = React.memo((props) => {
       setChangePlaylist(false);
     }
   };
+
+  const getOnePlaylist = () => {
+    if (!check.name) {
+      return errorMessage("Please select a playlist");
+    } else {
+      onGetOnePlaylist({id: check.id});
+    }
+  }
 
   useEffect(() => {
     if (playlists === null) {
@@ -185,6 +192,15 @@ const Content = React.memo((props) => {
                           onGetPlaylist,
                         }}
                       />
+                      <Button
+                        type="button"
+                        color="primary"
+                        onClick={getOnePlaylist}
+                        className="waves-light waves-effect ml-2"
+                      >
+                        {" "}
+                        Get One
+                      </Button>
                     </div>
                     <Form>
                       <ul className="message-list">
@@ -298,6 +314,7 @@ const mapDispatchToProps = (dispatch) => ({
   onUpdatePlaylist: (data) =>
     dispatch(Actions.playlists.updatePlaylistRequest(data)),
   onGetPlaylist: () => dispatch(Actions.playlists.getPlaylistsRequest()),
+  onGetOnePlaylist: (data) => dispatch(Actions.playlists.getOnePlaylistRequest(data)),
   errorMessage: (data) => dispatch(Actions.common.setErrorNotify(data)),
 });
 

@@ -2,6 +2,7 @@ import { Types } from "./actions";
 
 const initialState = {
   playlists: null,
+  onePlaylist: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,6 +12,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         ...{
           playlists: action.payload,
+        },
+      };
+    }
+    case Types.GET_ONE_PLAYLIST_SUCCESS: {
+      return {
+        ...state,
+        ...{
+          onePlaylist: action.payload,
         },
       };
     }
