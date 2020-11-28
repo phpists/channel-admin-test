@@ -21,23 +21,12 @@ export default {
       signature: signature,
     };
 
-    return await axiosInstance.post(
-      `?action=Login`,
-      {
-        jsonData: JSON.stringify({
-          emailLogin: {
-            email: "phpists@gmail.com",
-            password: "+GTeukbk0UMmWl[",
-          },
-        }),
-      },
-      axiosInstance
-        .post(`?${queryString}`, formData, config)
-        .then((response) => {
-          return response;
-        })
-        .catch((error) => ({ error }))
-    );
+    return await axiosInstance
+      .post(`?${queryString}`, formData, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => ({ error }));
   },
 
   deletePlaylist: async (data) => {
@@ -58,32 +47,19 @@ export default {
       signature: signature,
     };
 
-    return await axiosInstance.post(
-      `?action=Login`,
-      {
-        jsonData: JSON.stringify({
-          emailLogin: {
-            email: "phpists@gmail.com",
-            password: "+GTeukbk0UMmWl[",
-          },
-        }),
-      },
-      axiosInstance
+    return await axiosInstance
         .post(`?${queryString}`, formData, config)
         .then((response) => {
           console.log(response);
           return response;
         })
         .catch((error) => ({ error }))
-    );
   },
 
   updatePlaylist: async (data) => {
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
-    if (!authData) return false;
-
     if (!authData) return false;
 
     const queryString = `action=UpdatePlaylist&openKey=${authData.openKey}`;
@@ -100,24 +76,13 @@ export default {
       signature: signature,
     };
 
-    return await axiosInstance.post(
-      `?action=Login`,
-      {
-        jsonData: JSON.stringify({
-          emailLogin: {
-            email: "phpists@gmail.com",
-            password: "+GTeukbk0UMmWl[",
-          },
-        }),
-      },
-      axiosInstance
+    return await axiosInstance
         .post(`?${queryString}`, formData, config)
         .then((response) => {
           console.log(response);
           return response;
         })
         .catch((error) => ({ error }))
-    );
   },
 
   getPlaylists: async () => {
@@ -154,11 +119,11 @@ export default {
       },
     };
 
-    return await  axiosInstance
+    return await axiosInstance
       .get(`?${queryString}`, config)
       .then((response) => {
         return response;
       })
-      .catch((error) => ({ error }))
+      .catch((error) => ({ error }));
   },
 };
