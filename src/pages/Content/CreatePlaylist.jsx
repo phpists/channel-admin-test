@@ -28,20 +28,25 @@ const CreatePlaylist = (props) => {
     onGetPlaylist,
     valueButton,
     setCheck,
-    check
+    check,
   } = props;
 
   const [activeTab, setActiveTab] = useState("2");
   const [playlistName, setplaylistName] = useState("");
   const [playlistDescription, setplaylistDescription] = useState("");
   const [lng, setLng] = useState("English");
+  const [editName, setEditName] = useState(check?.name || "");
+  const [editDescription, setEditDescription] = useState(
+    check?.description || ""
+  );
 
   function onSubmit() {
     if (valueButton === "edit") {
-      onUpdatePlaylist({ id: check?.id, name: playlistName });
-      onGetPlaylist();
+      onUpdatePlaylist({ id: check?.id, name: editName });
+
       if (check?.name !== playlistName) {
         setCheck("");
+        onGetPlaylist();
       }
     } else {
       onAddPlaylist({
@@ -54,6 +59,22 @@ const CreatePlaylist = (props) => {
     onGetPlaylist();
   }
 
+  const name = (e) => {
+    if (valueButton === "edit") {
+      setEditName(e.target.value);
+    } else {
+      setplaylistName(e.target.value);
+    }
+  };
+
+  const description = (e) => {
+    if (valueButton === "edit") {
+      setEditDescription(e.target.value);
+    } else {
+      setplaylistDescription(e.target.value);
+    }
+  };
+
   const toggleCustomJustified = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
@@ -62,7 +83,7 @@ const CreatePlaylist = (props) => {
 
   useEffect(() => {
     i18n.changeLanguage(lng);
-  }, [i18n, lng]);
+  }, [lng]);
 
   return (
     <TabContent>
@@ -158,9 +179,9 @@ const CreatePlaylist = (props) => {
                   type="text"
                   required
                   label="Title"
-                  value={playlistName}
+                  value={valueButton === "edit" ? editName : playlistName}
                   onChange={(e) => {
-                    setplaylistName(e.target.value);
+                    name(e);
                   }}
                 />
                 <AvField
@@ -171,9 +192,13 @@ const CreatePlaylist = (props) => {
                   name="description"
                   required
                   placeholder="description"
-                  value={playlistDescription}
+                  value={
+                    valueButton === "edit"
+                      ? editDescription
+                      : playlistDescription
+                  }
                   onChange={(e) => {
-                    setplaylistDescription(e.target.value);
+                    description(e);
                   }}
                 />
                 <AvField
@@ -230,7 +255,9 @@ const CreatePlaylist = (props) => {
                   Save Changes
                 </Button>
                 <Button
-                  onClick={() => setChangePlaylist(false)}
+                  onClick={() => {
+                    setCheck('');
+                    setChangePlaylist(false)}}
                   type="button"
                   color="secondary"
                   className="waves-effect"

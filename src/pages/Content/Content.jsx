@@ -71,16 +71,17 @@ const Content = React.memo((props) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
       setChangePlaylist(false);
+      setCheck("");
     }
   };
 
-  const getOnePlaylist = () => {
-    if (!check.name) {
-      return errorMessage("Please select a playlist");
-    } else {
-      onGetOnePlaylist({id: check.id});
-    }
-  }
+  // const getOnePlaylist = () => {
+  //   if (!check.name) {
+  //     return errorMessage("Please select a playlist");
+  //   } else {
+  //     onGetOnePlaylist({id: check.id});
+  //   }
+  // }
 
   useEffect(() => {
     if (playlists === null) {
@@ -159,10 +160,10 @@ const Content = React.memo((props) => {
                       <Button
                         color="primary mr-2"
                         onClick={(e) => change(e)}
-                        className="d-flex"
+                        className="btn btn-primary waves-light waves-effect"
                         value="newPlaylist"
                       >
-                        <i className="dripicons-plus plus mr-2"></i> New
+                       <i class="fa fa-plus-circle mr-1"></i> New
                         Playlist
                       </Button>
                       <Button
@@ -170,6 +171,7 @@ const Content = React.memo((props) => {
                         onClick={(e) => change(e)}
                         className="btn btn-primary waves-light waves-effect"
                         value="edit"
+                        disabled={check.length < 1}
                       >
                         Edit <i className="mdi mdi-dots-vertical ml-2"></i>
                       </Button>
@@ -177,7 +179,8 @@ const Content = React.memo((props) => {
                         type="button"
                         color="primary"
                         onClick={toggleDelete}
-                        className="waves-light waves-effect"
+                        className="btn btn-primary waves-light waves-effect"
+                        disabled={check.length < 1}
                       >
                         {" "}
                         Delete<i className="far fa-trash-alt ml-2"></i>
@@ -192,7 +195,7 @@ const Content = React.memo((props) => {
                           onGetPlaylist,
                         }}
                       />
-                      <Button
+                      {/* <Button
                         type="button"
                         color="primary"
                         onClick={getOnePlaylist}
@@ -200,7 +203,7 @@ const Content = React.memo((props) => {
                       >
                         {" "}
                         Get One
-                      </Button>
+                      </Button> */}
                     </div>
                     <Form>
                       <ul className="message-list">
