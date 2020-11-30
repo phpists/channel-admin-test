@@ -37,7 +37,7 @@ const Content = React.memo((props) => {
     onUpdatePlaylist,
     onGetPlaylist,
     errorMessage,
-    onGetOnePlaylist
+    onGetOnePlaylist,
   } = props;
   const [changePlaylist, setChangePlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
@@ -46,18 +46,18 @@ const Content = React.memo((props) => {
   const [valueButton, setValueButton] = useState("");
 
   const change = (e) => {
-    if(e.target.value === "edit") {
+    if (e.target.value === "edit") {
       if (!check.name) {
         return errorMessage("Please select a playlist");
       } else {
-        setChangePlaylist(true)
-        setValueButton(e.target.value)
+        setChangePlaylist(true);
+        setValueButton(e.target.value);
       }
     } else {
-      setChangePlaylist(true)
-      setValueButton(e.target.value)
+      setChangePlaylist(true);
+      setValueButton(e.target.value);
     }
-  }
+  };
 
   const toggleDelete = () => {
     if (!check.name) {
@@ -73,6 +73,8 @@ const Content = React.memo((props) => {
       setChangePlaylist(false);
       setCheck("");
     }
+    setChangePlaylist(false);
+    setCheck("");
   };
 
   // const getOnePlaylist = () => {
@@ -144,7 +146,7 @@ const Content = React.memo((props) => {
                 valueButton,
                 onUpdatePlaylist,
                 setCheck,
-                check
+                check,
               }}
             />
           ) : (
@@ -163,8 +165,7 @@ const Content = React.memo((props) => {
                         className="btn btn-primary waves-light waves-effect"
                         value="newPlaylist"
                       >
-                       <i class="fa fa-plus-circle mr-1"></i> New
-                        Playlist
+                        <i class="fa fa-plus-circle mr-1"></i> New Playlist
                       </Button>
                       <Button
                         color="primary mr-2"
@@ -317,7 +318,8 @@ const mapDispatchToProps = (dispatch) => ({
   onUpdatePlaylist: (data) =>
     dispatch(Actions.playlists.updatePlaylistRequest(data)),
   onGetPlaylist: () => dispatch(Actions.playlists.getPlaylistsRequest()),
-  onGetOnePlaylist: (data) => dispatch(Actions.playlists.getOnePlaylistRequest(data)),
+  onGetOnePlaylist: (data) =>
+    dispatch(Actions.playlists.getOnePlaylistRequest(data)),
   errorMessage: (data) => dispatch(Actions.common.setErrorNotify(data)),
 });
 
