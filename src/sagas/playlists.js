@@ -60,7 +60,7 @@ export function* watchGetPlaylists() {
         Actions.common.setErrorNotify(response?.data?.message || "Server error")
       );
     } else {
-      yield put(Actions.playlists.getPlaylistsSuccess(response?.data));
+      yield put(Actions.playlists.getPlaylistsSuccess(response?.data?.playlists));
     }
   } else {
     yield put(Actions.common.setErrorNotify(response.status + " Server error"));

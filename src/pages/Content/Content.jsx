@@ -27,8 +27,9 @@ import selectors from "../../selectors";
 import Actions from "../../store/actions";
 import { withNamespaces } from "react-i18next";
 import DeletePlaylistModal from "./DeletePlaylistModal";
+import EmptyMessage from "./EmptyMessage";
 
-const Content = React.memo((props) => {
+const Content = (props) => {
   const {
     activeChannel,
     onAddPlaylist,
@@ -91,112 +92,116 @@ const Content = React.memo((props) => {
     }
   }, [playlists, onGetPlaylist]);
 
-  const renderContent = () => {
-    return (
-      <Row className="align-items-start">
-        <Col xs="12" sm="5" md="4" lg="3">
-          <Card>
-            <CardBody>
-              <Nav className="border-0 navi" vertical>
-                <NavItem>
-                  <Button className="w-100 mb-4" color="success">
-                    Upload
-                  </Button>
-                </NavItem>
-                <NavItem className="d-flex justify-content-between align-items-baseline">
-                  <NavLink
-                    className="px-0"
-                    className={classnames({
-                      active: activeTab === "1",
-                    })}
-                    onClick={() => {
-                      toggleTab("1");
-                    }}
-                  >
-                    <i className="dripicons-star mr-2"></i> Playlists
-                  </NavLink>
-                  <span>({playlists?.length})</span>
-                </NavItem>
-                <NavItem className="d-flex justify-content-between align-items-baseline">
-                  <NavLink
-                    className="px-0"
-                    className={classnames({
-                      active: activeTab === "2",
-                    })}
-                    onClick={() => {
-                      toggleTab("2");
-                    }}
-                  >
-                    <i className=" dripicons-jewel mr-2"></i> Videos
-                  </NavLink>
-                  <span>({0})</span>
-                </NavItem>
-              </Nav>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col xs="12" sm="7" md="8" lg="9">
-          {changePlaylist ? (
-            <CreatePlaylist
-              {...{
-                activeChannel,
-                onAddPlaylist,
-                setChangePlaylist,
-                onGetPlaylist,
-                valueButton,
-                onUpdatePlaylist,
-                setCheck,
-                check,
-              }}
-            />
-          ) : (
-            <TabContent activeTab={activeTab}>
-              <TabPane tabId="1">
-                <Card className="flex-column align-items-start">
-                  <CardBody className="w-100">
-                    <CardTitle>Playlists</CardTitle>
-                    <CardSubtitle className="mb-3">
-                      {playlists?.length} Total
-                    </CardSubtitle>
-                    <div className="btn-toolbar py-3" role="toolbar">
-                      <Button
-                        color="primary mr-2"
-                        onClick={(e) => change(e)}
-                        className="btn btn-primary waves-light waves-effect"
-                        value="newPlaylist"
-                      >
-                        <i class="fa fa-plus-circle mr-1"></i> New Playlist
+  return (
+    <>
+      <div className="page-content">
+        <Container fluid>
+          <Breadcrumbs title={"Dashboard"} breadcrumbItem={"content"} />
+          <Row className="align-items-start">
+            <Col xs="12" sm="5" md="4" lg="3">
+              <Card>
+                <CardBody>
+                  <Nav className="border-0 navi" vertical>
+                    <NavItem>
+                      <Button className="w-100 mb-4" color="success">
+                        Upload
                       </Button>
-                      <Button
-                        color="primary mr-2"
-                        onClick={(e) => change(e)}
-                        className="btn btn-primary waves-light waves-effect"
-                        value="edit"
-                        disabled={check.length < 1}
-                      >
-                        Edit <i className="mdi mdi-dots-vertical ml-2"></i>
-                      </Button>
-                      <Button
-                        type="button"
-                        color="primary"
-                        onClick={toggleDelete}
-                        className="btn btn-primary waves-light waves-effect"
-                        disabled={check.length < 1}
-                      >
-                        {" "}
-                        Delete<i className="far fa-trash-alt ml-2"></i>
-                      </Button>
-                      <DeletePlaylistModal
-                        {...{
-                          check,
-                          setCheck,
-                          modalDelete,
-                          toggleDelete,
-                          onPlaylistDelete,
-                          onGetPlaylist,
+                    </NavItem>
+                    <NavItem className="d-flex justify-content-between align-items-baseline">
+                      <NavLink
+                        className="px-0"
+                        className={classnames({
+                          active: activeTab === "1",
+                        })}
+                        onClick={() => {
+                          toggleTab("1");
                         }}
-                      />
-                      {/* <Button
+                      >
+                        <i className="dripicons-star mr-2"></i> Playlists
+                      </NavLink>
+                      <span>({playlists?.length})</span>
+                    </NavItem>
+                    <NavItem className="d-flex justify-content-between align-items-baseline">
+                      <NavLink
+                        className="px-0"
+                        className={classnames({
+                          active: activeTab === "2",
+                        })}
+                        onClick={() => {
+                          toggleTab("2");
+                        }}
+                      >
+                        <i className=" dripicons-jewel mr-2"></i> Videos
+                      </NavLink>
+                      <span>({0})</span>
+                    </NavItem>
+                  </Nav>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col xs="12" sm="7" md="8" lg="9">
+              {changePlaylist ? (
+                <CreatePlaylist
+                  {...{
+                    activeChannel,
+                    onAddPlaylist,
+                    setChangePlaylist,
+                    onGetPlaylist,
+                    valueButton,
+                    onUpdatePlaylist,
+                    setCheck,
+                    check,
+                  }}
+                />
+              ) : (
+                <TabContent activeTab={activeTab}>
+                  <TabPane tabId="1">
+                    <Card className="flex-column align-items-start">
+                      <CardBody className="w-100">
+                        <CardTitle>Playlists</CardTitle>
+                        <CardSubtitle className="mb-3">
+                          {playlists?.length} Total
+                        </CardSubtitle>
+                        <div className="btn-toolbar py-3" role="toolbar">
+                          <Button
+                            color="primary mr-2"
+                            onClick={(e) => change(e)}
+                            className="btn btn-primary waves-light waves-effect"
+                            value="newPlaylist"
+                          >
+                            <i className="fa fa-plus-circle mr-1"></i> New
+                            Playlist
+                          </Button>
+                          <Button
+                            color="primary mr-2"
+                            onClick={(e) => change(e)}
+                            className="btn btn-primary waves-light waves-effect"
+                            value="edit"
+                            disabled={check.length < 1}
+                          >
+                            Edit <i className="mdi mdi-dots-vertical ml-2"></i>
+                          </Button>
+                          <Button
+                            type="button"
+                            color="primary"
+                            onClick={toggleDelete}
+                            className="btn btn-primary waves-light waves-effect"
+                            disabled={check.length < 1}
+                          >
+                            {" "}
+                            Delete<i className="far fa-trash-alt ml-2"></i>
+                          </Button>
+                          <DeletePlaylistModal
+                            {...{
+                              check,
+                              setCheck,
+                              modalDelete,
+                              toggleDelete,
+                              onPlaylistDelete,
+                              onGetPlaylist,
+                            }}
+                          />
+                          {/* <Button
                         type="button"
                         color="primary"
                         onClick={getOnePlaylist}
@@ -205,106 +210,62 @@ const Content = React.memo((props) => {
                         {" "}
                         Get One
                       </Button> */}
-                    </div>
-                    <Form>
-                      <ul className="message-list">
-                        {playlists?.length
-                          ? playlists?.map((p) => {
-                              return (
-                                <li key={p.id}>
-                                  <div className="col-mail col-mail-1">
-                                    <div className="checkbox-wrapper-mail mx-0">
-                                      <Input
-                                        type="checkbox"
-                                        value={check.name}
-                                        checked={
-                                          check.id == p.id ? true : false
-                                        }
-                                        onChange={() => {
-                                          setCheck(p);
-                                        }}
-                                        id={p.id}
-                                      />
-                                      <Label
-                                        className="toggle"
-                                        htmlFor={p.id}
-                                      ></Label>
-                                    </div>
-                                    <Link to="#" className="title">
-                                      {p.name}
-                                    </Link>
-                                  </div>
-                                  <div className="col-mail col-mail-2">
-                                    <div className="date">4 items</div>
-                                  </div>
-                                </li>
-                              );
-                            })
-                          : null}
-                      </ul>
-                    </Form>
-                  </CardBody>
-                </Card>
-              </TabPane>
-              <TabPane tabId="2">{renderEmptyContentMessageVideos()}</TabPane>
-            </TabContent>
-          )}
-        </Col>
-      </Row>
-    );
-  };
-
-  const renderEmptyContentMessageVideos = () => (
-    <div className="overlay">
-      <CardBody>
-        <CardTitle className="text-center mb-3 mt-3">
-          Upload your first video to get started!
-        </CardTitle>
-        <div className="text-center mb-3">
-          <Link to="/content">
-            <Button color="info" className="waves-effect">
-              Upload videos
-            </Button>
-          </Link>
-        </div>
-      </CardBody>
-    </div>
-  );
-
-  const renderEmptyContentMessagePlaylist = () => (
-    <div className="overlay">
-      <CardBody>
-        <CardTitle className="text-center mb-3 mt-3">
-          Upload your files, then organize them and started with distibution
-        </CardTitle>
-        <div className="text-center mb-3">
-          <Link to="/content">
-            <Button
-              color="info"
-              className="waves-effect"
-              onClick={setChangePlaylist(true)}
-            >
-              Playlists
-            </Button>
-          </Link>
-        </div>
-      </CardBody>
-    </div>
-  );
-
-  return (
-    <>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumbs title={"Dashboard"} breadcrumbItem={"content"} />
-          {Boolean(true)
-            ? renderContent()
-            : renderEmptyContentMessagePlaylist()}
+                        </div>
+                        {playlists === null ? (
+                          EmptyMessage.renderEmptyContentMessagePlaylist()
+                        ) : (
+                          <Form>
+                            <ul className="message-list">
+                              {playlists &&
+                                playlists?.map((p) => {
+                                  return (
+                                    <li key={p.id} onClick={() => setCheck(p)} className="check">
+                                      <div className="col-mail col-mail-1">
+                                        <div className="checkbox-wrapper-mail mx-0">
+                                          <Input
+                                            type="checkbox"
+                                            value={check.name}
+                                            checked={
+                                              check.id === p.id ? true : false
+                                            }
+                                            onChange={() => {
+                                              setCheck(p);
+                                            }}
+                                            id={p.id}
+                                          />
+                                          <Label
+                                            className="toggle"
+                                            htmlFor={p.id}
+                                          ></Label>
+                                        </div>
+                                        <Link to="#" className="title">
+                                          {p.name}
+                                        </Link>
+                                      </div>
+                                      <div className="col-mail col-mail-2">
+                                        <div className="date">4 items</div>
+                                      </div>
+                                    </li>
+                                  );
+                                })}
+                            </ul>
+                          </Form>
+                        )}
+                      </CardBody>
+                    </Card>
+                  </TabPane>
+                  <TabPane tabId="2">
+                    {EmptyMessage.renderEmptyContentMessageVideos()}
+                  </TabPane>
+                </TabContent>
+              )}
+            </Col>
+          </Row>
         </Container>
       </div>
     </>
   );
-});
+};
 
 const mapStatetoProps = (state) => ({
   playlists: selectors.playlists.playlists(state),

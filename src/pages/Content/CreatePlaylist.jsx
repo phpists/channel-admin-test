@@ -39,24 +39,38 @@ const CreatePlaylist = (props) => {
   const [editDescription, setEditDescription] = useState(
     check?.description || ""
   );
+  const [require, setRequire] = useState(false);
 
   function onSubmit() {
+    debugger;
     if (valueButton === "edit") {
-      onUpdatePlaylist({ id: check?.id, name: editName });
+      if (editName === "" || editDescription === '') {
+        setRequire(true);
+      } else {
+        onUpdatePlaylist({ id: check?.id, name: editName });
 
-      if (check?.name !== playlistName) {
-        setCheck("");
+        setChangePlaylist(false);
         onGetPlaylist();
+
+        if (check?.name !== playlistName) {
+          setCheck("");
+          onGetPlaylist();
+        }
       }
     } else {
-      onAddPlaylist({
-        name: playlistName,
-        description: playlistDescription,
-        channel_id: activeChannel.id,
-      });
+      if (playlistName === "" || playlistDescription === '') {
+        setRequire(true);
+      } else {
+        onAddPlaylist({
+          name: playlistName,
+          description: playlistDescription,
+          channel_id: activeChannel.id,
+        });
+
+        setChangePlaylist(false);
+        onGetPlaylist();
+      }
     }
-    setChangePlaylist(false);
-    onGetPlaylist();
   }
 
   const name = (e) => {
@@ -177,7 +191,7 @@ const CreatePlaylist = (props) => {
                   className="form-control"
                   placeholder="title"
                   type="text"
-                  required
+                  required={require}
                   label="Title"
                   value={valueButton === "edit" ? editName : playlistName}
                   onChange={(e) => {
@@ -190,7 +204,7 @@ const CreatePlaylist = (props) => {
                   rows="5"
                   label="Description"
                   name="description"
-                  required
+                  required={require}
                   placeholder="description"
                   value={
                     valueButton === "edit"
@@ -201,13 +215,6 @@ const CreatePlaylist = (props) => {
                     description(e);
                   }}
                 />
-                <AvField
-                  className="form-control"
-                  type="select"
-                  label="Playlist"
-                  name="playlist"
-                  placeholder="Choose..."
-                ></AvField>
               </FormGroup>
             </CardBody>
             <CardBody>
@@ -256,8 +263,9 @@ const CreatePlaylist = (props) => {
                 </Button>
                 <Button
                   onClick={() => {
-                    setCheck('');
-                    setChangePlaylist(false)}}
+                    setCheck("");
+                    setChangePlaylist(false);
+                  }}
                   type="button"
                   color="secondary"
                   className="waves-effect"
