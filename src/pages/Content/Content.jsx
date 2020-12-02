@@ -232,6 +232,8 @@ const Content = (props) => {
                               <Droppable droppableId="characters">
                                 {(provided) => (
                                   <ul
+                                    type="1"
+                                    start="1"
                                     className="message-list characters"
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
@@ -253,8 +255,8 @@ const Content = (props) => {
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                               >
-                                                <div className="col-mail col-mail-1">
-                                                  <div className="checkbox-wrapper-mail mx-0">
+                                                <div className="col-mail col-mail-0 d-flex align-items-center">
+                                                  <div className="checkbox-wrapper-mail mx-0 mr-3">
                                                     <Input
                                                       type="checkbox"
                                                       value={check.name}
@@ -277,7 +279,7 @@ const Content = (props) => {
                                                     to="#"
                                                     className="title"
                                                   >
-                                                    {p.name}
+                                                  <span className="mr-3">{index + 1}</span>{p.name}
                                                   </Link>
                                                 </div>
                                                 <div className="col-mail col-mail-2">
