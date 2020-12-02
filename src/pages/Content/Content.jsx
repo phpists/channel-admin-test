@@ -28,6 +28,7 @@ import Actions from "../../store/actions";
 import { withNamespaces } from "react-i18next";
 import DeletePlaylistModal from "./DeletePlaylistModal";
 import EmptyMessage from "./EmptyMessage";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Content = (props) => {
   const {
@@ -45,6 +46,7 @@ const Content = (props) => {
   const [check, setCheck] = useState("");
   const [activeTab, setActiveTab] = useState("1");
   const [valueButton, setValueButton] = useState("");
+  const [characters, updateCharacters] = useState(playlists);
 
   const change = (e) => {
     if (e.target.value === "edit") {
@@ -78,6 +80,16 @@ const Content = (props) => {
     setCheck("");
   };
 
+  function handleOnDragEnd(result) {
+    console.log(result);
+    if (!result.destination) return;
+    const items = Array.from(characters);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    updateCharacters(items);
+  }
+
   // const getOnePlaylist = () => {
   //   if (!check.name) {
   //     return errorMessage("Please select a playlist");
@@ -90,6 +102,7 @@ const Content = (props) => {
     if (playlists === null) {
       onGetPlaylist();
     }
+    updateCharacters(playlists);
   }, [playlists, onGetPlaylist]);
 
   return (
@@ -215,40 +228,72 @@ const Content = (props) => {
                           EmptyMessage.renderEmptyContentMessagePlaylist()
                         ) : (
                           <Form>
-                            <ul className="message-list">
-                              {playlists &&
-                                playlists?.map((p) => {
-                                  return (
-                                    <li key={p.id} onClick={() => setCheck(p)} className="check">
-                                      <div className="col-mail col-mail-1">
-                                        <div className="checkbox-wrapper-mail mx-0">
-                                          <Input
-                                            type="checkbox"
-                                            value={check.name}
-                                            checked={
-                                              check.id === p.id ? true : false
-                                            }
-                                            onChange={() => {
-                                              setCheck(p);
-                                            }}
-                                            id={p.id}
-                                          />
-                                          <Label
-                                            className="toggle"
-                                            htmlFor={p.id}
-                                          ></Label>
-                                        </div>
-                                        <Link to="#" className="title">
-                                          {p.name}
-                                        </Link>
-                                      </div>
-                                      <div className="col-mail col-mail-2">
-                                        <div className="date">4 items</div>
-                                      </div>
-                                    </li>
-                                  );
-                                })}
-                            </ul>
+                            <DragDropContext onDragEnd={handleOnDragEnd}>
+                              <Droppable droppableId="characters">
+                                {(provided) => (
+                                  <ul
+                                    className="message-list characters"
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                  >
+                                    {provided.placeholder}
+                                    {playlists &&
+                                      characters?.map((p, index) => {
+                                        return (
+                                          <Draggable
+                                            key={p.id}
+                                            draggableId={p.name}
+                                            index={index}
+                                          >
+                                            {(provided) => (
+                                              <li
+                                                onClick={() => setCheck(p)}
+                                                className="check"
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                              >
+                                                <div className="col-mail col-mail-1">
+                                                  <div className="checkbox-wrapper-mail mx-0">
+                                                    <Input
+                                                      type="checkbox"
+                                                      value={check.name}
+                                                      checked={
+                                                        check.id === p.id
+                                                          ? true
+                                                          : false
+                                                      }
+                                                      onChange={() => {
+                                                        setCheck(p);
+                                                      }}
+                                                      id={p.id}
+                                                    />
+                                                    <Label
+                                                      className="toggle"
+                                                      htmlFor={p.id}
+                                                    ></Label>
+                                                  </div>
+                                                  <Link
+                                                    to="#"
+                                                    className="title"
+                                                  >
+                                                    {p.name}
+                                                  </Link>
+                                                </div>
+                                                <div className="col-mail col-mail-2">
+                                                  <div className="date">
+                                                    4 items
+                                                  </div>
+                                                </div>
+                                              </li>
+                                            )}
+                                          </Draggable>
+                                        );
+                                      })}
+                                  </ul>
+                                )}
+                              </Droppable>
+                            </DragDropContext>
                           </Form>
                         )}
                       </CardBody>
