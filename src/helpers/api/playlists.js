@@ -85,13 +85,12 @@ export default {
         .catch((error) => ({ error }))
   },
 
-  getPlaylists: async () => {
+  getPlaylists: async (data) => {
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
-
-    const queryString = `action=GetPlaylists&openKey=${authData.openKey}`;
+    const queryString = `action=GetPlaylists&openKey=${authData.openKey}&where=channel_id=${data.id}`;
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -111,8 +110,7 @@ export default {
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
-
-    const queryString = `action=GetPlaylists/id=${data.id}&openKey=${authData.openKey}`;
+    const queryString = `action=GetPlaylists&openKey=${authData.openKey}&where=id=${data.id}`;
     const config = {
       headers: {
         "Content-Type": "application/json",

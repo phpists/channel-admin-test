@@ -24,8 +24,9 @@ const addPlaylistSuccess = () => ({
   type: Types.ADD_PLAYLIST_SUCCESS,
 });
 
-const getPlaylistsRequest = () => ({
+const getPlaylistsRequest = (payload) => ({
   type: Types.GET_PLAYLISTS_REQUEST,
+  payload,
 });
 
 const getPlaylistsSuccess = (payload) => ({

@@ -40,6 +40,7 @@ const Content = (props) => {
     onGetPlaylist,
     errorMessage,
     onGetOnePlaylist,
+    onePlayist,
   } = props;
   const [changePlaylist, setChangePlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
@@ -47,6 +48,7 @@ const Content = (props) => {
   const [activeTab, setActiveTab] = useState("1");
   const [valueButton, setValueButton] = useState("");
   const [characters, updateCharacters] = useState(playlists);
+  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
 
   const change = (e) => {
     if (e.target.value === "edit") {
@@ -55,10 +57,13 @@ const Content = (props) => {
       } else {
         setChangePlaylist(true);
         setValueButton(e.target.value);
+        onGetOnePlaylist({ id: check.id })
+        // console.log(onePlayist);
       }
     } else {
       setChangePlaylist(true);
       setValueButton(e.target.value);
+      onGetOnePlaylist({ id: check.id })
     }
   };
 
@@ -81,7 +86,6 @@ const Content = (props) => {
   };
 
   function handleOnDragEnd(result) {
-    console.log(result);
     if (!result.destination) return;
     const items = Array.from(characters);
     const [reorderedItem] = items.splice(result.source.index, 1);
@@ -94,13 +98,13 @@ const Content = (props) => {
   //   if (!check.name) {
   //     return errorMessage("Please select a playlist");
   //   } else {
-  //     onGetOnePlaylist({id: check.id});
+  //     return onGetOnePlaylist({ id: check.id });
   //   }
-  // }
+  // };
 
   useEffect(() => {
     if (playlists === null) {
-      onGetPlaylist();
+      onGetPlaylist({ id: defaultChannel?.id || "1" });
     }
     updateCharacters(playlists);
   }, [playlists, onGetPlaylist]);
@@ -159,7 +163,7 @@ const Content = (props) => {
                     activeChannel,
                     onAddPlaylist,
                     setChangePlaylist,
-                    onGetPlaylist,
+                    onGetOnePlaylist,
                     valueButton,
                     onUpdatePlaylist,
                     setCheck,
@@ -215,14 +219,14 @@ const Content = (props) => {
                             }}
                           />
                           {/* <Button
-                        type="button"
-                        color="primary"
-                        onClick={getOnePlaylist}
-                        className="waves-light waves-effect ml-2"
-                      >
-                        {" "}
-                        Get One
-                      </Button> */}
+                            type="button"
+                            color="primary"
+                            onClick={() => getOnePlaylist()}
+                            className="waves-light waves-effect ml-2"
+                          >
+                            {" "}
+                            Get One
+                          </Button> */}
                         </div>
                         {playlists === null ? (
                           EmptyMessage.renderEmptyContentMessagePlaylist()
@@ -232,8 +236,6 @@ const Content = (props) => {
                               <Droppable droppableId="characters">
                                 {(provided) => (
                                   <ul
-                                    type="1"
-                                    start="1"
                                     className="message-list characters"
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
@@ -244,7 +246,7 @@ const Content = (props) => {
                                         return (
                                           <Draggable
                                             key={p.id}
-                                            draggableId={p.name}
+                                            draggableId={String(p.name)}
                                             index={index}
                                           >
                                             {(provided) => (
@@ -267,6 +269,7 @@ const Content = (props) => {
                                                       }
                                                       onChange={() => {
                                                         setCheck(p);
+                                                        onGetOnePlaylist(p.id)
                                                       }}
                                                       id={p.id}
                                                     />
@@ -279,7 +282,10 @@ const Content = (props) => {
                                                     to="#"
                                                     className="title"
                                                   >
-                                                  <span className="mr-3">{index + 1}</span>{p.name}
+                                                    <span className="mr-3">
+                                                      {index + 1}
+                                                    </span>
+                                                    {p.name}
                                                   </Link>
                                                 </div>
                                                 <div className="col-mail col-mail-2">
@@ -317,6 +323,7 @@ const Content = (props) => {
 const mapStatetoProps = (state) => ({
   playlists: selectors.playlists.playlists(state),
   activeChannel: selectors.channels.activeChannel(state),
+  onePlayist: selectors.playlists.onePlaylist(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -325,7 +332,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(Actions.playlists.deletePlaylistRequest(data)),
   onUpdatePlaylist: (data) =>
     dispatch(Actions.playlists.updatePlaylistRequest(data)),
-  onGetPlaylist: () => dispatch(Actions.playlists.getPlaylistsRequest()),
+  onGetPlaylist: (data) =>
+    dispatch(Actions.playlists.getPlaylistsRequest(data)),
   onGetOnePlaylist: (data) =>
     dispatch(Actions.playlists.getOnePlaylistRequest(data)),
   errorMessage: (data) => dispatch(Actions.common.setErrorNotify(data)),

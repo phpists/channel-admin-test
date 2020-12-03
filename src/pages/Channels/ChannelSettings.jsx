@@ -191,6 +191,7 @@ const mapStatetoProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	onChannelUpdate: (data) => dispatch(Actions.channels.updateChannelRequest(data)),
+	
 })
 
 export default connect(mapStatetoProps, mapDispatchToProps)(ChannelSettings);

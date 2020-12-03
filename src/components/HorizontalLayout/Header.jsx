@@ -18,13 +18,19 @@ const Header = (props) => {
     activeChannel,
     setActiveChannel,
     onGetChannels,
+    onGetPlaylist
   } = props
+  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
 
   useEffect(() => {
     if (channels === null) {
       onGetChannels()
     }
-  }, [channels, onGetChannels, activeChannel])
+    if(defaultChannel !== activeChannel) {
+      onGetPlaylist({id: defaultChannel?.id || "1"});
+    }
+    setActiveChannel(defaultChannel)
+  }, [channels, onGetChannels, activeChannel, defaultChannel])
 
   function toggleFullscreen() {
     if (
@@ -74,7 +80,11 @@ const Header = (props) => {
                 channels?.map(item => (
                   <DropdownItem
                     key={item.id}
-                    onClick={() => setActiveChannel(item)}
+                    onClick={() => {
+                      setActiveChannel(item)
+                      localStorage.setItem("channel", JSON.stringify(item))
+                    }}
+                    
                   >{item.name}</DropdownItem>
                 ))
               }
@@ -168,6 +178,7 @@ const mapDispatchToProps = (dispatch) => ({
   toggleLeftmenu: (value) => dispatch(toggleLeftmenu(value)),
   onGetChannels: () => dispatch(Actions.channels.getChannelsRequest()),
   setActiveChannel: (data) => dispatch(Actions.channels.setActiveChannel(data)),
+  onGetPlaylist: (data) => dispatch(Actions.playlists.getPlaylistsRequest(data)),
 })
 
 export default connect(mapStatetoProps, mapDispatchToProps)(withNamespaces()(Header));
