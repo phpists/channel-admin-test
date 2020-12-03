@@ -57,13 +57,11 @@ const Content = (props) => {
       } else {
         setChangePlaylist(true);
         setValueButton(e.target.value);
-        onGetOnePlaylist({ id: check.id })
         // console.log(onePlayist);
       }
     } else {
       setChangePlaylist(true);
       setValueButton(e.target.value);
-      onGetOnePlaylist({ id: check.id })
     }
   };
 
@@ -163,7 +161,7 @@ const Content = (props) => {
                     activeChannel,
                     onAddPlaylist,
                     setChangePlaylist,
-                    onGetOnePlaylist,
+                    onGetPlaylist,
                     valueButton,
                     onUpdatePlaylist,
                     setCheck,

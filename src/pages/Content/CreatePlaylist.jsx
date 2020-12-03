@@ -25,7 +25,7 @@ const CreatePlaylist = (props) => {
     onUpdatePlaylist,
     activeChannel,
     setChangePlaylist,
-    onGetOnePlaylist,
+    onGetPlaylist,
     valueButton,
     setCheck,
     check,
@@ -42,7 +42,6 @@ const CreatePlaylist = (props) => {
   const [require, setRequire] = useState(false);
 
   function onSubmit() {
-    debugger;
     if (valueButton === "edit") {
       if (editName === "" || editDescription === '') {
         setRequire(true);
@@ -50,11 +49,11 @@ const CreatePlaylist = (props) => {
         onUpdatePlaylist({ id: check?.id, name: editName });
 
         setChangePlaylist(false);
-        // onGetOnePlaylist({id: check.id});
+        onGetPlaylist({id: activeChannel.id});
 
         if (check?.name !== playlistName) {
           setCheck("");
-          // onGetOnePlaylist({id: check.id});
+          onGetPlaylist({id: activeChannel.id});
         }
       }
     } else {
@@ -68,7 +67,7 @@ const CreatePlaylist = (props) => {
         });
 
         setChangePlaylist(false);
-        // onGetOnePlaylist({id: check.id});
+        onGetPlaylist({id: activeChannel.id});
       }
     }
   }

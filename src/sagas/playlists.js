@@ -15,9 +15,9 @@ export function* watchAddPlaylist(action) {
     } else {
       history.push("/content");
       const state = yield select();
-      const onePlaylist = selectors.playlists.onePlaylist(state);
+      const activeChannel = selectors.channels.activeChannel(state);
 
-      yield put(Actions.playlists.getOnePlaylistRequest(onePlaylist.id));
+      yield put(Actions.playlists.getPlaylistsRequest({id: activeChannel.id || '1'}));
       yield put(Actions.common.setSuccessNotify("Created successfully"));
     }
   } else {
@@ -35,9 +35,9 @@ export function* watchDeletePlaylist(action) {
       );
     } else {
       const state = yield select();
-      const onePlaylist = selectors.playlists.onePlaylist(state);
+      const activeChannel = selectors.channels.activeChannel(state);
 
-      yield put(Actions.playlists.getOnePlaylistRequest(onePlaylist.id));
+      yield put(Actions.playlists.getPlaylistsRequest({id: activeChannel.id || '1'}));
       yield put(Actions.common.setSuccessNotify("Deleted successfully"));
     }
   } else {
@@ -55,9 +55,9 @@ export function* watchUpdatePlaylist(action) {
       );
     } else {
       const state = yield select();
-      const onePlaylist = selectors.playlists.onePlaylist(state);
+      const activeChannel = selectors.channels.activeChannel(state);
 
-      yield put(Actions.playlists.getOnePlaylistRequest(onePlaylist?.id));
+      yield put(Actions.playlists.getPlaylistsRequest({id: activeChannel.id || '1'}));
       yield put(Actions.common.setSuccessNotify("Updated successfully"));
     }
   } else {
