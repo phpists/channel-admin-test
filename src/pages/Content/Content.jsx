@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import classnames from "classnames";
 import {
   TabContent,
@@ -27,8 +26,10 @@ import selectors from "../../selectors";
 import Actions from "../../store/actions";
 import { withNamespaces } from "react-i18next";
 import DeletePlaylistModal from "./DeletePlaylistModal";
-import EmptyMessage from "./EmptyMessage";
+import EmptyPlaylists from "./EmptyPlaylists";
+import EmptyVideos from "./EmptyVideos";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Upload from "./Upload";
 
 const Content = (props) => {
   const {
@@ -38,7 +39,6 @@ const Content = (props) => {
     onPlaylistDelete,
     onUpdatePlaylist,
     onGetPlaylist,
-    errorMessage,
     onGetOnePlaylist,
     onePlayist,
   } = props;
@@ -49,38 +49,49 @@ const Content = (props) => {
   const [valueButton, setValueButton] = useState("");
   const [characters, updateCharacters] = useState(playlists);
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
+  const [checkedItems, setChekedItems] = useState([]);
+  const [modalSave, setModalSave] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+
+
+  const toggleSave = () => {
+    setModalSave(!modalSave);
+  };
 
   const change = (e) => {
-    if (e.target.value === "edit") {
-      if (!check.name) {
-        return errorMessage("Please select a playlist");
-      } else {
-        setChangePlaylist(true);
-        setValueButton(e.target.value);
-        // console.log(onePlayist);
-      }
+    const nameButton = e.target.value;
+    const item = characters.filter(c => c.id === checkedItems[0]);
+    if (nameButton === "edit") {
+      setEditName(item[0].name);
+      setEditDescription(item[0].description);
+      setCheck(item[0].name);
+      setChangePlaylist(true);
+      setValueButton(nameButton);
+      console.log(check);
+      console.log(editName);
     } else {
       setChangePlaylist(true);
-      setValueButton(e.target.value);
+      setValueButton(nameButton);
     }
   };
 
   const toggleDelete = () => {
-    if (!check.name) {
-      return errorMessage("Please select a playlist");
-    } else {
-      setModalDelete(!modalDelete);
-    }
+    setModalDelete(!modalDelete);
   };
 
   const toggleTab = (tab) => {
-    if (activeTab !== tab) {
-      setActiveTab(tab);
+    if(check !== editName) {
+      setModalSave(!modalSave);
+    } else {
+      if (activeTab !== tab) {
+        setActiveTab(tab);
+        setChangePlaylist(false);
+        setChekedItems([]);
+      }
       setChangePlaylist(false);
-      setCheck("");
+      setChekedItems([]);
     }
-    setChangePlaylist(false);
-    setCheck("");
   };
 
   function handleOnDragEnd(result) {
@@ -88,9 +99,21 @@ const Content = (props) => {
     const items = Array.from(characters);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-
+    console.log(result);
     updateCharacters(items);
   }
+
+  const handleChange = (p) => {
+    const clickedCategory = checkedItems.indexOf(p.id);
+    const all = [...checkedItems];
+
+    if (clickedCategory === -1) {
+      all.push(p.id);
+    } else {
+      all.splice(clickedCategory, 1);
+    }
+    setChekedItems(all);
+  };
 
   // const getOnePlaylist = () => {
   //   if (!check.name) {
@@ -103,6 +126,9 @@ const Content = (props) => {
   useEffect(() => {
     if (playlists === null) {
       onGetPlaylist({ id: defaultChannel?.id || "1" });
+    }
+    if(checkedItems.length > 1) {
+      console.log(check)
     }
     updateCharacters(playlists);
   }, [playlists, onGetPlaylist]);
@@ -118,9 +144,19 @@ const Content = (props) => {
                 <CardBody>
                   <Nav className="border-0 navi" vertical>
                     <NavItem>
-                      <Button className="w-100 mb-4" color="success">
-                        Upload
-                      </Button>
+                      <NavLink
+                        className="px-0"
+                        className={classnames({
+                          active: activeTab === "1",
+                        })}
+                        onClick={() => {
+                          toggleTab("3");
+                        }}
+                      >
+                        <Button className="w-100 mb-4" color="success">
+                          Upload
+                        </Button>
+                      </NavLink>
                     </NavItem>
                     <NavItem className="d-flex justify-content-between align-items-baseline">
                       <NavLink
@@ -166,6 +202,15 @@ const Content = (props) => {
                     onUpdatePlaylist,
                     setCheck,
                     check,
+                    modalSave,
+                    setModalSave,
+                    toggleSave,
+                    editName,
+                    setEditName,
+                    editDescription,
+                    setEditDescription,
+                    setChekedItems
+                
                   }}
                 />
               ) : (
@@ -192,7 +237,10 @@ const Content = (props) => {
                             onClick={(e) => change(e)}
                             className="btn btn-primary waves-light waves-effect"
                             value="edit"
-                            disabled={check.length < 1}
+                            disabled={
+                              checkedItems.length == 0 ||
+                              checkedItems.length > 1
+                            }
                           >
                             Edit <i className="mdi mdi-dots-vertical ml-2"></i>
                           </Button>
@@ -201,7 +249,7 @@ const Content = (props) => {
                             color="primary"
                             onClick={toggleDelete}
                             className="btn btn-primary waves-light waves-effect"
-                            disabled={check.length < 1}
+                            disabled={checkedItems.length === 0}
                           >
                             {" "}
                             Delete<i className="far fa-trash-alt ml-2"></i>
@@ -226,15 +274,16 @@ const Content = (props) => {
                             Get One
                           </Button> */}
                         </div>
-                        {playlists === null ? (
-                          EmptyMessage.renderEmptyContentMessagePlaylist()
+
+                        {playlists?.length === 0 ? (
+                          <EmptyPlaylists />
                         ) : (
                           <Form>
                             <DragDropContext onDragEnd={handleOnDragEnd}>
                               <Droppable droppableId="characters">
                                 {(provided) => (
                                   <ul
-                                    className="message-list characters"
+                                    className="message-list"
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
                                   >
@@ -249,48 +298,31 @@ const Content = (props) => {
                                           >
                                             {(provided) => (
                                               <li
-                                                onClick={() => setCheck(p)}
-                                                className="check"
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                               >
-                                                <div className="col-mail col-mail-0 d-flex align-items-center">
-                                                  <div className="checkbox-wrapper-mail mx-0 mr-3">
-                                                    <Input
-                                                      type="checkbox"
-                                                      value={check.name}
-                                                      checked={
-                                                        check.id === p.id
-                                                          ? true
-                                                          : false
-                                                      }
-                                                      onChange={() => {
-                                                        setCheck(p);
-                                                        onGetOnePlaylist(p.id)
-                                                      }}
-                                                      id={p.id}
-                                                    />
-                                                    <Label
-                                                      className="toggle"
-                                                      htmlFor={p.id}
-                                                    ></Label>
+                                                <Label className="check d-flex align-items-center ml-4">
+                                                  <Input
+                                                    type="checkbox"
+                                                    name={p.name}
+                                                    checked={checkedItems.includes(
+                                                      p.id
+                                                    )}
+                                                    onChange={() =>
+                                                      handleChange(p)
+                                                    }
+                                                  />
+                                                  <span className="title mr-3">
+                                                    {index + 1}
+                                                  </span>
+                                                  {p.name}
+                                                  <div className="col-mail col-mail-2">
+                                                    <div className="date">
+                                                      4 items
+                                                    </div>
                                                   </div>
-                                                  <Link
-                                                    to="#"
-                                                    className="title"
-                                                  >
-                                                    <span className="mr-3">
-                                                      {index + 1}
-                                                    </span>
-                                                    {p.name}
-                                                  </Link>
-                                                </div>
-                                                <div className="col-mail col-mail-2">
-                                                  <div className="date">
-                                                    4 items
-                                                  </div>
-                                                </div>
+                                                </Label>
                                               </li>
                                             )}
                                           </Draggable>
@@ -306,7 +338,14 @@ const Content = (props) => {
                     </Card>
                   </TabPane>
                   <TabPane tabId="2">
-                    {EmptyMessage.renderEmptyContentMessageVideos()}
+                    <Card>
+                      <EmptyVideos {...{ setActiveTab }} />
+                    </Card>
+                  </TabPane>
+                  <TabPane tabId="3">
+                    <Card>
+                      <Upload />
+                    </Card>
                   </TabPane>
                 </TabContent>
               )}

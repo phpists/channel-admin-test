@@ -17,8 +17,11 @@ import {
   Col,
   FormGroup,
   CardSubtitle,
+  Modal,
+  ModalHeader,
+  ModalFooter,
 } from "reactstrap";
-
+import ModalBody from "reactstrap/lib/ModalBody";
 const CreatePlaylist = (props) => {
   const {
     onAddPlaylist,
@@ -29,35 +32,38 @@ const CreatePlaylist = (props) => {
     valueButton,
     setCheck,
     check,
+    modalSave,
+    toggleSave,
+    editName,
+    setEditName,
+    editDescription,
+    setEditDescription,
+    setChekedItems
   } = props;
 
   const [activeTab, setActiveTab] = useState("2");
   const [playlistName, setplaylistName] = useState("");
   const [playlistDescription, setplaylistDescription] = useState("");
   const [lng, setLng] = useState("English");
-  const [editName, setEditName] = useState(check?.name || "");
-  const [editDescription, setEditDescription] = useState(
-    check?.description || ""
-  );
   const [require, setRequire] = useState(false);
-
+  
   function onSubmit() {
     if (valueButton === "edit") {
-      if (editName === "" || editDescription === '') {
+      if (editName === "" || editDescription === "") {
         setRequire(true);
       } else {
         onUpdatePlaylist({ id: check?.id, name: editName });
 
         setChangePlaylist(false);
-        onGetPlaylist({id: activeChannel.id});
+        onGetPlaylist({ id: activeChannel.id });
 
-        if (check?.name !== playlistName) {
-          setCheck("");
-          onGetPlaylist({id: activeChannel.id});
+        if (check?.name !== editName) {
+          setChekedItems([]);
+          onGetPlaylist({ id: activeChannel.id });
         }
       }
     } else {
-      if (playlistName === "" || playlistDescription === '') {
+      if (playlistName === "" || playlistDescription === "") {
         setRequire(true);
       } else {
         onAddPlaylist({
@@ -67,7 +73,7 @@ const CreatePlaylist = (props) => {
         });
 
         setChangePlaylist(false);
-        onGetPlaylist({id: activeChannel.id});
+        onGetPlaylist({ id: activeChannel.id });
       }
     }
   }
@@ -176,7 +182,6 @@ const CreatePlaylist = (props) => {
                   </NavLink>
                 </NavItem>
               </Nav>
-
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1" className="p-3"></TabPane>
                 <TabPane tabId="2" className="p-3"></TabPane>
@@ -184,6 +189,26 @@ const CreatePlaylist = (props) => {
                 <TabPane tabId="4" className="p-3"></TabPane>
                 <TabPane tabId="5" className="p-3"></TabPane>
               </TabContent>
+              <Modal isOpen={modalSave} toggle={toggleSave}>
+                <ModalHeader toggle={toggleSave}>
+                  Are you sure?
+                </ModalHeader>
+                <ModalBody>
+                  You have unsaved data. You want to leave the page?
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="secondary"
+                    className="w-sm"
+                    onClick={toggleSave}
+                  >
+                    Cancel
+                  </Button>
+                  <Button color="danger" className="w-sm" onClick={onSubmit}>
+                    Save Changes
+                  </Button>
+                </ModalFooter>
+              </Modal>
               <FormGroup className="w-50">
                 <AvField
                   name="title"
@@ -262,8 +287,11 @@ const CreatePlaylist = (props) => {
                 </Button>
                 <Button
                   onClick={() => {
-                    setCheck("");
+                    setChekedItems([]);
                     setChangePlaylist(false);
+                    setCheck("");
+                    setEditName("")
+                    setEditDescription("")
                   }}
                   type="button"
                   color="secondary"
