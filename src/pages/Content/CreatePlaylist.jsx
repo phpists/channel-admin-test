@@ -44,7 +44,7 @@ const CreatePlaylist = (props) => {
   const [activeTab, setActiveTab] = useState("2");
   const [playlistName, setplaylistName] = useState("");
   const [playlistDescription, setplaylistDescription] = useState("");
-  const [lng, setLng] = useState("English");
+  const [lng, setLng] = useState("eng");
   const [require, setRequire] = useState(false);
   
   function onSubmit() {

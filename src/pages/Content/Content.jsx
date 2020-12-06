@@ -59,6 +59,11 @@ const Content = (props) => {
     setModalSave(!modalSave);
   };
 
+  const skipEdit = (e) => {
+    setEditName("")
+    console.log(e.target.value)
+  }
+
   const change = (e) => {
     const nameButton = e.target.value;
     const item = characters.filter(c => c.id === checkedItems[0]);
@@ -242,7 +247,7 @@ const Content = (props) => {
                               checkedItems.length > 1
                             }
                           >
-                            Edit <i className="mdi mdi-dots-vertical ml-2"></i>
+                            Edit <i className="mdi mdi-dots-vertical ml-2 dots" value="edit-skip" onClick={skipEdit}></i>
                           </Button>
                           <Button
                             type="button"
