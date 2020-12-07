@@ -262,7 +262,8 @@ const Content = (props) => {
                               onPlaylistDelete,
                               onGetPlaylist,
                               activeChannel,
-                              setChekedItems
+                              setChekedItems,
+                              checkedItems
                             }}
                           />
                         </div>
