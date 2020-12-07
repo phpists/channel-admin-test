@@ -59,10 +59,6 @@ const Content = (props) => {
     setModalSave(!modalSave);
   };
 
-  const skipEdit = (e) => {
-    setEditName("")
-    console.log(e.target.value)
-  }
 
   const change = (e) => {
     const nameButton = e.target.value;
@@ -70,7 +66,7 @@ const Content = (props) => {
     if (nameButton === "edit") {
       setEditName(item[0].name);
       setEditDescription(item[0].description);
-      setCheck(item[0].name);
+      setCheck(item[0]);
       setChangePlaylist(true);
       setValueButton(nameButton);
       console.log(check);
@@ -86,7 +82,7 @@ const Content = (props) => {
   };
 
   const toggleTab = (tab) => {
-    if(check !== editName) {
+    if(check?.name !== editName) {
       setModalSave(!modalSave);
     } else {
       if (activeTab !== tab) {
@@ -247,7 +243,7 @@ const Content = (props) => {
                               checkedItems.length > 1
                             }
                           >
-                            Edit <i className="mdi mdi-dots-vertical ml-2 dots" value="edit-skip" onClick={skipEdit}></i>
+                            Edit <i className="mdi mdi-dots-vertical ml-2 dots"></i>
                           </Button>
                           <Button
                             type="button"
