@@ -23,6 +23,7 @@ import {
 } from "reactstrap";
 import ModalBody from "reactstrap/lib/ModalBody";
 const CreatePlaylist = (props) => {
+  // Get props
   const {
     onAddPlaylist,
     onUpdatePlaylist,
@@ -30,37 +31,39 @@ const CreatePlaylist = (props) => {
     setChangePlaylist,
     onGetPlaylist,
     valueButton,
-    setCheck,
-    check,
+    setCheckName,
+    checkId,
     modalSave,
-    toggleSave,
     editName,
     setEditName,
     editDescription,
     setEditDescription,
-    setChekedItems
+    setChekedItems,
+    setModalSave,
   } = props;
-
+  // State local
   const [activeTab, setActiveTab] = useState("2");
   const [playlistName, setplaylistName] = useState("");
   const [playlistDescription, setplaylistDescription] = useState("");
   const [lng, setLng] = useState("eng");
   const [require, setRequire] = useState(false);
-  
+
+  // Handle event
+
+  // On submit
   function onSubmit() {
     if (valueButton === "edit") {
       if (editName === "" || editDescription === "") {
         setRequire(true);
       } else {
-        onUpdatePlaylist({ id: check?.id, name: editName });
+        onUpdatePlaylist({ id: checkId, name: editName });
 
         setChangePlaylist(false);
         onGetPlaylist({ id: activeChannel.id });
-
-        if (check?.name !== editName) {
-          setChekedItems([]);
-          onGetPlaylist({ id: activeChannel.id });
-        }
+        setChekedItems([]);
+        setCheckName("");
+        setEditName("");
+        setEditDescription("");
       }
     } else {
       if (playlistName === "" || playlistDescription === "") {
@@ -78,28 +81,29 @@ const CreatePlaylist = (props) => {
     }
   }
 
-  const name = (e) => {
+  // Modal window (Save changes)
+  const toggleSave = () => {
+    setModalSave(!modalSave);
+  };
+
+  // On chnage global function
+  const onChanged = (setName) => (e) => {
     if (valueButton === "edit") {
-      setEditName(e.target.value);
+      setName(e.target.value);
+      console.log(e.target.value);
     } else {
-      setplaylistName(e.target.value);
+      setName(e.target.value);
     }
   };
 
-  const description = (e) => {
-    if (valueButton === "edit") {
-      setEditDescription(e.target.value);
-    } else {
-      setplaylistDescription(e.target.value);
-    }
-  };
-
+  // On toggle languages
   const toggleCustomJustified = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
   };
 
+  // Side effects
   useEffect(() => {
     i18n.changeLanguage(lng);
   }, [lng]);
@@ -110,6 +114,7 @@ const CreatePlaylist = (props) => {
         <Card>
           <AvForm onValidSubmit={onSubmit}>
             <CardBody>
+             {/* Toggle languages */}
               <Nav tabs className="nav-tabs-custom nav-justified">
                 <NavItem>
                   <NavLink
@@ -182,6 +187,7 @@ const CreatePlaylist = (props) => {
                   </NavLink>
                 </NavItem>
               </Nav>
+              {/* Buttons fot toggle */}
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1" className="p-3"></TabPane>
                 <TabPane tabId="2" className="p-3"></TabPane>
@@ -189,10 +195,9 @@ const CreatePlaylist = (props) => {
                 <TabPane tabId="4" className="p-3"></TabPane>
                 <TabPane tabId="5" className="p-3"></TabPane>
               </TabContent>
+              {/* Modal window (Save changes) */}
               <Modal isOpen={modalSave} toggle={toggleSave}>
-                <ModalHeader toggle={toggleSave}>
-                  Are you sure?
-                </ModalHeader>
+                <ModalHeader toggle={toggleSave}>Are you sure?</ModalHeader>
                 <ModalBody>
                   You have unsaved data. You want to leave the page?
                 </ModalBody>
@@ -209,6 +214,7 @@ const CreatePlaylist = (props) => {
                   </Button>
                 </ModalFooter>
               </Modal>
+              {/* Form group with validation */}
               <FormGroup className="w-50">
                 <AvField
                   name="title"
@@ -218,9 +224,9 @@ const CreatePlaylist = (props) => {
                   required={require}
                   label="Title"
                   value={valueButton === "edit" ? editName : playlistName}
-                  onChange={(e) => {
-                    name(e);
-                  }}
+                  onChange={onChanged(
+                    valueButton === "edit" ? setEditName : setplaylistName
+                  )}
                 />
                 <AvField
                   className="form-control"
@@ -235,9 +241,11 @@ const CreatePlaylist = (props) => {
                       ? editDescription
                       : playlistDescription
                   }
-                  onChange={(e) => {
-                    description(e);
-                  }}
+                  onChange={onChanged(
+                    valueButton === "edit"
+                      ? setEditDescription
+                      : setplaylistDescription
+                  )}
                 />
               </FormGroup>
             </CardBody>
@@ -246,6 +254,7 @@ const CreatePlaylist = (props) => {
               <CardSubtitle className="mb-3">
                 Fill all information below
               </CardSubtitle>
+              {/* Form group without validation */}
               <FormGroup>
                 <Row>
                   <Col sm={6}>
@@ -289,9 +298,9 @@ const CreatePlaylist = (props) => {
                   onClick={() => {
                     setChekedItems([]);
                     setChangePlaylist(false);
-                    setCheck("");
-                    setEditName("")
-                    setEditDescription("")
+                    setCheckName("");
+                    setEditName("");
+                    setEditDescription("");
                   }}
                   type="button"
                   color="secondary"

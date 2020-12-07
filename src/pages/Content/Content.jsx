@@ -32,6 +32,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Upload from "./Upload";
 
 const Content = (props) => {
+  // Get props
   const {
     activeChannel,
     onAddPlaylist,
@@ -39,50 +40,53 @@ const Content = (props) => {
     onPlaylistDelete,
     onUpdatePlaylist,
     onGetPlaylist,
-    onGetOnePlaylist,
-    onePlayist,
   } = props;
+
+  // State local
   const [changePlaylist, setChangePlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
-  const [check, setCheck] = useState("");
+  const [checkName, setCheckName] = useState("");
+  const [checkId, setCheckId] = useState("");
   const [activeTab, setActiveTab] = useState("1");
   const [valueButton, setValueButton] = useState("");
   const [characters, updateCharacters] = useState(playlists);
-  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
   const [checkedItems, setChekedItems] = useState([]);
   const [modalSave, setModalSave] = useState(false);
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
 
+  // Vallues
+  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
+  const item = characters?.filter((c) => c.id === checkedItems[0]);
 
-  const toggleSave = () => {
-    setModalSave(!modalSave);
-  };
+  // Handle event
 
-
-  const change = (e) => {
+  // Change page on click Create Playlist || Edit 
+  const changePage = (e) => {
     const nameButton = e.target.value;
-    const item = characters.filter(c => c.id === checkedItems[0]);
     if (nameButton === "edit") {
       setEditName(item[0].name);
       setEditDescription(item[0].description);
-      setCheck(item[0]);
+      setCheckId(item[0].id);
+      setCheckName(item[0].name);
       setChangePlaylist(true);
       setValueButton(nameButton);
-      console.log(check);
-      console.log(editName);
     } else {
       setChangePlaylist(true);
       setValueButton(nameButton);
     }
   };
 
+  // Toggle modal window (DELETE)
   const toggleDelete = () => {
     setModalDelete(!modalDelete);
+    setCheckId(item[0].id);
+    setCheckName(item[0].name);
   };
 
+  // Toggle tab (LEFT PANEL)
   const toggleTab = (tab) => {
-    if(check?.name !== editName) {
+    if (checkName !== editName) {
       setModalSave(!modalSave);
     } else {
       if (activeTab !== tab) {
@@ -95,15 +99,16 @@ const Content = (props) => {
     }
   };
 
+  // Drag playlist
   function handleOnDragEnd(result) {
     if (!result.destination) return;
     const items = Array.from(characters);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    console.log(result);
     updateCharacters(items);
   }
 
+  // Set & remove checkmark
   const handleChange = (p) => {
     const clickedCategory = checkedItems.indexOf(p.id);
     const all = [...checkedItems];
@@ -116,20 +121,10 @@ const Content = (props) => {
     setChekedItems(all);
   };
 
-  // const getOnePlaylist = () => {
-  //   if (!check.name) {
-  //     return errorMessage("Please select a playlist");
-  //   } else {
-  //     return onGetOnePlaylist({ id: check.id });
-  //   }
-  // };
-
+  // Side effects
   useEffect(() => {
     if (playlists === null) {
       onGetPlaylist({ id: defaultChannel?.id || "1" });
-    }
-    if(checkedItems.length > 1) {
-      console.log(check)
     }
     updateCharacters(playlists);
   }, [playlists, onGetPlaylist]);
@@ -140,6 +135,7 @@ const Content = (props) => {
         <Container fluid>
           <Breadcrumbs title={"Dashboard"} breadcrumbItem={"content"} />
           <Row className="align-items-start">
+            {/* LEFT PANEL */}
             <Col xs="12" sm="5" md="4" lg="3">
               <Card>
                 <CardBody>
@@ -191,6 +187,7 @@ const Content = (props) => {
                 </CardBody>
               </Card>
             </Col>
+            {/* RIGHT PANEL */}
             <Col xs="12" sm="7" md="8" lg="9">
               {changePlaylist ? (
                 <CreatePlaylist
@@ -201,17 +198,16 @@ const Content = (props) => {
                     onGetPlaylist,
                     valueButton,
                     onUpdatePlaylist,
-                    setCheck,
-                    check,
+                    setCheckName,
+                    checkName,
+                    checkId,
                     modalSave,
                     setModalSave,
-                    toggleSave,
                     editName,
                     setEditName,
                     editDescription,
                     setEditDescription,
-                    setChekedItems
-                
+                    setChekedItems,
                   }}
                 />
               ) : (
@@ -226,7 +222,7 @@ const Content = (props) => {
                         <div className="btn-toolbar py-3" role="toolbar">
                           <Button
                             color="primary mr-2"
-                            onClick={(e) => change(e)}
+                            onClick={changePage}
                             className="btn btn-primary waves-light waves-effect"
                             value="newPlaylist"
                           >
@@ -235,7 +231,7 @@ const Content = (props) => {
                           </Button>
                           <Button
                             color="primary mr-2"
-                            onClick={(e) => change(e)}
+                            onClick={changePage}
                             className="btn btn-primary waves-light waves-effect"
                             value="edit"
                             disabled={
@@ -243,7 +239,8 @@ const Content = (props) => {
                               checkedItems.length > 1
                             }
                           >
-                            Edit <i className="mdi mdi-dots-vertical ml-2 dots"></i>
+                            Edit{" "}
+                            <i className="mdi mdi-dots-vertical ml-2 dots"></i>
                           </Button>
                           <Button
                             type="button"
@@ -257,23 +254,17 @@ const Content = (props) => {
                           </Button>
                           <DeletePlaylistModal
                             {...{
-                              check,
-                              setCheck,
+                              checkId,
+                              checkName,
+                              setCheckName,
                               modalDelete,
                               toggleDelete,
                               onPlaylistDelete,
                               onGetPlaylist,
+                              activeChannel,
+                              setChekedItems
                             }}
                           />
-                          {/* <Button
-                            type="button"
-                            color="primary"
-                            onClick={() => getOnePlaylist()}
-                            className="waves-light waves-effect ml-2"
-                          >
-                            {" "}
-                            Get One
-                          </Button> */}
                         </div>
 
                         {playlists?.length === 0 ? (
@@ -358,12 +349,14 @@ const Content = (props) => {
   );
 };
 
+// Get redux state values
 const mapStatetoProps = (state) => ({
   playlists: selectors.playlists.playlists(state),
   activeChannel: selectors.channels.activeChannel(state),
   onePlayist: selectors.playlists.onePlaylist(state),
 });
 
+// Get redux state function
 const mapDispatchToProps = (dispatch) => ({
   onAddPlaylist: (data) => dispatch(Actions.playlists.addPlaylistRequest(data)),
   onPlaylistDelete: (data) =>
