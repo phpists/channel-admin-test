@@ -12,11 +12,11 @@ import {
 } from "reactstrap";
 import "./content.scss";
 import CreatePlaylist from "./Playlists/CreatePlaylist";
-import DeletePlaylistModal from "./Playlists/DeletePlaylistModal";
 import Upload from "./Upload/Upload";
 import Playlists from "./Playlists/Playlists";
 import Videos from "./Videos/Videos";
 import TabButton from "./TabButton/TabButton";
+import CreateVideo from "./Videos/CreateVideos";
 
 const Content = (props) => {
   // Get props
@@ -28,7 +28,6 @@ const Content = (props) => {
     onUpdatePlaylist,
     onGetPlaylist,
     videos,
-    onGetVideos,
     activeTab,
     toggleTab,
     characters,
@@ -40,12 +39,12 @@ const Content = (props) => {
     checkId,
     modalSave,
     setModalSave,
-    editName,
-    setEditName,
-    editDescription,
-    setEditDescription,
+    editNamePlaylist,
+    setEditNamePlaylist,
+    editDescriptionPlaylist,
+    setEditDescriptionPlaylist,
     setChekedItems,
-    changePage,
+    changePagePlaylist,
     checkedItems,
     toggleDelete,
     modalDelete,
@@ -53,6 +52,26 @@ const Content = (props) => {
     handleChange,
     updateCharacters,
     defaultChannel,
+
+    changeVideos,
+    setChangeVideo,
+    changePageVideo,
+    editNameVideos,
+    setEditNameVideos,
+    editDescriptionVideos,
+    setEditDescriptionVideos,
+    checkNameVideos,
+    setCheckNameVideos,
+    checkIdVideos,
+    valueButtonVideos,
+    checkedItemsVideos,
+    setChekedItemsVideos,
+    handleChangeVideos,
+    onGetVideos,
+    onUpdateVideo,
+    onAddVideoToPlaylist,
+    modalDeleteVideos,
+    toggleDeleteVideos,
   } = props;
 
   return (
@@ -65,7 +84,9 @@ const Content = (props) => {
             <Col xs="12" sm="5" md="4" lg="3">
               <Card>
                 <CardBody>
-                  <TabButton {...{ activeTab, toggleTab, characters, videos }} />
+                  <TabButton
+                    {...{ activeTab, toggleTab, characters, videos }}
+                  />
                 </CardBody>
               </Card>
             </Col>
@@ -86,10 +107,10 @@ const Content = (props) => {
                       checkId,
                       modalSave,
                       setModalSave,
-                      editName,
-                      setEditName,
-                      editDescription,
-                      setEditDescription,
+                      editNamePlaylist,
+                      setEditNamePlaylist,
+                      editDescriptionPlaylist,
+                      setEditDescriptionPlaylist,
                       setChekedItems,
                     }}
                   />
@@ -98,10 +119,9 @@ const Content = (props) => {
                     <Playlists
                       {...{
                         characters,
-                        changePage,
+                        changePagePlaylist,
                         checkedItems,
                         toggleDelete,
-                        DeletePlaylistModal,
                         checkId,
                         checkName,
                         setCheckName,
@@ -121,27 +141,48 @@ const Content = (props) => {
                   </TabPane>
                 )}
                 <TabPane tabId="2">
-                  <Videos
-                    {...{
-                      characters,
-                      changePage,
-                      checkedItems,
-                      toggleDelete,
-                      DeletePlaylistModal,
-                      checkId,
-                      checkName,
-                      setCheckName,
-                      modalDelete,
-                      onPlaylistDelete,
-                      onGetPlaylist,
-                      activeChannel,
-                      setChekedItems,
-                      handleOnDragEnd,
-                      handleChange,
-                      videos,
-                      onGetVideos,
-                    }}
-                  />
+                  {changeVideos ? (
+                    <CreateVideo
+                      {...{
+                        setChangeVideo,
+                        onGetVideos,
+                        onUpdateVideo,
+                        onAddVideoToPlaylist,
+                        setChangeVideo,
+                        valueButtonVideos,
+                        setCheckNameVideos,
+                        checkNameVideos,
+                        checkIdVideos,
+                        modalSave,
+                        setModalSave,
+                        editNameVideos,
+                        setEditNameVideos,
+                        editDescriptionVideos,
+                        setEditDescriptionVideos,
+                        setChekedItemsVideos,
+                        characters,
+                      }}
+                    />
+                  ) : (
+                    <Videos
+                      {...{
+                        characters,
+                        changePageVideo,
+                        checkedItemsVideos,
+                        checkIdVideos,
+                        checkNameVideos,
+                        setCheckNameVideos,
+                        setChekedItemsVideos,
+                        handleOnDragEnd,
+                        handleChangeVideos,
+                        videos,
+                        onGetVideos,
+                        setChangeVideo,
+                        modalDeleteVideos,
+                        toggleDeleteVideos,
+                      }}
+                    />
+                  )}
                 </TabPane>
                 <TabPane tabId="3">
                   <Card>

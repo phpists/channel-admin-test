@@ -12,26 +12,22 @@ import {
 } from "reactstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import EmptyVideos from "./EmptyVideos";
+import DeleteVideoModal from "./DeleteVideoModal";
 
 const Videos = (props) => {
   const {
-    characters,
-    changePage,
-    checkedItems,
-    toggleDelete,
-    DeletePlaylistModal,
-    checkId,
-    checkName,
-    setCheckName,
-    modalDelete,
-    onPlaylistDelete,
-    onGetPlaylist,
-    activeChannel,
-    setChekedItems,
+    changePageVideo,
+    checkedItemsVideos,
+    checkIdVideos,
+    checkNameVideos,
+    setCheckNameVideos,
+    setChekedItemsVideos,
     handleOnDragEnd,
-    handleChange,
+    handleChangeVideos,
     videos,
     onGetVideos,
+    modalDeleteVideos,
+    toggleDeleteVideos,
   } = props;
 
   useEffect(() => {
@@ -50,14 +46,17 @@ const Videos = (props) => {
           <Button
             color="primary mr-2"
             className="btn btn-primary waves-light waves-effect"
-            value="edit"
+            value="editVideo"
+            onClick={changePageVideo}
+            disabled={checkedItemsVideos.length == 0 || checkedItemsVideos.length > 1}
           >
             Edit <i className="mdi mdi-dots-vertical ml-2 dots"></i>
           </Button>
           <Button
             color="primary mr-2"
             className="btn btn-primary waves-light waves-effect"
-            value="newPlaylist"
+            value="newVideo"
+            onClick={changePageVideo}
           >
             <i className="dripicons-folder mr-1"></i> Add to playlist
           </Button>
@@ -65,11 +64,23 @@ const Videos = (props) => {
             type="button"
             color="primary"
             className="btn btn-primary waves-light waves-effect"
+            onClick={toggleDeleteVideos}
+            disabled={checkedItemsVideos.length === 0}
           >
             {" "}
             Delete<i className="far fa-trash-alt ml-2"></i>
           </Button>
-          <DeletePlaylistModal
+          <DeleteVideoModal
+            {...{
+              checkIdVideos,
+              checkNameVideos,
+              checkedItemsVideos,
+              setCheckNameVideos,
+              modalDeleteVideos,
+              toggleDeleteVideos,
+              onGetVideos,
+              setChekedItemsVideos
+            }}
           />
         </div>
 
@@ -104,8 +115,8 @@ const Videos = (props) => {
                                   <Input
                                     type="checkbox"
                                     name={p.vimeo_name}
-                                    checked={checkedItems.includes(p.id)}
-                                    onChange={() => handleChange(p)}
+                                    checked={checkedItemsVideos.includes(p.id)}
+                                    onChange={() => handleChangeVideos(p)}
                                   />
                                   <span className="title mr-3">
                                     {index + 1}
