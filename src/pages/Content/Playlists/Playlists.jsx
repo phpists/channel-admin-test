@@ -81,6 +81,7 @@ const Playlists = (props) => {
               {...{
                 checkId,
                 checkName,
+                checkedItems,
                 setCheckName,
                 modalDelete,
                 toggleDelete,
