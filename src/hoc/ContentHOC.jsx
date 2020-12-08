@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import selectors from "../selectors";
 import Actions from "../store/actions";
@@ -92,10 +92,14 @@ const ContentHOC = (props) => {
       if (activeTab !== tab) {
         setActiveTab(tab);
         setChangePlaylist(false);
+        setChangeVideo(false);
         setChekedItems([]);
+        setChekedItemsVideos([]);
       }
       setChangePlaylist(false);
+      setChangeVideo(false);
       setChekedItems([]);
+      setChekedItemsVideos([]);
     }
   };
 
@@ -132,6 +136,12 @@ const ContentHOC = (props) => {
     }
     setChekedItemsVideos(all);
   };
+
+  useEffect(() => {
+    if (defaultChannel !== props.activeChannel) {
+      setChekedItems([]);
+    }
+  }, [props.activeChannel]);
 
   return (
     <Content

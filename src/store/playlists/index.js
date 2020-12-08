@@ -3,7 +3,6 @@ import { Types } from "./actions";
 const initialState = {
   playlists: null,
   onePlaylist: null,
-  dragedPlaylist: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,14 +22,6 @@ const reducer = (state = initialState, action) => {
           onePlaylist: action.payload,
         },
       };
-    }
-    case Types.DRAG_PLAYLIST: {
-      return {
-        ...state,
-        ...{
-          dragedPlaylist: action.payload
-        }
-      }
     }
     default:
       return state;

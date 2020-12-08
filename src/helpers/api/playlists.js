@@ -50,7 +50,6 @@ export default {
     return await axiosInstance
         .post(`?${queryString}`, formData, config)
         .then((response) => {
-          console.log(response);
           return response;
         })
         .catch((error) => ({ error }))
@@ -79,7 +78,6 @@ export default {
     return await axiosInstance
         .post(`?${queryString}`, formData, config)
         .then((response) => {
-          console.log(response);
           return response;
         })
         .catch((error) => ({ error }))

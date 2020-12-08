@@ -11,11 +11,11 @@ const TabButton = (props) => {
   ];
   return (
     <Nav className="border-0 navi" vertical>
-      {buttons.map((b) => {
+      {buttons.map((b, index) => {
         return (
           <>
             {b.name === "Upload" ? (
-              <NavItem>
+              <NavItem key={index}>
                 <NavLink
                   className="px-0"
                   className={classnames({

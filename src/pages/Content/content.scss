@@ -17,3 +17,12 @@
 .check {
     cursor: pointer !important;
 }
+
+.form-control:valid {
+    background-image: none !important;
+}
+
+
+.form-control:invalid {
+    background-image: none !important;
+}

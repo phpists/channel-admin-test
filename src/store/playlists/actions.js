@@ -12,7 +12,8 @@ export const Types = {
 
   UPDATE_PLAYLIST_REQUEST: "UPDATE_PLAYLIST_REQUEST",
 
-  DRAG_PLAYLIST: "DRAG_PLAYLIST"
+  
+
 };
 
 const addPlaylistRequest = (payload) => ({
@@ -54,11 +55,6 @@ const updatePlaylistRequest = (payload) => ({
   payload,
 });
 
-const dropPlaylist = (payload) => ({
-  type: Types.DRAG_PLAYLIST,
-  payload,
-})
-
 export default {
   addPlaylistRequest,
   addPlaylistSuccess,
@@ -68,5 +64,4 @@ export default {
   getOnePlaylistSuccess,
   deletePlaylistRequest,
   updatePlaylistRequest,
-  dropPlaylist
 };
