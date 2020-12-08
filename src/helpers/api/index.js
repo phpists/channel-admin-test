@@ -3,6 +3,7 @@ import authorization from  './authorization'
 import profile from  './profile'
 import channels from  './channels'
 import playlists from './playlists'
+import videos from './videos'
 
 const URL = 'https://bringstream.com/Engine/api/api.php'
 
@@ -14,5 +15,6 @@ export const API = {
   authorization,
   profile,
   channels,
-  playlists
+  playlists,
+  videos
 }

@@ -3,6 +3,7 @@ import common from './common/actions'
 import profile from './profile/actions'
 import channels from './channels/actions'
 import playlists from './playlists/actions'
+import videos from './videos/actions'
 
 export * from './layout/actions';
 
@@ -11,5 +12,6 @@ export default {
   common,
   profile,
   channels,
-  playlists
+  playlists,
+  videos
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "./content.scss";
+import "../content.scss";
 import classnames from "classnames";
-import i18n from "../../i18n";
+import i18n from "../../../i18n";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import {
   TabContent,
