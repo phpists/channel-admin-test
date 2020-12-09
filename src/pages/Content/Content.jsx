@@ -62,7 +62,7 @@ const Content = (props) => {
   // Vallues
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
   const item = characters?.filter((c) => c.id === checkedItems[0]);
-  const itemVideos = props.videos?.filter(
+  const itemVideos = dragVIdeo?.filter(
     (v) => v.id === checkedItemsVideos[0]
   );
 
@@ -87,7 +87,7 @@ const Content = (props) => {
   // Change page on click Add video || Edit video
   const changePageVideo = (e) => {
     const nameButton = e.target.value;
-      setEditNameVideos(itemVideos[0].vimeo_name);
+      setEditNameVideos(itemVideos[0]?.vimeo_name);
       setEditDescriptionVideos(JSON.parse(itemVideos[0].description)["EN"]);
       setCheckIdVideos(itemVideos[0].id);
       setCheckNameVideos(itemVideos[0].name);
@@ -98,7 +98,6 @@ const Content = (props) => {
   // Toggle modal window (DELETE)
   const toggleDelete = () => {
     setModalDelete(!modalDelete);
-    setCheckId(item[0].id);
     setCheckName(item[0].name);
   };
 
@@ -126,39 +125,28 @@ const Content = (props) => {
     }
   };
 
-  // Drag playlist
-  function handleOnDragEnd(result) {
+  // Drag playlist or videos
+  function handleOnDragEnd(result, items, setItems) {
     if (!result.destination) return;
+
+    const getItems = Array.from(items);
+    const [reorderedItem] = getItems.splice(result.source.index, 1);
+    getItems.splice(result.destination.index, 0, reorderedItem);
     
-    const items = Array.from(characters);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-    updateCharacters(items);
+    setItems(getItems);
   }
 
   // Set & remove checkmark
-  const handleChange = (p) => {
-    const clickedCategory = checkedItems.indexOf(p.id);
-    const all = [...checkedItems];
+  const handleChange = (p, checkItems, setCheckItems) => {
+    const clickedCategory = checkItems.indexOf(p.id);
+    const all = [...checkItems];
 
     if (clickedCategory === -1) {
       all.push(p.id);
     } else {
       all.splice(clickedCategory, 1);
     }
-    setChekedItems(all);
-  };
-
-  const handleChangeVideos = (p) => {
-    const clickedCategory = checkedItemsVideos.indexOf(p.id);
-    const all = [...checkedItemsVideos];
-
-    if (clickedCategory === -1) {
-      all.push(p.id);
-    } else {
-      all.splice(clickedCategory, 1);
-    }
-    setChekedItemsVideos(all);
+    setCheckItems(all);
   };
 
   useEffect(() => {
@@ -234,7 +222,7 @@ const Content = (props) => {
                       setCheckNameVideos,
                       setChekedItemsVideos,
                       handleOnDragEnd,
-                      handleChangeVideos,
+                      handleChange,
                       videos,
                       onGetVideos,
                       setChangeVideo,

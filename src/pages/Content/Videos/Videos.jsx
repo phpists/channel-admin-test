@@ -23,7 +23,7 @@ const Videos = (props) => {
     setCheckNameVideos,
     setChekedItemsVideos,
     handleOnDragEnd,
-    handleChangeVideos,
+    handleChange,
     videos,
     onGetVideos,
     modalDeleteVideos,
@@ -48,7 +48,13 @@ const Videos = (props) => {
     if (videos === null) {
       onGetVideos();
     }
-    updateDragVideo(videos);
+    if (
+      dragVIdeo === null ||
+      videos.length !== dragVIdeo.length ||
+      checkNameVideos !== editNameVideos
+    ) {
+      updateDragVideo(videos);
+    }
   }, [videos]);
 
   return (
@@ -74,14 +80,16 @@ const Videos = (props) => {
               setEditDescriptionVideos,
               setChekedItemsVideos,
               characters,
-              videos
+              videos,
             }}
           />
         </CardBody>
       ) : (
         <CardBody className="w-100">
           <CardTitle>Videos</CardTitle>
-          <CardSubtitle className="mb-3">{dragVIdeo?.length} Total</CardSubtitle>
+          <CardSubtitle className="mb-3">
+            {dragVIdeo?.length} Total
+          </CardSubtitle>
           <div className="btn-toolbar py-3" role="toolbar">
             <Button
               color="primary mr-2"
@@ -130,21 +138,22 @@ const Videos = (props) => {
             <EmptyVideos />
           ) : (
             <Form>
-              <DragDropContext onDragEnd={handleOnDragEnd}>
-                <Droppable droppableId="characters">
+              <DragDropContext
+                onDragEnd={(e) => handleOnDragEnd(e, videos, updateDragVideo)}
+              >
+                <Droppable droppableId="dragId">
                   {(provided) => (
                     <ul
-                      className="message-list"
+                      className="message-list dragId"
                       {...provided.droppableProps}
                       ref={provided.innerRef}
                     >
-                      {provided.placeholder}
                       {dragVIdeo &&
                         dragVIdeo?.map((p, index) => {
                           return (
                             <Draggable
                               key={p.id}
-                              draggableId={String(p.name)}
+                              draggableId={String(p.vimeo_name)}
                               index={index}
                             >
                               {(provided) => (
@@ -160,7 +169,13 @@ const Videos = (props) => {
                                       checked={checkedItemsVideos.includes(
                                         p.id
                                       )}
-                                      onChange={() => handleChangeVideos(p)}
+                                      onChange={() =>
+                                        handleChange(
+                                          p,
+                                          checkedItemsVideos,
+                                          setChekedItemsVideos
+                                        )
+                                      }
                                     />
 
                                     <span className="title mr-3">
@@ -180,6 +195,7 @@ const Videos = (props) => {
                             </Draggable>
                           );
                         })}
+                      {provided.placeholder}
                     </ul>
                   )}
                 </Droppable>

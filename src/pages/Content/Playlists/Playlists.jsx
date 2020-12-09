@@ -50,7 +50,11 @@ const Playlists = (props) => {
     if (playlists === null) {
       onGetPlaylist({ id: defaultChannel?.id || "1" });
     }
-    if (characters == null) {
+    if (
+      characters === null ||
+      playlists.length !== characters.length ||
+      checkName !== editNamePlaylist
+    ) {
       updateCharacters(playlists);
     }
   }, [defaultChannel, playlists]);
@@ -135,7 +139,11 @@ const Playlists = (props) => {
             <EmptyPlaylists />
           ) : (
             <Form>
-              <DragDropContext onDragEnd={handleOnDragEnd}>
+              <DragDropContext
+                onDragEnd={(e) =>
+                  handleOnDragEnd(e, characters, updateCharacters)
+                }
+              >
                 <Droppable droppableId="characters">
                   {(provided) => (
                     <ul
@@ -162,7 +170,13 @@ const Playlists = (props) => {
                                       type="checkbox"
                                       name={p.name}
                                       checked={checkedItems.includes(p.id)}
-                                      onChange={() => handleChange(p)}
+                                      onChange={() =>
+                                        handleChange(
+                                          p,
+                                          checkedItems,
+                                          setChekedItems
+                                        )
+                                      }
                                     />
                                     <span className="title mr-3">
                                       {index + 1}

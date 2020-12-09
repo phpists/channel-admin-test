@@ -62,8 +62,8 @@ const CreatePlaylist = (props) => {
         onGetPlaylist({ id: activeChannel.id });
         setChekedItems([]);
         setCheckName("");
-        setEditNamePlaylist("");
-        setEditDescriptionPlaylist("");
+        // setEditNamePlaylist("");
+        // setEditDescriptionPlaylist("");
       }
     } else {
       if (playlistName === "" || playlistDescription === "") {
@@ -114,7 +114,7 @@ const CreatePlaylist = (props) => {
         <Card>
           <AvForm onValidSubmit={onSubmit}>
             <CardBody>
-             {/* Toggle languages */}
+              {/* Toggle languages */}
               <Nav tabs className="nav-tabs-custom nav-justified">
                 <NavItem>
                   <NavLink
@@ -223,9 +223,15 @@ const CreatePlaylist = (props) => {
                   type="text"
                   required={require}
                   label="Title"
-                  value={valueButton === "editPlaylist" ? editNamePlaylist : playlistName}
+                  value={
+                    valueButton === "editPlaylist"
+                      ? editNamePlaylist
+                      : playlistName
+                  }
                   onChange={onChanged(
-                    valueButton === "editPlaylist" ? setEditNamePlaylist : setplaylistName
+                    valueButton === "editPlaylist"
+                      ? setEditNamePlaylist
+                      : setplaylistName
                   )}
                 />
                 <AvField

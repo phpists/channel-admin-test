@@ -66,8 +66,6 @@ const CreateVideo = (props) => {
       }
       setChekedItemsVideos([]);
       setCheckNameVideos("");
-      setEditNameVideos("");
-      setEditDescriptionVideos("");
       setChangeVideo(false);
       onGetVideos();
     }
