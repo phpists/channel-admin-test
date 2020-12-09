@@ -12,7 +12,7 @@ import Pages404 from "./pages/Utility/pages-404"
 import Dashboard from "./pages/Dashboard/index";
 import CreateChannel from "./pages/Channels/CreateChannel";
 import ChannelSettings from "./pages//Channels/ChannelSettings";
-import Content from './hoc/ContentHOC';
+import Content from './pages/Content/Content';
 import HorizontalLayout from "./components/HorizontalLayout";
 import GettingStarted from './pages/Channels/GettingStarted';
 import { LastLocationProvider } from 'react-router-last-location'

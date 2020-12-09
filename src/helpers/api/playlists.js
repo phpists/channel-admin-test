@@ -98,6 +98,7 @@ export default {
     return await axiosInstance
       .get(`?${queryString}`, config)
       .then((response) => {
+        console.log(response)
         return response;
       })
       .catch((error) => ({ error }));

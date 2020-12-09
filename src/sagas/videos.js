@@ -23,7 +23,6 @@ export function* watchAddVideoToPlaylist(action) {
 
 export function* watchRemoveVideoFromPlaylist(action) {
   const response = yield API.videos.removeVideoFromPlaylist(action.payload);
-  console.log(response?.data);
   if (response.status === 200) {
     if (response.data.status === "error") {
       yield put(
@@ -57,7 +56,7 @@ export function* watchUpdateVideo(action) {
 
 export function* watchGetVideos() {
   const response = yield API.videos.getVideos();
-  console.log(response);
+  console.log(response.data.playlists)
   if (response.status === 200) {
     if (response.data.status === "error") {
       yield put(

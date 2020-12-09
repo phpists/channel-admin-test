@@ -210,7 +210,7 @@ const ChannelSettings = React.memo((props) => {
                         return (
                           <Label check key={index} className="d-block ml-4 mt-2 font-weight-bold">
                             <Input
-                              type="radio"
+                              type="checkbox"
                               name={label}
                               checked={label === checkedName}
                               onChange={onChecked}

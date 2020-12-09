@@ -13,9 +13,9 @@ const TabButton = (props) => {
     <Nav className="border-0 navi" vertical>
       {buttons.map((b, index) => {
         return (
-          <>
+          <div key={index}>
             {b.name === "Upload" ? (
-              <NavItem key={index}>
+              <NavItem>
                 <NavLink
                   className="px-0"
                   className={classnames({
@@ -46,7 +46,7 @@ const TabButton = (props) => {
                 <span>{b.total}</span>
               </NavItem>
             )}
-          </>
+          </div>
         );
       })}
     </Nav>

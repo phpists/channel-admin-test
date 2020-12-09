@@ -22,6 +22,7 @@ import {
   ModalFooter,
 } from "reactstrap";
 import ModalBody from "reactstrap/lib/ModalBody";
+import videos from "../../../helpers/api/videos";
 const CreateVideo = (props) => {
   // Get props
   const {
@@ -40,45 +41,35 @@ const CreateVideo = (props) => {
     onUpdateVideo,
     onAddVideoToPlaylist,
     characters,
+    videos
   } = props;
   // State local
   const [activeTab, setActiveTab] = useState("2");
-  const [playlistName, setplaylistName] = useState("");
-  const [playlistDescription, setplaylistDescription] = useState("");
   const [lng, setLng] = useState("eng");
   const [require, setRequire] = useState(false);
-  const [playlistId, setPlaylistId] = useState("");
+  const [playlistId, setPlaylistId] = useState(characters[0].id);
 
   // Handle event
 
   // On submit
   function onSubmit() {
-    debugger;
-    if (valueButtonVideos === "editVideo") {
-      if (editNameVideos === "" || editDescriptionVideos === "") {
-        setRequire(true);
-      } else {
-        onUpdateVideo({ id: checkIdVideos, name: editNameVideos });
-
-        setChangeVideo(false);
-        onGetVideos();
-        setChekedItemsVideos([]);
-        setCheckNameVideos("");
-        setEditNameVideos("");
-        setEditDescriptionVideos("");
-      }
+    if (editNameVideos === "" || editDescriptionVideos === "") {
+      setRequire(true);
     } else {
-      if (playlistName === "" || playlistDescription === "") {
-        setRequire(true);
+      if (valueButtonVideos === "editVideo") {
+        onUpdateVideo({ id: checkIdVideos, name: editNameVideos });
       } else {
         onAddVideoToPlaylist({
-          playlist_id: checkIdVideos,
-          video_id: playlistDescription,
+          playlist_id: playlistId,
+          video_id: checkIdVideos,
         });
-
-        setChangeVideo(false);
-        onGetVideos();
       }
+      setChekedItemsVideos([]);
+      setCheckNameVideos("");
+      setEditNameVideos("");
+      setEditDescriptionVideos("");
+      setChangeVideo(false);
+      onGetVideos();
     }
   }
 
@@ -89,12 +80,7 @@ const CreateVideo = (props) => {
 
   // On chnage global function
   const onChanged = (setName) => (e) => {
-    if (valueButtonVideos === "editVideo") {
-      setName(e.target.value);
-      console.log(e.target.value);
-    } else {
-      setName(e.target.value);
-    }
+    setName(e.target.value);
   };
 
   // On toggle languages
@@ -105,7 +91,10 @@ const CreateVideo = (props) => {
   };
 
   const getPlailistId = (e) => {
-    setPlaylistId(e.target.value);
+    const name = e.target.value;
+    const arr = characters?.filter((c => c.name == name))
+    const id = arr[0]?.id;
+    setPlaylistId(id);
   };
 
   // Side effects
@@ -228,16 +217,8 @@ const CreateVideo = (props) => {
                   type="text"
                   required={require}
                   label="Title"
-                  value={
-                    valueButtonVideos === "editVideo"
-                      ? editNameVideos
-                      : playlistName
-                  }
-                  onChange={onChanged(
-                    valueButtonVideos === "editVideo"
-                      ? setEditNameVideos
-                      : setplaylistName
-                  )}
+                  value={editNameVideos}
+                  onChange={onChanged(setEditNameVideos)}
                 />
                 <AvField
                   className="form-control"
@@ -247,29 +228,19 @@ const CreateVideo = (props) => {
                   name="description"
                   required={require}
                   placeholder="description"
-                  value={
-                    valueButtonVideos === "editVideo"
-                      ? editDescriptionVideos
-                      : playlistDescription
-                  }
-                  onChange={onChanged(
-                    valueButtonVideos === "editVideo"
-                      ? setEditDescriptionVideos
-                      : setplaylistDescription
-                  )}
+                  value={editDescriptionVideos}
+                  onChange={onChanged(setEditDescriptionVideos)}
                 />
                 <AvField
                   type="select"
                   name="select"
                   label="Option"
                   helpMessage="Please, chose playlist"
+                  vlaue={playlistId}
+                  onChange={(e) => getPlailistId(e)}
                 >
                   {characters.map((c) => {
-                    return (
-                      <option vlaue={playlistId} onChange={getPlailistId}>
-                        {c.name}
-                      </option>
-                    );
+                    return <option key={c.id}>{c.name}</option>;
                   })}
                 </AvField>
               </FormGroup>

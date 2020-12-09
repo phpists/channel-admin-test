@@ -1,6 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import selectors from "../../selectors";
+import Actions from "../../store/actions";
+import { withNamespaces } from "react-i18next";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
-
 import {
   TabContent,
   TabPane,
@@ -11,68 +14,168 @@ import {
   Container,
 } from "reactstrap";
 import "./content.scss";
-import CreatePlaylist from "./Playlists/CreatePlaylist";
 import Upload from "./Upload/Upload";
 import Playlists from "./Playlists/Playlists";
 import Videos from "./Videos/Videos";
 import TabButton from "./TabButton/TabButton";
-import CreateVideo from "./Videos/CreateVideos";
 
 const Content = (props) => {
   // Get props
   const {
-    activeChannel,
-    onAddPlaylist,
     playlists,
+    activeChannel,
+    videos,
+    onAddPlaylist,
     onPlaylistDelete,
     onUpdatePlaylist,
     onGetPlaylist,
-    videos,
-    activeTab,
-    toggleTab,
-    characters,
-    changePlaylist,
-    setChangePlaylist,
-    valueButton,
-    setCheckName,
-    checkName,
-    checkId,
-    modalSave,
-    setModalSave,
-    editNamePlaylist,
-    setEditNamePlaylist,
-    editDescriptionPlaylist,
-    setEditDescriptionPlaylist,
-    setChekedItems,
-    changePagePlaylist,
-    checkedItems,
-    toggleDelete,
-    modalDelete,
-    handleOnDragEnd,
-    handleChange,
-    updateCharacters,
-    defaultChannel,
-
-    changeVideos,
-    setChangeVideo,
-    changePageVideo,
-    editNameVideos,
-    setEditNameVideos,
-    editDescriptionVideos,
-    setEditDescriptionVideos,
-    checkNameVideos,
-    setCheckNameVideos,
-    checkIdVideos,
-    valueButtonVideos,
-    checkedItemsVideos,
-    setChekedItemsVideos,
-    handleChangeVideos,
     onGetVideos,
     onUpdateVideo,
     onAddVideoToPlaylist,
-    modalDeleteVideos,
-    toggleDeleteVideos,
   } = props;
+
+  // State local
+  // Playlists state
+  const [changePlaylist, setChangePlaylist] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
+  const [checkName, setCheckName] = useState("");
+  const [checkId, setCheckId] = useState("");
+  const [activeTab, setActiveTab] = useState("2");
+  const [valueButton, setValueButton] = useState("");
+  const [characters, updateCharacters] = useState(playlists);
+  const [checkedItems, setChekedItems] = useState([]);
+  const [modalSave, setModalSave] = useState(false);
+  const [editNamePlaylist, setEditNamePlaylist] = useState("");
+  const [editDescriptionPlaylist, setEditDescriptionPlaylist] = useState("");
+
+  // Videos state
+  const [changeVideos, setChangeVideo] = useState(false);
+  const [editNameVideos, setEditNameVideos] = useState("");
+  const [editDescriptionVideos, setEditDescriptionVideos] = useState("");
+  const [checkNameVideos, setCheckNameVideos] = useState("");
+  const [checkIdVideos, setCheckIdVideos] = useState("");
+  const [valueButtonVideos, setValueButtonVideos] = useState("");
+  const [checkedItemsVideos, setChekedItemsVideos] = useState([]);
+  const [modalDeleteVideos, setModalDeleteVideos] = useState(false);
+  const [dragVIdeo, updateDragVideo] = useState(videos)
+
+  // Vallues
+  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
+  const item = characters?.filter((c) => c.id === checkedItems[0]);
+  const itemVideos = props.videos?.filter(
+    (v) => v.id === checkedItemsVideos[0]
+  );
+
+  // Handle event
+
+  // Change page on click Create Playlist || Edit Playlist
+  const changePagePlaylist = (e) => {
+    const nameButton = e.target.value;
+    if (nameButton === "editPlaylist") {
+      setEditNamePlaylist(item[0].name);
+      setEditDescriptionPlaylist(item[0].description);
+      setCheckId(item[0].id);
+      setCheckName(item[0].name);
+      setChangePlaylist(true);
+      setValueButton(nameButton);
+    } else {
+      setChangePlaylist(true);
+      setValueButton(nameButton);
+    }
+  };
+
+  // Change page on click Add video || Edit video
+  const changePageVideo = (e) => {
+    const nameButton = e.target.value;
+      setEditNameVideos(itemVideos[0].vimeo_name);
+      setEditDescriptionVideos(itemVideos[0].description);
+      setCheckIdVideos(itemVideos[0].id);
+      setCheckNameVideos(itemVideos[0].name);
+      setChangeVideo(true);
+      setValueButtonVideos(nameButton);
+  };
+
+  // Toggle modal window (DELETE)
+  const toggleDelete = () => {
+    setModalDelete(!modalDelete);
+    setCheckId(item[0].id);
+    setCheckName(item[0].name);
+  };
+
+  const toggleDeleteVideos = () => {
+    setModalDeleteVideos(!modalDeleteVideos);
+    setCheckNameVideos(itemVideos[0].vimeo_name);
+  };
+
+  // Toggle tab (LEFT PANEL)
+  const toggleTab = (tab) => {
+    if (checkName !== editNamePlaylist) {
+      setModalSave(!modalSave);
+    } else {
+      if (activeTab !== tab) {
+        setActiveTab(tab);
+        setChangePlaylist(false);
+        setChangeVideo(false);
+        setChekedItems([]);
+        setChekedItemsVideos([]);
+      }
+      setChangePlaylist(false);
+      setChangeVideo(false);
+      setChekedItems([]);
+      setChekedItemsVideos([]);
+    }
+  };
+
+  // Drag playlist
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+    let items = [];
+    if(characters) {
+      items = Array.from(characters);
+    } else {
+      items = Array.from(dragVIdeo);
+    }
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    if(characters) {
+      updateCharacters(items)
+      debugger
+    } else {
+      updateDragVideo(items);
+    }
+    
+  }
+
+  // Set & remove checkmark
+  const handleChange = (p) => {
+    const clickedCategory = checkedItems.indexOf(p.id);
+    const all = [...checkedItems];
+
+    if (clickedCategory === -1) {
+      all.push(p.id);
+    } else {
+      all.splice(clickedCategory, 1);
+    }
+    setChekedItems(all);
+  };
+
+  const handleChangeVideos = (p) => {
+    const clickedCategory = checkedItemsVideos.indexOf(p.id);
+    const all = [...checkedItemsVideos];
+
+    if (clickedCategory === -1) {
+      all.push(p.id);
+    } else {
+      all.splice(clickedCategory, 1);
+    }
+    setChekedItemsVideos(all);
+  };
+
+  useEffect(() => {
+    if (defaultChannel !== props.activeChannel) {
+      setChekedItems([]);
+    }
+  }, [props.activeChannel]);
 
   return (
     <>
@@ -93,96 +196,70 @@ const Content = (props) => {
             {/* RIGHT PANEL */}
             <Col xs="12" sm="7" md="8" lg="9">
               <TabContent activeTab={activeTab}>
-                {changePlaylist ? (
-                  <CreatePlaylist
+                <TabPane tabId="1">
+                  <Playlists
                     {...{
-                      activeChannel,
-                      onAddPlaylist,
-                      setChangePlaylist,
-                      onGetPlaylist,
-                      valueButton,
-                      onUpdatePlaylist,
-                      setCheckName,
-                      checkName,
+                      characters,
+                      changePagePlaylist,
+                      checkedItems,
+                      toggleDelete,
                       checkId,
-                      modalSave,
-                      setModalSave,
+                      checkName,
+                      setCheckName,
+                      modalDelete,
+                      onPlaylistDelete,
+                      onGetPlaylist,
+                      activeChannel,
+                      setChekedItems,
+                      handleOnDragEnd,
+                      handleChange,
+                      updateCharacters,
+                      playlists,
+                      defaultChannel,
+                      videos,
+                      onAddPlaylist,
+                      onUpdatePlaylist,
+                      changePlaylist,
+                      setChangePlaylist,
+                      valueButton,
                       editNamePlaylist,
                       setEditNamePlaylist,
                       editDescriptionPlaylist,
                       setEditDescriptionPlaylist,
-                      setChekedItems,
+                      modalSave,
+                      setModalSave,
                     }}
                   />
-                ) : (
-                  <TabPane tabId="1">
-                    <Playlists
-                      {...{
-                        characters,
-                        changePagePlaylist,
-                        checkedItems,
-                        toggleDelete,
-                        checkId,
-                        checkName,
-                        setCheckName,
-                        modalDelete,
-                        onPlaylistDelete,
-                        onGetPlaylist,
-                        activeChannel,
-                        setChekedItems,
-                        handleOnDragEnd,
-                        handleChange,
-                        updateCharacters,
-                        playlists,
-                        defaultChannel,
-                        videos,
-                      }}
-                    />
-                  </TabPane>
-                )}
+                </TabPane>
                 <TabPane tabId="2">
-                  {changeVideos ? (
-                    <CreateVideo
-                      {...{
-                        setChangeVideo,
-                        onGetVideos,
-                        onUpdateVideo,
-                        onAddVideoToPlaylist,
-                        setChangeVideo,
-                        valueButtonVideos,
-                        setCheckNameVideos,
-                        checkNameVideos,
-                        checkIdVideos,
-                        modalSave,
-                        setModalSave,
-                        editNameVideos,
-                        setEditNameVideos,
-                        editDescriptionVideos,
-                        setEditDescriptionVideos,
-                        setChekedItemsVideos,
-                        characters,
-                      }}
-                    />
-                  ) : (
-                    <Videos
-                      {...{
-                        characters,
-                        changePageVideo,
-                        checkedItemsVideos,
-                        checkIdVideos,
-                        checkNameVideos,
-                        setCheckNameVideos,
-                        setChekedItemsVideos,
-                        handleOnDragEnd,
-                        handleChangeVideos,
-                        videos,
-                        onGetVideos,
-                        setChangeVideo,
-                        modalDeleteVideos,
-                        toggleDeleteVideos,
-                      }}
-                    />
-                  )}
+                  <Videos
+                    {...{
+                      characters,
+                      dragVIdeo,
+                      updateDragVideo,
+                      changePageVideo,
+                      checkedItemsVideos,
+                      checkIdVideos,
+                      checkNameVideos,
+                      setCheckNameVideos,
+                      setChekedItemsVideos,
+                      handleOnDragEnd,
+                      handleChangeVideos,
+                      videos,
+                      onGetVideos,
+                      setChangeVideo,
+                      modalDeleteVideos,
+                      toggleDeleteVideos,
+                      changeVideos,
+                      editNameVideos,
+                      setEditNameVideos,
+                      editDescriptionVideos,
+                      setEditDescriptionVideos,
+                      valueButtonVideos,
+                      onUpdateVideo,
+                      onAddVideoToPlaylist,
+                    }}
+                  />
                 </TabPane>
                 <TabPane tabId="3">
                   <Card>
@@ -198,4 +275,33 @@ const Content = (props) => {
   );
 };
 
-export default Content;
+// Get redux state values
+const mapStatetoProps = (state) => ({
+  playlists: selectors.playlists.playlists(state),
+  activeChannel: selectors.channels.activeChannel(state),
+  onePlayist: selectors.playlists.onePlaylist(state),
+  videos: selectors.videos.videos(state),
+});
+
+// Get redux state function
+const mapDispatchToProps = (dispatch) => ({
+  onAddPlaylist: (data) => dispatch(Actions.playlists.addPlaylistRequest(data)),
+  onPlaylistDelete: (data) =>
+    dispatch(Actions.playlists.deletePlaylistRequest(data)),
+  onUpdatePlaylist: (data) =>
+    dispatch(Actions.playlists.updatePlaylistRequest(data)),
+  onGetPlaylist: (data) =>
+    dispatch(Actions.playlists.getPlaylistsRequest(data)),
+  onGetOnePlaylist: (data) =>
+    dispatch(Actions.playlists.getOnePlaylistRequest(data)),
+
+  onGetVideos: () => dispatch(Actions.videos.getVideosRequest()),
+  onUpdateVideo: (data) => dispatch(Actions.videos.updateVideoRequest(data)),
+  onAddVideoToPlaylist: (data) =>
+    dispatch(Actions.videos.addVideoToPlaylistRequest(data)),
+});
+
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps
+)(withNamespaces()(Content));

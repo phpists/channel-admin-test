@@ -27,7 +27,6 @@ export function* watchAddPlaylist(action) {
 
 export function* watchDeletePlaylist(action) {
   const response = yield API.playlists.deletePlaylist(action.payload);
-  console.log(response?.data);
   if (response.status === 200) {
     if (response.data.status === "error") {
       yield put(
@@ -67,7 +66,6 @@ export function* watchUpdatePlaylist(action) {
 
 export function* watchGetPlaylists(action) {
   const response = yield API.playlists.getPlaylists(action.payload);
-  console.log(response);
   if (response.status === 200) {
     if (response.data.status === "error") {
       yield put(
