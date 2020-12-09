@@ -129,11 +129,10 @@ const Content = (props) => {
   // Drag playlist
   function handleOnDragEnd(result) {
     if (!result.destination) return;
-
+    
     const items = Array.from(characters);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    
     updateCharacters(items);
   }
 

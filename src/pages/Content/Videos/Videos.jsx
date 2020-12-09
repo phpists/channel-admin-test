@@ -168,6 +168,7 @@ const Videos = (props) => {
                                     </span>
                                     <img
                                       src={JSON.parse(p.pictures)["100"]}
+                                      className="picture"
                                     />
                                     {p.vimeo_name}
                                     <div className="col-mail col-mail-2">
