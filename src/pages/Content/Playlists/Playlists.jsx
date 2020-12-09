@@ -50,32 +50,36 @@ const Playlists = (props) => {
     if (playlists === null) {
       onGetPlaylist({ id: defaultChannel?.id || "1" });
     }
-    updateCharacters(playlists);
-  }, [playlists, defaultChannel]);
+    if (characters == null) {
+      updateCharacters(playlists);
+    }
+  }, [defaultChannel, playlists]);
 
   return (
     <Card className="flex-column align-items-start">
       {changePlaylist ? (
-       <CardBody  className="w-100"> <CreatePlaylist
-          {...{
-            activeChannel,
-            onAddPlaylist,
-            setChangePlaylist,
-            onGetPlaylist,
-            valueButton,
-            onUpdatePlaylist,
-            setCheckName,
-            checkName,
-            checkId,
-            modalSave,
-            setModalSave,
-            editNamePlaylist,
-            setEditNamePlaylist,
-            editDescriptionPlaylist,
-            setEditDescriptionPlaylist,
-            setChekedItems,
-          }}
-        />
+        <CardBody className="w-100">
+          {" "}
+          <CreatePlaylist
+            {...{
+              activeChannel,
+              onAddPlaylist,
+              setChangePlaylist,
+              onGetPlaylist,
+              valueButton,
+              onUpdatePlaylist,
+              setCheckName,
+              checkName,
+              checkId,
+              modalSave,
+              setModalSave,
+              editNamePlaylist,
+              setEditNamePlaylist,
+              editDescriptionPlaylist,
+              setEditDescriptionPlaylist,
+              setChekedItems,
+            }}
+          />
         </CardBody>
       ) : (
         <CardBody className="w-100">
@@ -135,11 +139,10 @@ const Playlists = (props) => {
                 <Droppable droppableId="characters">
                   {(provided) => (
                     <ul
-                      className="message-list"
+                      className="message-list characters"
                       {...provided.droppableProps}
                       ref={provided.innerRef}
                     >
-                      {provided.placeholder}
                       {characters &&
                         characters?.map((p, index) => {
                           return (
@@ -174,6 +177,7 @@ const Playlists = (props) => {
                             </Draggable>
                           );
                         })}
+                      {provided.placeholder}
                     </ul>
                   )}
                 </Droppable>

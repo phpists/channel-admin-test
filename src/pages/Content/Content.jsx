@@ -88,7 +88,7 @@ const Content = (props) => {
   const changePageVideo = (e) => {
     const nameButton = e.target.value;
       setEditNameVideos(itemVideos[0].vimeo_name);
-      setEditDescriptionVideos(itemVideos[0].description);
+      setEditDescriptionVideos(JSON.parse(itemVideos[0].description)["EN"]);
       setCheckIdVideos(itemVideos[0].id);
       setCheckNameVideos(itemVideos[0].name);
       setChangeVideo(true);
@@ -129,21 +129,12 @@ const Content = (props) => {
   // Drag playlist
   function handleOnDragEnd(result) {
     if (!result.destination) return;
-    let items = [];
-    if(characters) {
-      items = Array.from(characters);
-    } else {
-      items = Array.from(dragVIdeo);
-    }
+
+    const items = Array.from(characters);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    if(characters) {
-      updateCharacters(items)
-      debugger
-    } else {
-      updateDragVideo(items);
-    }
     
+    updateCharacters(items);
   }
 
   // Set & remove checkmark
