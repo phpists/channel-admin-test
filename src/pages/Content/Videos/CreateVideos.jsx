@@ -29,7 +29,6 @@ const CreateVideo = (props) => {
     setChangeVideo,
     valueButtonVideos,
     setCheckNameVideos,
-    checkIdVideos,
     modalSave,
     setModalSave,
     editNameVideos,
@@ -41,7 +40,7 @@ const CreateVideo = (props) => {
     onUpdateVideo,
     onAddVideoToPlaylist,
     characters,
-    videos
+    checkedItemsVideos
   } = props;
   // State local
   const [activeTab, setActiveTab] = useState("2");
@@ -57,11 +56,11 @@ const CreateVideo = (props) => {
       setRequire(true);
     } else {
       if (valueButtonVideos === "editVideo") {
-        onUpdateVideo({ id: checkIdVideos, name: editNameVideos });
+        onUpdateVideo({ id: checkedItemsVideos[0], name: editNameVideos });
       } else {
         onAddVideoToPlaylist({
           playlist_id: playlistId,
-          video_id: checkIdVideos,
+          video_id: checkedItemsVideos[0],
         });
       }
       setChekedItemsVideos([]);

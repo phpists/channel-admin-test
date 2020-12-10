@@ -20,7 +20,6 @@ const Playlists = (props) => {
     changePagePlaylist,
     checkedItems,
     toggleDelete,
-    checkId,
     checkName,
     setCheckName,
     modalDelete,
@@ -74,7 +73,6 @@ const Playlists = (props) => {
               onUpdatePlaylist,
               setCheckName,
               checkName,
-              checkId,
               modalSave,
               setModalSave,
               editNamePlaylist,
@@ -82,6 +80,7 @@ const Playlists = (props) => {
               editDescriptionPlaylist,
               setEditDescriptionPlaylist,
               setChekedItems,
+              checkedItems
             }}
           />
         </CardBody>
@@ -121,7 +120,6 @@ const Playlists = (props) => {
             </Button>
             <DeletePlaylistModal
               {...{
-                checkId,
                 checkName,
                 checkedItems,
                 setCheckName,

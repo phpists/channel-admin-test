@@ -18,7 +18,6 @@ const Videos = (props) => {
   const {
     changePageVideo,
     checkedItemsVideos,
-    checkIdVideos,
     checkNameVideos,
     setCheckNameVideos,
     setChekedItemsVideos,
@@ -71,7 +70,6 @@ const Videos = (props) => {
               valueButtonVideos,
               setCheckNameVideos,
               checkNameVideos,
-              checkIdVideos,
               modalSave,
               setModalSave,
               editNameVideos,
@@ -81,6 +79,7 @@ const Videos = (props) => {
               setChekedItemsVideos,
               characters,
               videos,
+              checkedItemsVideos
             }}
           />
         </CardBody>
@@ -107,6 +106,9 @@ const Videos = (props) => {
               className="btn btn-primary waves-light waves-effect"
               value="newVideo"
               onClick={changePageVideo}
+              disabled={
+                checkedItemsVideos.length === 0 || checkedItemsVideos.length > 1
+              }
             >
               <i className="dripicons-folder mr-1"></i> Add to playlist
             </Button>
@@ -122,7 +124,6 @@ const Videos = (props) => {
             </Button>
             <DeleteVideoModal
               {...{
-                checkIdVideos,
                 checkNameVideos,
                 checkedItemsVideos,
                 setCheckNameVideos,

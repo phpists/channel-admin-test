@@ -36,7 +36,7 @@ export default {
     if (!authData) return false;
 
     const queryString = `action=DeletePlaylist&openKey=${authData.openKey}`;
-    const jsonData = JSON.stringify(data);
+    const jsonData = JSON.stringify(data.id);
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
     formData.append("jsonData", jsonData);

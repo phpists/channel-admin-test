@@ -8,7 +8,7 @@ export const DeletePlaylistModal = (props) => {
   const {
     modalDelete,
     toggleDelete,
-    //onPlaylistDelete,
+    onPlaylistDelete,
     //checkId,
     checkName,
     onGetPlaylist,
@@ -22,7 +22,7 @@ export const DeletePlaylistModal = (props) => {
 
   const onDelete = async () => {
     const ids = checkedItems;
-    const promises = ids.map(deletePlaylistAction)
+    const promises = ids.map(onPlaylistDelete)
     try {
       await Promise.all(promises)
       toggleDelete();
@@ -33,28 +33,6 @@ export const DeletePlaylistModal = (props) => {
       console.error(err)
     }
   };
-
-
-  function deletePlaylistAction(id) {
-    const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null
-    if (!authData) return false
-    const queryString = `action=DeletePlaylist&openKey=${authData.openKey}`;
-    const params = { id };
-    const jsonData = JSON.stringify(params)
-    const signature = sha1(queryString + authData.privateKey + jsonData);
-    const formData = new FormData();
-    formData.append('jsonData', jsonData)
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      signature: signature
-    };
-
-    return axiosInstance.post(`?${queryString}`, formData, config)
-      .catch(err => console.error(err))
-  };
-
 
   return (
     <div>

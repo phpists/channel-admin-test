@@ -32,7 +32,6 @@ const CreatePlaylist = (props) => {
     onGetPlaylist,
     valueButton,
     setCheckName,
-    checkId,
     modalSave,
     editNamePlaylist,
     setEditNamePlaylist,
@@ -40,6 +39,7 @@ const CreatePlaylist = (props) => {
     setEditDescriptionPlaylist,
     setChekedItems,
     setModalSave,
+    checkedItems
   } = props;
   // State local
   const [activeTab, setActiveTab] = useState("2");
@@ -56,7 +56,7 @@ const CreatePlaylist = (props) => {
       if (editNamePlaylist === "" || editDescriptionPlaylist === "") {
         setRequire(true);
       } else {
-        onUpdatePlaylist({ id: checkId, name: editNamePlaylist });
+        onUpdatePlaylist({ id: checkedItems[0], name: editNamePlaylist });
 
         setChangePlaylist(false);
         onGetPlaylist({ id: activeChannel.id });

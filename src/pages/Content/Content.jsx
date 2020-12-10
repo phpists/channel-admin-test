@@ -39,7 +39,6 @@ const Content = (props) => {
   const [changePlaylist, setChangePlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [checkName, setCheckName] = useState("");
-  const [checkId, setCheckId] = useState("");
   const [activeTab, setActiveTab] = useState("2");
   const [valueButton, setValueButton] = useState("");
   const [characters, updateCharacters] = useState(playlists);
@@ -53,7 +52,6 @@ const Content = (props) => {
   const [editNameVideos, setEditNameVideos] = useState("");
   const [editDescriptionVideos, setEditDescriptionVideos] = useState("");
   const [checkNameVideos, setCheckNameVideos] = useState("");
-  const [checkIdVideos, setCheckIdVideos] = useState("");
   const [valueButtonVideos, setValueButtonVideos] = useState("");
   const [checkedItemsVideos, setChekedItemsVideos] = useState([]);
   const [modalDeleteVideos, setModalDeleteVideos] = useState(false);
@@ -74,7 +72,6 @@ const Content = (props) => {
     if (nameButton === "editPlaylist") {
       setEditNamePlaylist(item[0].name);
       setEditDescriptionPlaylist(item[0].description);
-      setCheckId(item[0].id);
       setCheckName(item[0].name);
       setChangePlaylist(true);
       setValueButton(nameButton);
@@ -89,7 +86,6 @@ const Content = (props) => {
     const nameButton = e.target.value;
       setEditNameVideos(itemVideos[0]?.vimeo_name);
       setEditDescriptionVideos(JSON.parse(itemVideos[0].description)["EN"]);
-      setCheckIdVideos(itemVideos[0].id);
       setCheckNameVideos(itemVideos[0].name);
       setChangeVideo(true);
       setValueButtonVideos(nameButton);
@@ -181,7 +177,6 @@ const Content = (props) => {
                       changePagePlaylist,
                       checkedItems,
                       toggleDelete,
-                      checkId,
                       checkName,
                       setCheckName,
                       modalDelete,
@@ -217,7 +212,6 @@ const Content = (props) => {
                       updateDragVideo,
                       changePageVideo,
                       checkedItemsVideos,
-                      checkIdVideos,
                       checkNameVideos,
                       setCheckNameVideos,
                       setChekedItemsVideos,
