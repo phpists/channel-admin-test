@@ -232,6 +232,7 @@ const Content = (props) => {
                       onGetVideosByPlaylist,
                       getPlaylist,
                       setGetPlaylist,
+                      setActiveTab
                     }}
                   />
                 </TabPane>

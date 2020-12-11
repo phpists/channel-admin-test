@@ -47,6 +47,7 @@ const Videos = (props) => {
     onGetVideosByPlaylist,
     getPlaylist,
     setGetPlaylist,
+    setActiveTab
   } = props;
 
   const [dropdownOpen, setOpen] = useState(false);
@@ -162,7 +163,7 @@ const Videos = (props) => {
           </div>
 
           {dragVIdeo?.length === 0 || dragVIdeo === null? (
-            <EmptyVideos />
+            <EmptyVideos {...{setActiveTab}}/>
           ) : (
             <Form>
               <DragDropContext
