@@ -13,7 +13,6 @@ export const DeleteVideoModal = (props) => {
     toggleDeleteVideos,
     onGetVideosByPlaylist,
     setChekedItemsVideos,
-    videosByPlaylist,
     getPlaylist
   } = props;
 
@@ -22,13 +21,13 @@ export const DeleteVideoModal = (props) => {
   const onDelete = async () => {
     const ids = checkedItemsVideos;
     const promises = ids.map((id) => deleteVideoAction({
-      playlist_id: getPlaylist, 
+      playlist_id: getPlaylist.id, 
       video_id: id
     }))
     try {
       await Promise.all(promises)
       toggleDeleteVideos();
-      onGetVideosByPlaylist(getPlaylist);
+      onGetVideosByPlaylist(getPlaylist.id);
       setCheckNameVideos("");
       setChekedItemsVideos([]);
     } catch (err) {

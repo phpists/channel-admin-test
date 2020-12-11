@@ -105,12 +105,18 @@ const Videos = (props) => {
              
             >
               <DropdownToggle caret  color="secondary mr-2"
-              className="btn btn-primary waves-light waves-effect">Chose playlist<span className="arrow-down" /></DropdownToggle>
+              className="btn btn-primary waves-light waves-effect">{getPlaylist?.name || "Chose playlist"}<span className="arrow-down" /></DropdownToggle>
               <DropdownMenu>
+                <DropdownItem onClick={() => {
+                  setGetPlaylist(null)
+                  onGetVideosByPlaylist(null)
+                }}>
+                  Chose playlist
+                </DropdownItem>
                 {characters?.map(c => {
                   return <DropdownItem key={c.id} onClick={() => {
                     onGetVideosByPlaylist(c.id)
-                    setGetPlaylist(c.id);
+                    setGetPlaylist(c);
                   }}>{c.name}</DropdownItem>
                 })}
               </DropdownMenu>
