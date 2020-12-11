@@ -29,9 +29,10 @@ const Content = (props) => {
     onPlaylistDelete,
     onUpdatePlaylist,
     onGetPlaylist,
-    onGetVideos,
     onUpdateVideo,
     onAddVideoToPlaylist,
+    onGetVideosByPlaylist,
+    videosByPlaylist,
   } = props;
 
   // State local
@@ -55,14 +56,13 @@ const Content = (props) => {
   const [valueButtonVideos, setValueButtonVideos] = useState("");
   const [checkedItemsVideos, setChekedItemsVideos] = useState([]);
   const [modalDeleteVideos, setModalDeleteVideos] = useState(false);
-  const [dragVIdeo, updateDragVideo] = useState(videos)
+  const [dragVIdeo, updateDragVideo] = useState(videosByPlaylist);
+  const [getPlaylist, setGetPlaylist] = useState("");
 
   // Vallues
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
   const item = characters?.filter((c) => c.id === checkedItems[0]);
-  const itemVideos = dragVIdeo?.filter(
-    (v) => v.id === checkedItemsVideos[0]
-  );
+  const itemVideos = dragVIdeo?.filter((v) => v.id === checkedItemsVideos[0]);
 
   // Handle event
 
@@ -84,11 +84,11 @@ const Content = (props) => {
   // Change page on click Add video || Edit video
   const changePageVideo = (e) => {
     const nameButton = e.target.value;
-      setEditNameVideos(itemVideos[0]?.vimeo_name);
-      setEditDescriptionVideos(JSON.parse(itemVideos[0].description)["EN"]);
-      setCheckNameVideos(itemVideos[0].name);
-      setChangeVideo(true);
-      setValueButtonVideos(nameButton);
+    setEditNameVideos(itemVideos[0]?.vimeo_name);
+    setEditDescriptionVideos(JSON.parse(itemVideos[0].description)["EN"]);
+    setCheckNameVideos(itemVideos[0].name);
+    setChangeVideo(true);
+    setValueButtonVideos(nameButton);
   };
 
   // Toggle modal window (DELETE)
@@ -128,7 +128,7 @@ const Content = (props) => {
     const getItems = Array.from(items);
     const [reorderedItem] = getItems.splice(result.source.index, 1);
     getItems.splice(result.destination.index, 0, reorderedItem);
-    
+
     setItems(getItems);
   }
 
@@ -162,7 +162,7 @@ const Content = (props) => {
               <Card>
                 <CardBody>
                   <TabButton
-                    {...{ activeTab, toggleTab, characters, videos }}
+                    {...{ activeTab, toggleTab, characters, dragVIdeo }}
                   />
                 </CardBody>
               </Card>
@@ -189,7 +189,7 @@ const Content = (props) => {
                       updateCharacters,
                       playlists,
                       defaultChannel,
-                      videos,
+                      videosByPlaylist,
                       onAddPlaylist,
                       onUpdatePlaylist,
                       changePlaylist,
@@ -217,8 +217,7 @@ const Content = (props) => {
                       setChekedItemsVideos,
                       handleOnDragEnd,
                       handleChange,
-                      videos,
-                      onGetVideos,
+                      videosByPlaylist,
                       setChangeVideo,
                       modalDeleteVideos,
                       toggleDeleteVideos,
@@ -230,6 +229,9 @@ const Content = (props) => {
                       valueButtonVideos,
                       onUpdateVideo,
                       onAddVideoToPlaylist,
+                      onGetVideosByPlaylist,
+                      getPlaylist,
+                      setGetPlaylist,
                     }}
                   />
                 </TabPane>
@@ -253,6 +255,7 @@ const mapStatetoProps = (state) => ({
   activeChannel: selectors.channels.activeChannel(state),
   onePlayist: selectors.playlists.onePlaylist(state),
   videos: selectors.videos.videos(state),
+  videosByPlaylist: selectors.videos.videosByPlaylist(state),
 });
 
 // Get redux state function
@@ -267,10 +270,11 @@ const mapDispatchToProps = (dispatch) => ({
   onGetOnePlaylist: (data) =>
     dispatch(Actions.playlists.getOnePlaylistRequest(data)),
 
-  onGetVideos: () => dispatch(Actions.videos.getVideosRequest()),
   onUpdateVideo: (data) => dispatch(Actions.videos.updateVideoRequest(data)),
   onAddVideoToPlaylist: (data) =>
     dispatch(Actions.videos.addVideoToPlaylistRequest(data)),
+  onGetVideosByPlaylist: (data) =>
+    dispatch(Actions.videos.getVideoByPlaylistRequest(data)),
 });
 
 export default connect(

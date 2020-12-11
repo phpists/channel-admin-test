@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -8,6 +8,10 @@ import {
   Label,
   Form,
   CardSubtitle,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownItem,
+  DropdownMenu,
 } from "reactstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import EmptyVideos from "./EmptyVideos";
@@ -23,8 +27,7 @@ const Videos = (props) => {
     setChekedItemsVideos,
     handleOnDragEnd,
     handleChange,
-    videos,
-    onGetVideos,
+    videosByPlaylist,
     modalDeleteVideos,
     toggleDeleteVideos,
     changeVideos,
@@ -41,20 +44,24 @@ const Videos = (props) => {
     characters,
     dragVIdeo,
     updateDragVideo,
+    onGetVideosByPlaylist,
+    getPlaylist,
+    setGetPlaylist,
   } = props;
 
+  const [dropdownOpen, setOpen] = useState(false);
+
+  const toggle = () => setOpen(!dropdownOpen);
+
   useEffect(() => {
-    if (videos === null) {
-      onGetVideos();
-    }
     if (
       dragVIdeo === null ||
-      videos.length !== dragVIdeo.length ||
+      videosByPlaylist?.length !== dragVIdeo?.length ||
       checkNameVideos !== editNameVideos
     ) {
-      updateDragVideo(videos);
+      updateDragVideo(videosByPlaylist);
     }
-  }, [videos]);
+  }, [videosByPlaylist]);
 
   return (
     <Card className="flex-column align-items-start">
@@ -63,7 +70,6 @@ const Videos = (props) => {
           {" "}
           <CreateVideo
             {...{
-              onGetVideos,
               onUpdateVideo,
               onAddVideoToPlaylist,
               setChangeVideo,
@@ -78,8 +84,10 @@ const Videos = (props) => {
               setEditDescriptionVideos,
               setChekedItemsVideos,
               characters,
-              videos,
-              checkedItemsVideos
+              videosByPlaylist,
+              checkedItemsVideos,
+              onGetVideosByPlaylist,
+              getPlaylist
             }}
           />
         </CardBody>
@@ -87,9 +95,25 @@ const Videos = (props) => {
         <CardBody className="w-100">
           <CardTitle>Videos</CardTitle>
           <CardSubtitle className="mb-3">
-            {dragVIdeo?.length} Total
+            {dragVIdeo?.length || 0} Total
           </CardSubtitle>
           <div className="btn-toolbar py-3" role="toolbar">
+            <ButtonDropdown
+              isOpen={dropdownOpen}
+              toggle={toggle}
+             
+            >
+              <DropdownToggle caret  color="secondary mr-2"
+              className="btn btn-primary waves-light waves-effect">Chose playlist<span className="arrow-down" /></DropdownToggle>
+              <DropdownMenu>
+                {characters?.map(c => {
+                  return <DropdownItem key={c.id} onClick={() => {
+                    onGetVideosByPlaylist(c.id)
+                    setGetPlaylist(c.id);
+                  }}>{c.name}</DropdownItem>
+                })}
+              </DropdownMenu>
+            </ButtonDropdown>
             <Button
               color="primary mr-2"
               className="btn btn-primary waves-light waves-effect"
@@ -129,18 +153,20 @@ const Videos = (props) => {
                 setCheckNameVideos,
                 modalDeleteVideos,
                 toggleDeleteVideos,
-                onGetVideos,
                 setChekedItemsVideos,
+                videosByPlaylist,
+                onGetVideosByPlaylist,
+                getPlaylist
               }}
             />
           </div>
 
-          {dragVIdeo?.length === 0 ? (
+          {dragVIdeo?.length === 0 || dragVIdeo === null? (
             <EmptyVideos />
           ) : (
             <Form>
               <DragDropContext
-                onDragEnd={(e) => handleOnDragEnd(e, videos, updateDragVideo)}
+                onDragEnd={(e) => handleOnDragEnd(e, videosByPlaylist, updateDragVideo)}
               >
                 <Droppable droppableId="dragId">
                   {(provided) => (

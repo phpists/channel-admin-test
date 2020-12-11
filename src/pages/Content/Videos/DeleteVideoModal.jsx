@@ -11,19 +11,24 @@ export const DeleteVideoModal = (props) => {
     setCheckNameVideos,
     modalDeleteVideos,
     toggleDeleteVideos,
-    onGetVideos,
-    setChekedItemsVideos
+    onGetVideosByPlaylist,
+    setChekedItemsVideos,
+    videosByPlaylist,
+    getPlaylist
   } = props;
 
   // DELETE PLAYLIST
 
   const onDelete = async () => {
     const ids = checkedItemsVideos;
-    const promises = ids.map(deleteVideoAction)
+    const promises = ids.map((id) => deleteVideoAction({
+      playlist_id: getPlaylist, 
+      video_id: id
+    }))
     try {
       await Promise.all(promises)
       toggleDeleteVideos();
-      onGetVideos();
+      onGetVideosByPlaylist(getPlaylist);
       setCheckNameVideos("");
       setChekedItemsVideos([]);
     } catch (err) {
@@ -32,12 +37,12 @@ export const DeleteVideoModal = (props) => {
   };
 
 
-  function deleteVideoAction(id) {
+  function deleteVideoAction(data) {
+    debugger;
     const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null
     if (!authData) return false
     const queryString = `action=RemoveVideoFromPlaylist&openKey=${authData.openKey}`;
-    const params = { id };
-    const jsonData = JSON.stringify(params)
+    const jsonData = JSON.stringify(data)
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
     formData.append('jsonData', jsonData)

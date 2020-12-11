@@ -31,8 +31,9 @@ const getVideosSuccess = (payload) => ({
   payload,
 });
 
-const getVideoByPlaylistRequest = () => ({
+const getVideoByPlaylistRequest = (payload) => ({
   type: Types.GET_VIDEO_BY_PLAYLIST_REQUEST,
+  payload
 });
 
 const getVideoByPlaylistSuccess = (payload) => ({

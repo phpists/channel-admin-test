@@ -22,7 +22,7 @@ import {
   ModalFooter,
 } from "reactstrap";
 import ModalBody from "reactstrap/lib/ModalBody";
-import videos from "../../../helpers/api/videos";
+
 const CreateVideo = (props) => {
   // Get props
   const {
@@ -36,11 +36,12 @@ const CreateVideo = (props) => {
     editDescriptionVideos,
     setEditDescriptionVideos,
     setChekedItemsVideos,
-    onGetVideos,
+    onGetVideosByPlaylist,
     onUpdateVideo,
     onAddVideoToPlaylist,
     characters,
-    checkedItemsVideos
+    checkedItemsVideos,
+    getPlaylist
   } = props;
   // State local
   const [activeTab, setActiveTab] = useState("2");
@@ -66,7 +67,7 @@ const CreateVideo = (props) => {
       setChekedItemsVideos([]);
       setCheckNameVideos("");
       setChangeVideo(false);
-      onGetVideos();
+      onGetVideosByPlaylist(getPlaylist);
     }
   }
 

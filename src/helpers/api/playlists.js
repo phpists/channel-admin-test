@@ -30,13 +30,14 @@ export default {
   },
 
   deletePlaylist: async (data) => {
+    debugger
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
 
     const queryString = `action=DeletePlaylist&openKey=${authData.openKey}`;
-    const jsonData = JSON.stringify(data.id);
+    const jsonData = JSON.stringify({id: data});
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
     formData.append("jsonData", jsonData);

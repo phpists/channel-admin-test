@@ -3,11 +3,11 @@ import classnames from "classnames";
 import { Button, Nav, NavItem, NavLink } from "reactstrap";
 
 const TabButton = (props) => {
-  const { activeTab, toggleTab, characters, videos } = props;
+  const { activeTab, toggleTab, characters, dragVIdeo } = props;
   const buttons = [
     { name: "Upload", tab: "3" },
     { name: "Playlists", tab: "1", count: 0, total: characters?.length },
-    { name: "Videos", tab: "2", count: 0, total: videos?.length },
+    { name: "Videos", tab: "2", count: 0, total: dragVIdeo?.length },
   ];
   return (
     <Nav className="border-0 navi" vertical>
@@ -43,7 +43,7 @@ const TabButton = (props) => {
                 >
                   <i className="dripicons-star mr-2"></i> {b.name}
                 </NavLink>
-                <span>{b.total}</span>
+                <span>{b.total || 0}</span>
               </NavItem>
             )}
           </div>
