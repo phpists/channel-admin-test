@@ -24,7 +24,7 @@ const Content = (props) => {
   const {
     playlists,
     activeChannel,
-    videos,
+    onRemoveVideoFromPlaylist,
     onAddPlaylist,
     onPlaylistDelete,
     onUpdatePlaylist,
@@ -33,6 +33,8 @@ const Content = (props) => {
     onAddVideoToPlaylist,
     onGetVideosByPlaylist,
     videosByPlaylist,
+    onGetVideos,
+    videos,
   } = props;
 
   // State local
@@ -40,7 +42,8 @@ const Content = (props) => {
   const [changePlaylist, setChangePlaylist] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [checkName, setCheckName] = useState("");
-  const [activeTab, setActiveTab] = useState("2");
+  const [checkDesc, setCheckDesc] = useState("");
+  const [activeTab, setActiveTab] = useState("1");
   const [valueButton, setValueButton] = useState("");
   const [characters, updateCharacters] = useState(playlists);
   const [checkedItems, setChekedItems] = useState([]);
@@ -53,11 +56,12 @@ const Content = (props) => {
   const [editNameVideos, setEditNameVideos] = useState("");
   const [editDescriptionVideos, setEditDescriptionVideos] = useState("");
   const [checkNameVideos, setCheckNameVideos] = useState("");
+  const [checkDescVideos, setCheckDescVideos] = useState("");
   const [valueButtonVideos, setValueButtonVideos] = useState("");
   const [checkedItemsVideos, setChekedItemsVideos] = useState([]);
   const [modalDeleteVideos, setModalDeleteVideos] = useState(false);
   const [dragVIdeo, updateDragVideo] = useState(videosByPlaylist);
-  const [getPlaylist, setGetPlaylist] = useState("");
+  const [getPlaylist, setGetPlaylist] = useState(null);
 
   // Vallues
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
@@ -73,6 +77,7 @@ const Content = (props) => {
       setEditNamePlaylist(item[0].name);
       setEditDescriptionPlaylist(item[0].description);
       setCheckName(item[0].name);
+      setCheckDesc(item[0].description);
       setChangePlaylist(true);
       setValueButton(nameButton);
     } else {
@@ -85,8 +90,9 @@ const Content = (props) => {
   const changePageVideo = (e) => {
     const nameButton = e.target.value;
     setEditNameVideos(itemVideos[0]?.vimeo_name);
-    setEditDescriptionVideos(JSON.parse(itemVideos[0].description)["EN"]);
-    setCheckNameVideos(itemVideos[0].name);
+    setEditDescriptionVideos(JSON.parse(itemVideos[0].description)["EN"] || "");
+    setCheckNameVideos(itemVideos[0].vimeo_name);
+    setCheckDescVideos(JSON.parse(itemVideos[0].description)["EN"] || "");
     setChangeVideo(true);
     setValueButtonVideos(nameButton);
   };
@@ -104,15 +110,17 @@ const Content = (props) => {
 
   // Toggle tab (LEFT PANEL)
   const toggleTab = (tab) => {
-    if (checkName !== editNamePlaylist) {
+    if (
+      checkName !== editNamePlaylist ||
+      checkDesc !== editDescriptionPlaylist ||
+      checkNameVideos !== editNameVideos ||
+      checkDescVideos !== editDescriptionVideos
+    ) {
+      debugger
       setModalSave(!modalSave);
     } else {
       if (activeTab !== tab) {
         setActiveTab(tab);
-        setChangePlaylist(false);
-        setChangeVideo(false);
-        setChekedItems([]);
-        setChekedItemsVideos([]);
       }
       setChangePlaylist(false);
       setChangeVideo(false);
@@ -232,7 +240,12 @@ const Content = (props) => {
                       onGetVideosByPlaylist,
                       getPlaylist,
                       setGetPlaylist,
-                      setActiveTab
+                      setActiveTab,
+                      onRemoveVideoFromPlaylist,
+                      onGetVideos,
+                      videos,
+                      modalSave,
+                      setModalSave
                     }}
                   />
                 </TabPane>
@@ -276,6 +289,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(Actions.videos.addVideoToPlaylistRequest(data)),
   onGetVideosByPlaylist: (data) =>
     dispatch(Actions.videos.getVideoByPlaylistRequest(data)),
+  onRemoveVideoFromPlaylist: (data) =>
+    dispatch(Actions.videos.removeVideoFromPlaylistRequest(data)),
+  onGetVideos: () => dispatch(Actions.videos.getVideosRequest()),
 });
 
 export default connect(

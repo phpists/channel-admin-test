@@ -9,7 +9,6 @@ export const DeletePlaylistModal = (props) => {
     modalDelete,
     toggleDelete,
     onPlaylistDelete,
-    //checkId,
     checkName,
     onGetPlaylist,
     setCheckName,

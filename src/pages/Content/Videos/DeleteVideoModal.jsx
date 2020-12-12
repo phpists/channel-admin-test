@@ -1,7 +1,5 @@
 import React from "react";
-import { axiosInstance } from '../../../helpers/api';
 import { Button, Modal, ModalHeader, ModalFooter } from "reactstrap";
-import { sha1 } from '../../../helpers/sha1';
 
 export const DeleteVideoModal = (props) => {
   // Get props
@@ -13,14 +11,15 @@ export const DeleteVideoModal = (props) => {
     toggleDeleteVideos,
     onGetVideosByPlaylist,
     setChekedItemsVideos,
-    getPlaylist
+    getPlaylist,
+    onRemoveVideoFromPlaylist
   } = props;
 
   // DELETE PLAYLIST
 
   const onDelete = async () => {
     const ids = checkedItemsVideos;
-    const promises = ids.map((id) => deleteVideoAction({
+    const promises = ids.map((id) => onRemoveVideoFromPlaylist({
       playlist_id: getPlaylist.id, 
       video_id: id
     }))
@@ -34,28 +33,6 @@ export const DeleteVideoModal = (props) => {
       console.error(err)
     }
   };
-
-
-  function deleteVideoAction(data) {
-    debugger;
-    const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null
-    if (!authData) return false
-    const queryString = `action=RemoveVideoFromPlaylist&openKey=${authData.openKey}`;
-    const jsonData = JSON.stringify(data)
-    const signature = sha1(queryString + authData.privateKey + jsonData);
-    const formData = new FormData();
-    formData.append('jsonData', jsonData)
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      signature: signature
-    };
-
-    return axiosInstance.post(`?${queryString}`, formData, config)
-      .catch(err => console.error(err))
-  };
-
 
   return (
     <div>

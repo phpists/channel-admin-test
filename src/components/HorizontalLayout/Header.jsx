@@ -78,14 +78,15 @@ const Header = (props) => {
             <DropdownMenu>
               {
                 channels?.map(item => (
-                  <DropdownItem
+                  <Link to="/dashboard"> <DropdownItem
                     key={item.id}
                     onClick={() => {
                       setActiveChannel(item)
                       localStorage.setItem("channel", JSON.stringify(item))
+                      
                     }}
                     
-                  >{item.name}</DropdownItem>
+                  >{item.name}</DropdownItem></Link>
                 ))
               }
 

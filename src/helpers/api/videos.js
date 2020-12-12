@@ -123,7 +123,7 @@ export default {
     return await axiosInstance
       .get(`?${queryString}`, formData, config)
       .then((response) => {
-        console.log(response);
+        console.log("videos: ", response);
         return response;
       })
       .catch((error) => ({ error }));

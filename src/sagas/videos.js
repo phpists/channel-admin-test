@@ -56,7 +56,6 @@ export function* watchUpdateVideo(action) {
 
 export function* watchGetVideos() {
   const response = yield API.videos.getVideos();
-  console.log(response.data.playlists)
   if (response.status === 200) {
     if (response.data.status === "error") {
       yield put(

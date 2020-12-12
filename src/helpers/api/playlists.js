@@ -99,7 +99,7 @@ export default {
     return await axiosInstance
       .get(`?${queryString}`, config)
       .then((response) => {
-        console.log(response)
+        console.log('playlists: ', response)
         return response;
       })
       .catch((error) => ({ error }));

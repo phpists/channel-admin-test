@@ -55,6 +55,7 @@ const Playlists = (props) => {
       checkName !== editNamePlaylist
     ) {
       updateCharacters(playlists);
+      // setEditNamePlaylist("");
     }
   }, [defaultChannel, playlists]);
 
@@ -80,7 +81,7 @@ const Playlists = (props) => {
               editDescriptionPlaylist,
               setEditDescriptionPlaylist,
               setChekedItems,
-              checkedItems
+              checkedItems,
             }}
           />
         </CardBody>
@@ -99,41 +100,48 @@ const Playlists = (props) => {
             >
               <i className="fa fa-plus-circle mr-1"></i> Create Playlist
             </Button>
-            <Button
-              color="primary mr-2"
-              onClick={changePagePlaylist}
-              className="btn btn-primary waves-light waves-effect"
-              value="editPlaylist"
-              disabled={checkedItems.length === 0 || checkedItems.length > 1}
-            >
-              Edit <i className="mdi mdi-dots-vertical ml-2 dots"></i>
-            </Button>
-            <Button
-              type="button"
-              color="primary"
-              onClick={toggleDelete}
-              className="btn btn-primary waves-light waves-effect"
-              disabled={checkedItems.length === 0}
-            >
-              {" "}
-              Delete<i className="far fa-trash-alt ml-2"></i>
-            </Button>
-            <DeletePlaylistModal
-              {...{
-                checkName,
-                checkedItems,
-                setCheckName,
-                modalDelete,
-                toggleDelete,
-                onPlaylistDelete,
-                onGetPlaylist,
-                activeChannel,
-                setChekedItems,
-              }}
-            />
+            {characters?.length === 0 || characters === null ? null : (
+              <>
+                {" "}
+                <Button
+                  color="primary mr-2"
+                  onClick={changePagePlaylist}
+                  className="btn btn-primary waves-light waves-effect"
+                  value="editPlaylist"
+                  disabled={
+                    checkedItems.length === 0 || checkedItems.length > 1
+                  }
+                >
+                  Edit <i className="mdi mdi-dots-vertical ml-2 dots"></i>
+                </Button>
+                <Button
+                  type="button"
+                  color="primary"
+                  onClick={toggleDelete}
+                  className="btn btn-primary waves-light waves-effect"
+                  disabled={checkedItems.length === 0}
+                >
+                  {" "}
+                  Delete<i className="far fa-trash-alt ml-2"></i>
+                </Button>
+                <DeletePlaylistModal
+                  {...{
+                    checkName,
+                    checkedItems,
+                    setCheckName,
+                    modalDelete,
+                    toggleDelete,
+                    onPlaylistDelete,
+                    onGetPlaylist,
+                    activeChannel,
+                    setChekedItems,
+                  }}
+                />
+              </>
+            )}
           </div>
 
-          {characters?.length === 0 ? (
+          {characters?.length === 0 || characters === null ? (
             <EmptyPlaylists />
           ) : (
             <Form>
