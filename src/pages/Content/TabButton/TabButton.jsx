@@ -6,47 +6,39 @@ const TabButton = (props) => {
   const { activeTab, toggleTab, characters, dragVIdeo } = props;
   const buttons = [
     { name: "Upload", tab: "3" },
-    { name: "Playlists", tab: "1", count: 0, total: characters?.length },
-    { name: "Videos", tab: "2", count: 0, total: dragVIdeo?.length },
+    { name: "Playlists", tab: "1", total: characters?.length },
+    { name: "Videos", tab: "2", total: dragVIdeo?.length },
   ];
   return (
     <Nav className="border-0 navi" vertical>
       {buttons.map((b, index) => {
         return (
-          <div key={index}>
-            {b.name === "Upload" ? (
-              <NavItem>
-                <NavLink
-                  className="px-0"
-                  className={classnames({
-                    active: activeTab === b.tab,
-                  })}
-                  onClick={() => {
-                    toggleTab(b.tab);
-                  }}
-                >
-                  <Button className="w-100 mb-4" color="success">
-                    {b.name}
-                  </Button>
-                </NavLink>
-              </NavItem>
-            ) : (
-              <NavItem className="d-flex justify-content-between align-items-baseline">
-                <NavLink
-                  className="px-0"
-                  className={classnames({
-                    active: activeTab === b.tab,
-                  })}
-                  onClick={() => {
-                    toggleTab(b.tab);
-                  }}
-                >
+          <NavItem
+            key={index}
+            className={b.name === "Upload" ? "w-100"  : "d-flex justify-content-between align-items-baseline"}
+          >
+            <NavLink
+              className="px-0"
+              className={classnames({
+                active: activeTab === b.tab,
+              })}
+              onClick={() => {
+                toggleTab(b.tab);
+              }}
+            >
+              {b.name === "Upload" ? (
+                <Button className="w-100 mb-4" color="success">
+                  {b.name}
+                </Button>
+              ) : (
+                <>
+                  {" "}
                   <i className="dripicons-star mr-2"></i> {b.name}
-                </NavLink>
-                <span>{b.total || 0}</span>
-              </NavItem>
-            )}
-          </div>
+                </>
+              )}
+            </NavLink>
+            {b.name === "Upload" ? null : <span>{b.total || 0}</span>}
+          </NavItem>
         );
       })}
     </Nav>
