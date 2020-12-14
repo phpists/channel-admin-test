@@ -70,6 +70,7 @@ const TabPanel = (props) => {
       checkName == editName
     ) {
       updateDragVideo(videosByPlaylist);
+      onGetPlaylist({ id: defaultChannel?.id || "1" });
     }
     if (getPlaylist === null) {
       onGetVideos();

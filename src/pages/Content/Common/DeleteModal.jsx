@@ -34,7 +34,7 @@ export const DeleteModal = (props) => {
             })
           )
         : ids.map(onPlaylistDelete);
-    console.log(item);
+    console.log(promises);
     try {
       await Promise.all(promises);
       toggleDelete();
