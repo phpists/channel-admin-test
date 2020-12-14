@@ -17,7 +17,7 @@ const ButtonsAPIVideo = (props) => {
     toggleDelete,
     onGetVideosByPlaylist,
     dragVIdeo,
-    changePagePlaylist,
+    toForm,
     checkedItems
   } = props;
 
@@ -68,7 +68,7 @@ const ButtonsAPIVideo = (props) => {
             color="primary mr-2"
             className="btn btn-primary waves-light waves-effect"
             value="editVideo"
-            onClick={changePagePlaylist}
+            onClick={toForm}
             disabled={checkedItems.length === 0 || checkedItems.length > 1}
           >
             Edit <i className="mdi mdi-dots-vertical ml-2 dots"></i>
@@ -77,7 +77,7 @@ const ButtonsAPIVideo = (props) => {
             color="primary mr-2"
             className="btn btn-primary waves-light waves-effect"
             value="newVideo"
-            onClick={changePagePlaylist}
+            onClick={toForm}
             disabled={checkedItems.length === 0 || checkedItems.length > 1}
           >
             <i className="dripicons-folder mr-1"></i> Add to playlist

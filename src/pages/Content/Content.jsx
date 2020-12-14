@@ -59,7 +59,7 @@ const Content = (props) => {
   // Handle event
 
   // Change page on click Create Playlist || Edit Playlist
-  const changePagePlaylist = (e) => {
+  const toForm = (e) => {
     const nameButton = e.target.value;
     switch (nameButton) {
       case "editPlaylist":
@@ -158,56 +158,8 @@ const Content = (props) => {
                   <TabPanel
                     {...{
                       characters,
-                      changePagePlaylist,
-                      checkedItems,
-                      toggleDelete,
-                      checkName,
-                      setCheckName,
-                      setCheckDesc,
-                      modalDelete,
-                      onPlaylistDelete,
-                      onGetPlaylist,
-                      activeChannel,
-                      setChekedItems,
-                      handleOnDragEnd,
-                      handleChange,
-                      updateCharacters,
-                      playlists,
-                      defaultChannel,
-                      onAddPlaylist,
-                      onUpdatePlaylist,
-                      changePage,
-                      setChangePage,
-                      valueButton,
-                      editName,
-                      setEditName,
-                      editDescription,
-                      setEditDescription,
-                      modalSave,
-                      setModalSave,
-                      item,
-                      onRemoveVideoFromPlaylist,
-                      onUpdateVideo,
-                      onAddVideoToPlaylist,
-                      onGetVideosByPlaylist,
-                      getPlaylist,
-                      onGetVideos,
-                      updateDragVideo,
-                      videos,
-                      activeTab,
-                      dragVIdeo,
-                      setGetPlaylist,
-                      videosByPlaylist
-                    }}
-                  />
-                </TabPane>
-                <TabPane tabId="2">
-                  <TabPanel
-                    {...{
-                      characters,
                       dragVIdeo,
                       updateDragVideo,
-                      changePagePlaylist,
                       checkedItems,
                       checkName,
                       setCheckName,
@@ -228,7 +180,6 @@ const Content = (props) => {
                       onGetVideosByPlaylist,
                       getPlaylist,
                       setGetPlaylist,
-                      setActiveTab,
                       onRemoveVideoFromPlaylist,
                       onGetVideos,
                       videos,
@@ -243,11 +194,57 @@ const Content = (props) => {
                       onAddPlaylist,
                       onGetPlaylist,
                       onUpdatePlaylist,
-                      editDescription,
                       activeTab,
+                      toForm,
+                      defaultChannel,
+                      playlists
+                    }}
+                  />
+                </TabPane>
+                <TabPane tabId="2">
+                  <TabPanel
+                    {...{
+                      characters,
                       dragVIdeo,
+                      updateDragVideo,
+                      checkedItems,
+                      checkName,
+                      setCheckName,
+                      setCheckDesc,
+                      setChekedItems,
+                      handleOnDragEnd,
+                      handleChange,
+                      videosByPlaylist,
+                      changePage,
+                      setChangePage,
+                      editName,
+                      editDescription,
+                      setEditName,
+                      setEditDescription,
+                      valueButton,
+                      onUpdateVideo,
+                      onAddVideoToPlaylist,
+                      onGetVideosByPlaylist,
+                      getPlaylist,
                       setGetPlaylist,
-                      videosByPlaylist
+                      onRemoveVideoFromPlaylist,
+                      onGetVideos,
+                      videos,
+                      modalSave,
+                      setModalSave,
+                      updateCharacters,
+                      item,
+                      modalDelete,
+                      toggleDelete,
+                      onPlaylistDelete,
+                      activeChannel,
+                      onAddPlaylist,
+                      onGetPlaylist,
+                      onUpdatePlaylist,
+                      activeTab,
+                      toForm,
+                      defaultChannel,
+                      playlists
                     }}
                   />
                 </TabPane>

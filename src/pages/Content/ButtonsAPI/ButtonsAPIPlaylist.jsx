@@ -2,13 +2,13 @@ import React from "react";
 import { Button } from "reactstrap";
 
 const ButtonsAPIPlaylist = (props) => {
-  const { characters, changePagePlaylist, checkedItems, toggleDelete } = props;
+  const { characters, toForm, checkedItems, toggleDelete } = props;
 
   return (
     <div className="btn-toolbar py-3" role="toolbar">
       <Button
         color="primary mr-2"
-        onClick={changePagePlaylist}
+        onClick={toForm}
         className="btn btn-primary waves-light waves-effect"
         value="newPlaylist"
       >
@@ -19,7 +19,7 @@ const ButtonsAPIPlaylist = (props) => {
           {" "}
           <Button
             color="primary mr-2"
-            onClick={changePagePlaylist}
+            onClick={toForm}
             className="btn btn-primary waves-light waves-effect"
             value="editPlaylist"
             disabled={checkedItems.length === 0 || checkedItems.length > 1}

@@ -68,7 +68,7 @@ const CheckItems = (props) => {
                             <div className="col-mail col-mail-2">
                               <div className="date">
                                 {items === characters ? (
-                                  `4 items`
+                                  `${p.videos_count} items`
                                 ) : (
                                   <>
                                     {minutes}:

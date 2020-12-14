@@ -49,6 +49,13 @@ export const DeleteModal = (props) => {
     }
   };
 
+  const onCancel = () => {
+    toggleDelete();
+    setCheckName("");
+    setCheckDesc("")
+    setChekedItems([]);
+  }
+
   return (
     <div>
       <Modal isOpen={modalDelete} toggle={toggleDelete}>
@@ -56,7 +63,7 @@ export const DeleteModal = (props) => {
           Are you sure you want to delete "{checkName}" playlist?
         </ModalHeader>
         <ModalFooter>
-          <Button color="secondary" className="w-sm" onClick={toggleDelete}>
+          <Button color="secondary" className="w-sm" onClick={onCancel}>
             Cancel
           </Button>
           <Button color="danger" className="w-sm" onClick={onDelete}>

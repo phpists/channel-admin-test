@@ -10,46 +10,46 @@ import ButtonsAPIVideo from "../ButtonsAPI/ButtonsAPIVideo";
 const TabPanel = (props) => {
   const {
     characters,
-    changePagePlaylist,
+    dragVIdeo,
+    updateDragVideo,
     checkedItems,
-    toggleDelete,
     checkName,
     setCheckName,
     setCheckDesc,
-    modalDelete,
-    onPlaylistDelete,
-    onGetPlaylist,
-    activeChannel,
     setChekedItems,
     handleOnDragEnd,
     handleChange,
-    updateCharacters,
-    playlists,
-    defaultChannel,
-    onAddPlaylist,
-    onUpdatePlaylist,
+    videosByPlaylist,
     changePage,
     setChangePage,
-    valueButton,
     editName,
-    setEditName,
     editDescription,
+    setEditName,
     setEditDescription,
-    modalSave,
-    setModalSave,
-    item,
-    onRemoveVideoFromPlaylist,
+    valueButton,
     onUpdateVideo,
     onAddVideoToPlaylist,
     onGetVideosByPlaylist,
     getPlaylist,
-    onGetVideos,
-    updateDragVideo,
-    videos,
-    activeTab,
-    dragVIdeo,
     setGetPlaylist,
-    videosByPlaylist
+    onRemoveVideoFromPlaylist,
+    onGetVideos,
+    videos,
+    modalSave,
+    setModalSave,
+    updateCharacters,
+    item,
+    modalDelete,
+    toggleDelete,
+    onPlaylistDelete,
+    activeChannel,
+    onAddPlaylist,
+    onGetPlaylist,
+    onUpdatePlaylist,
+    activeTab,
+    toForm,
+    defaultChannel,
+    playlists,
   } = props;
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const TabPanel = (props) => {
       onGetVideos();
       updateDragVideo(videos);
     }
-  }, [defaultChannel, playlists,videosByPlaylist, videos, getPlaylist]);
+  }, [defaultChannel, playlists, videosByPlaylist, videos, getPlaylist]);
 
   return (
     <Card className="flex-column align-items-start">
@@ -113,32 +113,34 @@ const TabPanel = (props) => {
         <CardBody className="w-100">
           <CardTitle>Playlists</CardTitle>
           <CardSubtitle className="mb-3">
-            {activeTab === "1" ? characters?.length : dragVIdeo?.length || 0} Total
+            {activeTab === "1" ? characters?.length : dragVIdeo?.length || 0}{" "}
+            Total
           </CardSubtitle>
-      { activeTab === "1"   
-       ? <ButtonsAPIPlaylist
-            {...{
-              characters,
-              changePagePlaylist,
-              checkedItems,
-              toggleDelete,
-            }}
-          />
-        : <ButtonsAPIVideo
-        {...{
-          getPlaylist,
-          setGetPlaylist,
-          onGetVideos,
-          setChekedItems,
-          characters,
-          toggleDelete,
-          onGetVideosByPlaylist,
-          dragVIdeo,
-          changePagePlaylist,
-          checkedItems,
-        }}
-      />
-        }
+          {activeTab === "1" ? (
+            <ButtonsAPIPlaylist
+              {...{
+                characters,
+                toForm,
+                checkedItems,
+                toggleDelete,
+              }}
+            />
+          ) : (
+            <ButtonsAPIVideo
+              {...{
+                getPlaylist,
+                setGetPlaylist,
+                onGetVideos,
+                setChekedItems,
+                characters,
+                toggleDelete,
+                onGetVideosByPlaylist,
+                dragVIdeo,
+                toForm,
+                checkedItems,
+              }}
+            />
+          )}
           <DeleteModal
             {...{
               checkName,
