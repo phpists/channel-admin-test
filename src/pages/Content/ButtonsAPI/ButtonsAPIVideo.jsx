@@ -18,7 +18,10 @@ const ButtonsAPIVideo = (props) => {
     onGetVideosByPlaylist,
     dragVIdeo,
     toForm,
-    checkedItems
+    checkedItems,
+    selectedPage,
+    updateDragVideo,
+    videos,
   } = props;
 
   const [dropdownOpen, setOpen] = useState(false);
@@ -40,8 +43,9 @@ const ButtonsAPIVideo = (props) => {
           <DropdownItem
             onClick={() => {
               setGetPlaylist(null);
-              onGetVideos();
+              onGetVideos((selectedPage - 1) * 25);
               setChekedItems([]);
+              updateDragVideo(videos);
             }}
           >
             All playlists

@@ -70,6 +70,7 @@
     "react-rangeslider": "^2.2.0",
     "react-rating": "^2.0.4",
     "react-rating-tooltip": "^1.1.6",
+    "react-reactstrap-pagination": "^2.0.3",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-router-last-location": "^2.0.1",

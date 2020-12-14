@@ -83,12 +83,13 @@ export default {
         .catch((error) => ({ error }))
   },
 
-  getVideos: async () => {
+  getVideos: async (data) => {
+    debugger;
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
-    const queryString = `action=GetVideos&openKey=${authData.openKey}`;
+    const queryString = `action=GetVideos&openKey=${authData.openKey}&offset=${data}`;
     const config = {
       headers: {
         "Content-Type": "application/json",

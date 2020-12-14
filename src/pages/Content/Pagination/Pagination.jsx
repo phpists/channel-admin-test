@@ -1,0 +1,36 @@
+import React, { useEffect, useState } from "react";
+import PaginationComponent from "react-reactstrap-pagination";
+
+const PaginationVideos = (props) => {
+  const {
+    count,
+    onGetVideos,
+    updateDragVideo,
+    videos,
+    selectedPage,
+    setSelectedPage,
+  } = props;
+
+  const handleSelected = (page) => {
+    onGetVideos((page - 1) * 25);
+    setSelectedPage(page);
+  };
+
+  useEffect(() => {
+    if (selectedPage) {
+      updateDragVideo(videos);
+    }
+  }, [selectedPage, videos]);
+
+  return (
+    <div className="d-flex justify-content-center">
+      <PaginationComponent
+        totalItems={count}
+        pageSize={25}
+        onSelect={handleSelected}
+      />
+    </div>
+  );
+};
+
+export default PaginationVideos;

@@ -34,6 +34,7 @@ const Content = (props) => {
     videosByPlaylist,
     onGetVideos,
     videos,
+    count,
   } = props;
 
   // State local
@@ -50,6 +51,7 @@ const Content = (props) => {
   const [editDescription, setEditDescription] = useState("");
   const [dragVIdeo, updateDragVideo] = useState(videosByPlaylist);
   const [getPlaylist, setGetPlaylist] = useState(null);
+  const [selectedPage, setSelectedPage] = useState(null);
 
   // Vallues
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
@@ -197,7 +199,10 @@ const Content = (props) => {
                       activeTab,
                       toForm,
                       defaultChannel,
-                      playlists
+                      playlists,
+                      count,
+                      selectedPage,
+                      setSelectedPage,
                     }}
                   />
                 </TabPane>
@@ -244,7 +249,10 @@ const Content = (props) => {
                       activeTab,
                       toForm,
                       defaultChannel,
-                      playlists
+                      playlists,
+                      count,
+                      selectedPage,
+                      setSelectedPage,
                     }}
                   />
                 </TabPane>
@@ -269,6 +277,7 @@ const mapStatetoProps = (state) => ({
   onePlayist: selectors.playlists.onePlaylist(state),
   videos: selectors.videos.videos(state),
   videosByPlaylist: selectors.videos.videosByPlaylist(state),
+  count: selectors.videos.count(state),
 });
 
 // Get redux state function
@@ -290,7 +299,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(Actions.videos.getVideoByPlaylistRequest(data)),
   onRemoveVideoFromPlaylist: (data) =>
     dispatch(Actions.videos.removeVideoFromPlaylistRequest(data)),
-  onGetVideos: () => dispatch(Actions.videos.getVideosRequest()),
+  onGetVideos: (data) => dispatch(Actions.videos.getVideosRequest(data)),
 });
 
 export default connect(

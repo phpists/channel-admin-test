@@ -22,8 +22,9 @@ const addVideoToPlaylistSuccess = () => ({
   type: Types.ADD_VIDEO_TO_PLAYLIST_SUCCESS,
 });
 
-const getVideosRequest = () => ({
+const getVideosRequest = (payload) => ({
   type: Types.GET_VIDEOS_REQUEST,
+  payload
 });
 
 const getVideosSuccess = (payload) => ({

@@ -6,6 +6,7 @@ import CreateEdit from "./CreateEdit";
 import ButtonsAPIPlaylist from "../ButtonsAPI/ButtonsAPIPlaylist";
 import CheckItems from "./CheckItems";
 import ButtonsAPIVideo from "../ButtonsAPI/ButtonsAPIVideo";
+import PaginationVideos from "../Pagination/Pagination";
 
 const TabPanel = (props) => {
   const {
@@ -50,6 +51,9 @@ const TabPanel = (props) => {
     toForm,
     defaultChannel,
     playlists,
+    count,
+    selectedPage,
+    setSelectedPage,
   } = props;
 
   useEffect(() => {
@@ -64,17 +68,20 @@ const TabPanel = (props) => {
       updateCharacters(playlists);
     }
 
-    if (
-      videosByPlaylist === null ||
-      videosByPlaylist?.length !== dragVIdeo?.length ||
-      checkName == editName
-    ) {
-      updateDragVideo(videosByPlaylist);
-      onGetPlaylist({ id: defaultChannel?.id || "1" });
+    if (getPlaylist !== null) {
+      if (
+        videosByPlaylist === null ||
+        videosByPlaylist?.length !== dragVIdeo?.length ||
+        checkName == editName
+      ) {
+        updateDragVideo(videosByPlaylist);
+        onGetPlaylist({ id: defaultChannel?.id || "1" });
+      }
     }
-    if (getPlaylist === null) {
-      onGetVideos();
+    if (selectedPage === null) {
+      onGetVideos(0);
       updateDragVideo(videos);
+      setSelectedPage(1);
     }
   }, [defaultChannel, playlists, videosByPlaylist, videos, getPlaylist]);
 
@@ -139,6 +146,9 @@ const TabPanel = (props) => {
                 dragVIdeo,
                 toForm,
                 checkedItems,
+                selectedPage,
+                updateDragVideo,
+                videos,
               }}
             />
           )}
@@ -175,17 +185,31 @@ const TabPanel = (props) => {
               }}
             />
           ) : (
-            <CheckItems
-              items={dragVIdeo}
-              updateItems={updateDragVideo}
-              {...{
-                handleOnDragEnd,
-                characters,
-                handleChange,
-                checkedItems,
-                setChekedItems,
-              }}
-            />
+            <>
+              <CheckItems
+                items={dragVIdeo}
+                updateItems={updateDragVideo}
+                {...{
+                  handleOnDragEnd,
+                  characters,
+                  handleChange,
+                  checkedItems,
+                  setChekedItems,
+                }}
+              />
+              {getPlaylist === null ? (
+                <PaginationVideos
+                  {...{
+                    count,
+                    onGetVideos,
+                    updateDragVideo,
+                    videos,
+                    selectedPage,
+                    setSelectedPage,
+                  }}
+                />
+              ) : null}
+            </>
           )}
         </CardBody>
       )}

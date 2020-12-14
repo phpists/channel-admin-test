@@ -54,8 +54,8 @@ export function* watchUpdateVideo(action) {
   }
 }
 
-export function* watchGetVideos() {
-  const response = yield API.videos.getVideos();
+export function* watchGetVideos(action) {
+  const response = yield API.videos.getVideos(action.payload);
   if (response.status === 200) {
     if (response.data.status === "error") {
       yield put(
@@ -63,7 +63,7 @@ export function* watchGetVideos() {
       );
     } else {
       yield put(
-        Actions.videos.getVideosSuccess(response?.data?.playlists)
+        Actions.videos.getVideosSuccess(response?.data)
       );
     }
   } else {
