@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
-import EmptyMessage from "../Common/EmptyMessage";
-import DeleteModal from "../Common/DeleteModal";
-import CreateEdit from "../Common/CreateEdit";
-import ButtonsAPI from "./ButtonsAPI";
-import CheckItems from "../Common/CheckItems";
+import EmptyMessage from "./EmptyMessage";
+import DeleteModal from "./DeleteModal";
+import CreateEdit from "./CreateEdit";
+import ButtonsAPIPlaylist from "../ButtonsAPI/ButtonsAPIPlaylist";
+import CheckItems from "./CheckItems";
+import ButtonsAPIVideo from "../ButtonsAPI/ButtonsAPIVideo";
 
-const Playlists = (props) => {
+const TabPanel = (props) => {
   const {
     characters,
     changePagePlaylist,
@@ -42,6 +43,13 @@ const Playlists = (props) => {
     onAddVideoToPlaylist,
     onGetVideosByPlaylist,
     getPlaylist,
+    onGetVideos,
+    updateDragVideo,
+    videos,
+    activeTab,
+    dragVIdeo,
+    setGetPlaylist,
+    videosByPlaylist
   } = props;
 
   useEffect(() => {
@@ -50,12 +58,24 @@ const Playlists = (props) => {
     }
     if (
       characters === null ||
-      playlists.length !== characters.length ||
+      playlists?.length !== characters?.length ||
       checkName == editName
     ) {
       updateCharacters(playlists);
     }
-  }, [defaultChannel, playlists]);
+
+    if (
+      videosByPlaylist === null ||
+      videosByPlaylist?.length !== dragVIdeo?.length ||
+      checkName == editName
+    ) {
+      updateDragVideo(videosByPlaylist);
+    }
+    if (getPlaylist === null) {
+      onGetVideos();
+      updateDragVideo(videos);
+    }
+  }, [defaultChannel, playlists,videosByPlaylist, videos, getPlaylist]);
 
   return (
     <Card className="flex-column align-items-start">
@@ -93,9 +113,10 @@ const Playlists = (props) => {
         <CardBody className="w-100">
           <CardTitle>Playlists</CardTitle>
           <CardSubtitle className="mb-3">
-            {characters?.length || 0} Total
+            {activeTab === "1" ? characters?.length : dragVIdeo?.length || 0} Total
           </CardSubtitle>
-          <ButtonsAPI
+      { activeTab === "1"   
+       ? <ButtonsAPIPlaylist
             {...{
               characters,
               changePagePlaylist,
@@ -103,6 +124,21 @@ const Playlists = (props) => {
               toggleDelete,
             }}
           />
+        : <ButtonsAPIVideo
+        {...{
+          getPlaylist,
+          setGetPlaylist,
+          onGetVideos,
+          setChekedItems,
+          characters,
+          toggleDelete,
+          onGetVideosByPlaylist,
+          dragVIdeo,
+          changePagePlaylist,
+          checkedItems,
+        }}
+      />
+        }
           <DeleteModal
             {...{
               checkName,
@@ -123,7 +159,7 @@ const Playlists = (props) => {
           />
           {characters?.length === 0 || characters === null ? (
             <EmptyMessage {...{ characters }} />
-          ) : (
+          ) : activeTab === "1" ? (
             <CheckItems
               items={characters}
               updateItems={updateCharacters}
@@ -135,6 +171,18 @@ const Playlists = (props) => {
                 characters,
               }}
             />
+          ) : (
+            <CheckItems
+              items={dragVIdeo}
+              updateItems={updateDragVideo}
+              {...{
+                handleOnDragEnd,
+                characters,
+                handleChange,
+                checkedItems,
+                setChekedItems,
+              }}
+            />
           )}
         </CardBody>
       )}
@@ -142,4 +190,4 @@ const Playlists = (props) => {
   );
 };
 
-export default Playlists;
+export default TabPanel;

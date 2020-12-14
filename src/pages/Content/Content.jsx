@@ -15,8 +15,7 @@ import {
 } from "reactstrap";
 import "./content.scss";
 import Upload from "./Upload/Upload";
-import Playlists from "./Playlists/Playlists";
-import Videos from "./Videos/Videos";
+import TabPanel from "./Common/TabPanel";
 import TabButton from "./TabButton/TabButton";
 
 const Content = (props) => {
@@ -156,7 +155,7 @@ const Content = (props) => {
             <Col xs="12" sm="7" md="8" lg="9">
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
-                  <Playlists
+                  <TabPanel
                     {...{
                       characters,
                       changePagePlaylist,
@@ -192,11 +191,18 @@ const Content = (props) => {
                       onAddVideoToPlaylist,
                       onGetVideosByPlaylist,
                       getPlaylist,
+                      onGetVideos,
+                      updateDragVideo,
+                      videos,
+                      activeTab,
+                      dragVIdeo,
+                      setGetPlaylist,
+                      videosByPlaylist
                     }}
                   />
                 </TabPane>
                 <TabPane tabId="2">
-                  <Videos
+                  <TabPanel
                     {...{
                       characters,
                       dragVIdeo,
@@ -237,7 +243,11 @@ const Content = (props) => {
                       onAddPlaylist,
                       onGetPlaylist,
                       onUpdatePlaylist,
-                      editDescription
+                      editDescription,
+                      activeTab,
+                      dragVIdeo,
+                      setGetPlaylist,
+                      videosByPlaylist
                     }}
                   />
                 </TabPane>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "reactstrap";
 
-const ButtonsAPI = (props) => {
+const ButtonsAPIPlaylist = (props) => {
   const { characters, changePagePlaylist, checkedItems, toggleDelete } = props;
 
   return (
@@ -42,4 +42,4 @@ const ButtonsAPI = (props) => {
   );
 };
 
-export default ButtonsAPI;
+export default ButtonsAPIPlaylist;
