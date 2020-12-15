@@ -3,7 +3,7 @@ import { CardBody, CardTitle, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 
 const EmptyMessage = (props) => {
-  const { setActiveTab, characters } = props;
+  const { setActiveTab, activeTab } = props;
 
   const toggleToUpload = () => {
     setActiveTab("3");
@@ -13,7 +13,7 @@ const EmptyMessage = (props) => {
     <div className="overlay">
       <CardBody>
         <CardTitle className="text-center mb-3 mt-3">
-          {characters === null || characters.length === 0
+          {activeTab === "1"
             ? "Upload your files, then organize them and started with distibution"
             : "Upload your first video to get started!"}
         </CardTitle>
@@ -22,9 +22,9 @@ const EmptyMessage = (props) => {
             <Button
               color="info"
               className="waves-effect"
-              onClick={characters === null || characters.length === 0 ? null : toggleToUpload}
+              onClick={activeTab === "1" ? null : toggleToUpload}
             >
-              {characters === null || characters.length === 0
+              {activeTab === "1"
                 ? "Playlists"
                 : "Upload videos"}
             </Button>

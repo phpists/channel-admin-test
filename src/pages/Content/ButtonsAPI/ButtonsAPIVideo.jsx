@@ -30,7 +30,7 @@ const ButtonsAPIVideo = (props) => {
 
   return (
     <div className="btn-toolbar py-3" role="toolbar">
-      <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+      <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} direction="up">
         <DropdownToggle
           caret
           color="secondary mr-2"

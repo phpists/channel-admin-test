@@ -170,20 +170,25 @@ const TabPanel = (props) => {
               onGetVideosByPlaylist,
             }}
           />
-          {characters?.length === 0 || characters === null ? (
-            <EmptyMessage {...{ characters }} />
-          ) : activeTab === "1" ? (
-            <CheckItems
-              items={characters}
-              updateItems={updateCharacters}
-              {...{
-                checkedItems,
-                setChekedItems,
-                handleOnDragEnd,
-                handleChange,
-                characters,
-              }}
-            />
+
+          {activeTab === "1" ? (
+            characters?.length === 0 || characters === null ? (
+              <EmptyMessage {...{ activeTab }} />
+            ) : (
+              <CheckItems
+                items={characters}
+                updateItems={updateCharacters}
+                {...{
+                  checkedItems,
+                  setChekedItems,
+                  handleOnDragEnd,
+                  handleChange,
+                  characters,
+                }}
+              />
+            )
+          ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
+            <EmptyMessage {...{ activeTab }} />
           ) : (
             <>
               <CheckItems
