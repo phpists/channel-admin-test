@@ -28,6 +28,7 @@ const PaginationVideos = (props) => {
         totalItems={count}
         pageSize={25}
         onSelect={handleSelected}
+        defaultActivePage={selectedPage}
       />
     </div>
   );
