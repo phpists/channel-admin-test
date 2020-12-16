@@ -50,7 +50,7 @@ const ChannelSettings = React.memo((props) => {
   const onChecked = (e) => {
     const name = e.target.name;
 
-    const clickedCategory = checkedName.indexOf(name);
+    const clickedCategory = checkedName?.indexOf(name);
     const all = [...checkedName];
 
     if (clickedCategory === -1) {
@@ -75,7 +75,7 @@ const ChannelSettings = React.memo((props) => {
 
   useEffect(() => {
     const data = localStorage.getItem("channelLangs");
-    const languages = data.split(',');
+    const languages = data?.split(',');
     setCheckedName(languages);
     i18n.changeLanguage(lng);
   }, [lng]);
@@ -226,7 +226,7 @@ const ChannelSettings = React.memo((props) => {
                             <Input
                               type="checkbox"
                               name={label}
-                              checked={checkedName.includes(label)}
+                              checked={checkedName?.includes(label)}
                               onChange={onChecked}
                             />
                             {label}

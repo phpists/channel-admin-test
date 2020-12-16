@@ -9,10 +9,11 @@ const PaginationVideos = (props) => {
     videos,
     selectedPage,
     setSelectedPage,
+    defaultChannel
   } = props;
 
   const handleSelected = (page) => {
-    onGetVideos((page - 1) * 25);
+    onGetVideos( {id: defaultChannel?.id, count: ((page - 1) * 25)});
     setSelectedPage(page);
   };
 

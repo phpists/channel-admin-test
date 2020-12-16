@@ -89,7 +89,7 @@ export default {
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
-    const queryString = `action=GetVideos&openKey=${authData.openKey}&offset=${data}`;
+    const queryString = `action=GetVideos&openKey=${authData.openKey}&offset=${data.count}&where=channel_id=${data.id}`;
     const config = {
       headers: {
         "Content-Type": "application/json",

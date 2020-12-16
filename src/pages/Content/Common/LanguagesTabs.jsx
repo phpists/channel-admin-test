@@ -19,7 +19,7 @@ const LanguagesTabs = () => {
   useEffect(() => {
     i18n.changeLanguage(lng);
     const data = localStorage.getItem("channelLangs");
-    const languages = data.split(',');
+    const languages = data?.split(',');
     setLangs(languages)
   }, [lng]);
 
@@ -31,7 +31,7 @@ const LanguagesTabs = () => {
       <TabPane>
         <Nav tabs className="nav-tabs-custom nav-justified">
 
-          {langs.map((item, index) => {
+          {langs?.map((item, index) => {
             const num = index + 1
             return (
               <NavItem>

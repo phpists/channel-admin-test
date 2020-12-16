@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../content.scss";
 import {
   Card,
@@ -17,6 +17,7 @@ import {
 import { AvField, AvForm } from "availity-reactstrap-validation";
 import LanguagesTabs from "./LanguagesTabs";
 import FormaData from "./FormaData";
+import { Prompt } from 'react-router'
 
 const CreateEdit = (props) => {
   // Get props
@@ -27,6 +28,7 @@ const CreateEdit = (props) => {
     setChangePage,
     onGetPlaylist,
     valueButton,
+    checkName,
     setCheckName,
     modalSave,
     editName,
@@ -89,8 +91,20 @@ const CreateEdit = (props) => {
     setModalSave(!modalSave);
   };
 
+  useEffect(() => {
+    if (checkName !== editName) {
+      window.onbeforeunload = () => true
+    } else {
+      window.onbeforeunload = undefined
+    }
+  }, [checkName, editName])
+
   return (
     <Card>
+      <Prompt
+      when={checkName !== editName}
+      message='You have unsaved data. You want to leave the page?'
+    />
       <AvForm onValidSubmit={onSubmit}>
         <CardBody>
           {/* Toggle languages */}

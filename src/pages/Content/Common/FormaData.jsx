@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import { AvField } from "availity-reactstrap-validation";
 import {
-  Button,
   FormGroup,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownItem,
+  DropdownMenu,
 } from "reactstrap";
 
 const FormaData = (props) => {
@@ -23,12 +22,18 @@ const FormaData = (props) => {
   } = props;
 
   // On submit
+  const [playlistName, setPlaylistName] = useState();
+  const [dropdownOpen, setOpen] = useState(false);
+
+  const toggle = () => setOpen(!dropdownOpen);
 
   const getPlailistId = (e) => {
-    const name = e.target.value;
+    const name = e.target.name;
     const arr = characters?.filter((c) => c.name == name);
     const id = arr[0]?.id;
     setPlaylistId(id);
+    setPlaylistName(name);
+    debugger;
   };
 
   // Modal window (Save changes)
@@ -62,18 +67,30 @@ const FormaData = (props) => {
         onChange={onChanged(setEditDescription)}
       />
       {valueButton === "editVideo" || valueButton === "newVideo" ? (
-        <AvField
-          type="select"
-          name="select"
-          label="Option"
-          helpMessage="Please, chose playlist"
-          vlaue={playlistId}
-          onChange={(e) => getPlailistId(e)}
-        >
-          {characters.map((c) => {
-            return <option key={c.id}>{c.name}</option>;
-          })}
-        </AvField>
+        <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} direction="left">
+          <DropdownToggle
+            caret
+            color="secondary"
+            className="btn btn-primary waves-light waves-effect"
+          >
+            {playlistName || "Chose playlist"}
+            <span className="arrow-down" />
+          </DropdownToggle>
+          <DropdownMenu>
+            {characters?.map((c) => {
+              return (
+                <DropdownItem
+                  key={c.id}
+                  onClick={(e) => getPlailistId(e)}
+                  name={c.name}
+                  id={c.id}
+                >
+                  {c.name}
+                </DropdownItem>
+              );
+            })}
+          </DropdownMenu>
+        </ButtonDropdown>
       ) : null}
     </FormGroup>
   );

@@ -79,10 +79,12 @@ const TabPanel = (props) => {
       }
     }
     if (selectedPage === null) {
-      onGetVideos(0);
+      onGetVideos({id: defaultChannel?.id, count: 0});
       updateDragVideo(videos);
       setSelectedPage(1);
     }
+
+   
   }, [defaultChannel, playlists, videosByPlaylist, videos, getPlaylist]);
 
   return (
@@ -114,6 +116,7 @@ const TabPanel = (props) => {
               onGetVideosByPlaylist,
               getPlaylist,
               characters,
+              checkName
             }}
           />
         </CardBody>
@@ -149,6 +152,7 @@ const TabPanel = (props) => {
                 selectedPage,
                 updateDragVideo,
                 videos,
+                defaultChannel
               }}
             />
           )}
@@ -212,7 +216,8 @@ const TabPanel = (props) => {
                     videos,
                     selectedPage,
                     setSelectedPage,
-                    toForm
+                    toForm,
+                    defaultChannel
                   }}
                 />
               ) : null}

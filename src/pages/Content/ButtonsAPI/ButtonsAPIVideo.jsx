@@ -22,6 +22,7 @@ const ButtonsAPIVideo = (props) => {
     selectedPage,
     updateDragVideo,
     videos,
+    defaultChannel
   } = props;
 
   const [dropdownOpen, setOpen] = useState(false);
@@ -43,7 +44,7 @@ const ButtonsAPIVideo = (props) => {
           <DropdownItem
             onClick={() => {
               setGetPlaylist(null);
-              onGetVideos((selectedPage - 1) * 25);
+              onGetVideos( {id: defaultChannel?.id, count: ((selectedPage - 1) * 25)});
               setChekedItems([]);
               updateDragVideo(videos);
             }}
