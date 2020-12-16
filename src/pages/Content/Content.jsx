@@ -55,12 +55,21 @@ const Content = (props) => {
 
   // Vallues
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
-  const item = characters?.filter((c) => c.id === checkedItems[0]);
-  const itemVideos = dragVIdeo?.filter((v) => v.id === checkedItems[0]);
+  const item = characters ?.filter((c) => c.id === checkedItems[0]);
+  const itemVideos = dragVIdeo ?.filter((v) => v.id === checkedItems[0]);
 
   // Handle event
 
   // Change page on click Create Playlist || Edit Playlist
+
+  const toEdit = (p) => {
+    setEditName(p.vimeo_name || p.name);
+    setEditDescription(p.vimeo_description);
+    setCheckName(p.vimeo_name);
+    setCheckDesc(p.vimeo_description);
+    setChangePage(true);
+  }
+
   const toForm = (e) => {
     const nameButton = e.target.value;
     switch (nameButton) {
@@ -76,7 +85,7 @@ const Content = (props) => {
         break;
       case "editVideo":
       case "newVideo":
-        setEditName(itemVideos[0]?.vimeo_name);
+        setEditName(itemVideos[0] ?.vimeo_name);
         setEditDescription(JSON.parse(itemVideos[0].description)["EN"] || "");
         setCheckName(itemVideos[0].vimeo_name);
         setCheckDesc(JSON.parse(itemVideos[0].description)["EN"] || "");
@@ -253,6 +262,7 @@ const Content = (props) => {
                       count,
                       selectedPage,
                       setSelectedPage,
+                      toEdit
                     }}
                   />
                 </TabPane>

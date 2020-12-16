@@ -84,7 +84,7 @@ export default {
   },
 
   getVideos: async (data) => {
-    debugger;
+    //debugger;
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;

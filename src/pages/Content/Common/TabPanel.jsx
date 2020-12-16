@@ -54,6 +54,7 @@ const TabPanel = (props) => {
     count,
     selectedPage,
     setSelectedPage,
+    toEdit
   } = props;
 
   useEffect(() => {
@@ -131,6 +132,7 @@ const TabPanel = (props) => {
                 toForm,
                 checkedItems,
                 toggleDelete,
+                toEdit
               }}
             />
           ) : (
@@ -170,25 +172,21 @@ const TabPanel = (props) => {
               onGetVideosByPlaylist,
             }}
           />
-
-          {activeTab === "1" ? (
-            characters?.length === 0 || characters === null ? (
-              <EmptyMessage {...{ activeTab }} />
-            ) : (
-              <CheckItems
-                items={characters}
-                updateItems={updateCharacters}
-                {...{
-                  checkedItems,
-                  setChekedItems,
-                  handleOnDragEnd,
-                  handleChange,
-                  characters,
-                }}
-              />
-            )
-          ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
-            <EmptyMessage {...{ activeTab }} />
+          {characters?.length === 0 || characters === null ? (
+            <EmptyMessage {...{ characters }} />
+          ) : activeTab === "1" ? (
+            <CheckItems
+              items={characters}
+              updateItems={updateCharacters}
+              {...{
+                toForm,
+                checkedItems,
+                setChekedItems,
+                handleOnDragEnd,
+                handleChange,
+                characters
+              }}
+            />
           ) : (
             <>
               <CheckItems
@@ -200,6 +198,7 @@ const TabPanel = (props) => {
                   handleChange,
                   checkedItems,
                   setChekedItems,
+                  toEdit
                 }}
               />
               {getPlaylist === null ? (

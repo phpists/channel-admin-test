@@ -11,6 +11,7 @@ const CheckItems = (props) => {
     handleOnDragEnd,
     handleChange,
     characters,
+    toEdit
   } = props;
 
   return (
@@ -26,7 +27,7 @@ const CheckItems = (props) => {
               ref={provided.innerRef}
             >
               {items &&
-                items?.map((p, index) => {
+                items ?.map((p, index) => {
                   const element = (p.duration / 3600).toString().split("");
                   const minutes = element.splice(0, 1).join("");
                   const seconds = element.splice(1, 2);
@@ -54,27 +55,29 @@ const CheckItems = (props) => {
                             />
                             <span className="title mr-3">{index + 1}</span>
                             {items === characters ? (
-                              p.name
+                              <span >{p.name}</span>
                             ) : (
-                              <>
-                                {" "}
-                                <img
-                                  src={JSON.parse(p.pictures)["100"]}
-                                  className="picture"
-                                />
-                                {p.vimeo_name}{" "}
-                              </>
-                            )}
+                                <>
+                                  {" "}
+                                  <img
+                                    src={JSON.parse(p.pictures)["100"]}
+                                    className="picture"
+                                  />
+                                  <span
+                                    onClick={() => toEdit(p)} >
+                                    {p.vimeo_name}{" "}</span>
+                                </>
+                              )}
                             <div className="col-mail col-mail-2">
                               <div className="date">
                                 {items === characters ? (
-                                  `${p?.videos_count} items`
+                                  `${p ?.videos_count} items`
                                 ) : (
-                                  <>
-                                    {minutes}:
+                                    <>
+                                      {minutes}:
                                     {seconds.length === 0 ? "00" : seconds}{" "}
-                                  </>
-                                )}
+                                    </>
+                                  )}
                               </div>
                             </div>
                           </Label>

@@ -40,16 +40,13 @@ const ChannelSettings = React.memo((props) => {
     activeChannel ?.subdomain || ""
   );
   const [modal, setModal] = useState(false);
-
   const [checkedName, setCheckedName] = useState(["English"]);
   const lang = ["English", "Deutsch", "Espanol", "Italy", "Russian"];
   const [lng, setLng] = useState("eng");
 
 
-
   const onChecked = (e) => {
     const name = e.target.name;
-
     const clickedCategory = checkedName.indexOf(name);
     const all = [...checkedName];
 
@@ -59,7 +56,7 @@ const ChannelSettings = React.memo((props) => {
       all.splice(clickedCategory, 1);
     }
     setCheckedName(all);
-
+      
     if (name === "English") {
       //setLng("eng");
     } else if (name === "Deutsch") {
@@ -72,11 +69,21 @@ const ChannelSettings = React.memo((props) => {
       //setLng("rs");
     }
   };
-
+  
+  const onSubmit = () => {
+    localStorage.setItem("channelLangs", checkedName);
+    onChannelUpdate({
+      id: activeChannel.id,
+      name: channelName,
+      domain: channelDomain.replace(/\s/g, ""),
+      subdomain: channelSubDomain.replace(/\s/g, ""),
+    });
+  };
+  
   useEffect(() => {
     const data = localStorage.getItem("channelLangs");
     const languages = data.split(',');
-    setCheckedName(languages);
+    setCheckedName(languages)
     i18n.changeLanguage(lng);
   }, [lng]);
 
@@ -110,15 +117,6 @@ const ChannelSettings = React.memo((props) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const onSubmit = () => {
-    localStorage.setItem("channelLangs", checkedName)
-    onChannelUpdate({
-      id: activeChannel.id,
-      name: channelName,
-      domain: channelDomain.replace(/\s/g, ""),
-      subdomain: channelSubDomain.replace(/\s/g, ""),
-    });
-  };
 
   const renderChannelSettings = () => {
     return (
