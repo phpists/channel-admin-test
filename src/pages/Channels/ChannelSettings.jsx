@@ -74,6 +74,9 @@ const ChannelSettings = React.memo((props) => {
   };
 
   useEffect(() => {
+    const data = localStorage.getItem("channelLangs");
+    const languages = data.split(',');
+    setCheckedName(languages);
     i18n.changeLanguage(lng);
   }, [lng]);
 
