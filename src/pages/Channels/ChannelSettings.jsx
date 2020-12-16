@@ -31,35 +31,46 @@ import "./channels.scss";
 
 const ChannelSettings = React.memo((props) => {
   const { activeChannel, onChannelUpdate } = props;
-
   const [activeTab, setActiveTab] = useState("1");
-  const [channelName, setChannelName] = useState(activeChannel?.name || "");
+  const [channelName, setChannelName] = useState(activeChannel ?.name || "");
   const [channelDomain, setChannelDomain] = useState(
-    activeChannel?.domain || ""
+    activeChannel ?.domain || ""
   );
   const [channelSubDomain, setChannelSubDomain] = useState(
-    activeChannel?.subdomain || ""
+    activeChannel ?.subdomain || ""
   );
   const [modal, setModal] = useState(false);
 
-  const [checkedName, setCheckedName] = useState("English");
+  const [checkedName, setCheckedName] = useState(["English"]);
   const lang = ["English", "Deutsch", "Espanol", "Italy", "Russian"];
   const [lng, setLng] = useState("eng");
 
+
+
   const onChecked = (e) => {
     const name = e.target.name;
-	setCheckedName(name);
-	if(name === "English") {
-		setLng("eng");
-	} else if(name === "Deutsch") {
-		setLng("gr");
-	} else if(name === "Espanol") {
-		setLng("sp");
-	} else if(name === "Italy") {
-		setLng("it");
-	} else if(name === "Russian") {
-		setLng("rs");
-	}
+
+    const clickedCategory = checkedName.indexOf(name);
+    const all = [...checkedName];
+
+    if (clickedCategory === -1) {
+      all.push(name);
+    } else {
+      all.splice(clickedCategory, 1);
+    }
+    setCheckedName(all);
+
+    if (name === "English") {
+      //setLng("eng");
+    } else if (name === "Deutsch") {
+      //setLng("gr");
+    } else if (name === "Espanol") {
+      //setLng("sp");
+    } else if (name === "Italy") {
+      //setLng("it");
+    } else if (name === "Russian") {
+      //setLng("rs");
+    }
   };
 
   useEffect(() => {
@@ -84,9 +95,9 @@ const ChannelSettings = React.memo((props) => {
 
   useEffect(() => {
     if (activeChannel) {
-      setChannelName(activeChannel?.name);
-      setChannelDomain(activeChannel?.domain || "");
-      setChannelSubDomain(activeChannel?.subdomain || "");
+      setChannelName(activeChannel ?.name);
+      setChannelDomain(activeChannel ?.domain || "");
+      setChannelSubDomain(activeChannel ?.subdomain || "");
     }
   }, [activeChannel]);
 
@@ -97,6 +108,7 @@ const ChannelSettings = React.memo((props) => {
   };
 
   const onSubmit = () => {
+    localStorage.setItem("channelLangs", checkedName)
     onChannelUpdate({
       id: activeChannel.id,
       name: channelName,
@@ -205,14 +217,13 @@ const ChannelSettings = React.memo((props) => {
                         Enable languages so that viewers can see translated
                         content on your website
                       </FormText>
-
                       {lang.map((label, index) => {
                         return (
                           <Label check key={index} className="d-block ml-4 mt-2 font-weight-bold">
                             <Input
                               type="checkbox"
                               name={label}
-                              checked={label === checkedName}
+                              checked={checkedName.includes(label)}
                               onChange={onChecked}
                             />
                             {label}

@@ -6,6 +6,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 const LanguagesTabs = () => {
   const [activeTab, setActiveTab] = useState("2");
   const [lng, setLng] = useState("eng");
+  const [langs, setLangs] = useState([]);
 
   // On toggle languages
   const toggleCustomJustified = (tab) => {
@@ -17,13 +18,40 @@ const LanguagesTabs = () => {
   // Side effects
   useEffect(() => {
     i18n.changeLanguage(lng);
+    const data = localStorage.getItem("channelLangs");
+    const languages = data.split(',');
+    setLangs(languages)
   }, [lng]);
+
+  // console.log(langs);
+  // console.log(typeof (langs));
 
   return (
     <TabContent>
       <TabPane>
         <Nav tabs className="nav-tabs-custom nav-justified">
-          <NavItem>
+
+          {langs.map((item, index) => {
+            const num = index + 1
+            return (
+              <NavItem>
+                <NavLink
+                  style={{ cursor: "pointer" }}
+                  className={classnames({
+                    active: activeTab === num.toString(),
+                  })}
+                  onClick={() => {
+                    //setLng("rs");
+                    toggleCustomJustified(num.toString());
+                  }}
+                >
+                  <span className="d-none d-sm-block">{item}</span>
+                </NavLink>
+              </NavItem>
+            );
+          })}
+
+          {/* <NavItem>
             <NavLink
               style={{ cursor: "pointer" }}
               className={classnames({
@@ -36,8 +64,9 @@ const LanguagesTabs = () => {
             >
               <span className="d-none d-sm-block">Russian</span>
             </NavLink>
-          </NavItem>
-          <NavItem>
+          </NavItem> */}
+
+          {/* <NavItem>
             <NavLink
               style={{ cursor: "pointer" }}
               className={classnames({
@@ -51,6 +80,7 @@ const LanguagesTabs = () => {
               <span className="d-none d-sm-block">English</span>
             </NavLink>
           </NavItem>
+
           <NavItem>
             <NavLink
               style={{ cursor: "pointer" }}
@@ -65,6 +95,7 @@ const LanguagesTabs = () => {
               <span className="d-none d-sm-block">Italy</span>
             </NavLink>
           </NavItem>
+
           <NavItem>
             <NavLink
               style={{ cursor: "pointer" }}
@@ -79,6 +110,7 @@ const LanguagesTabs = () => {
               <span className="d-none d-sm-block">German</span>
             </NavLink>
           </NavItem>
+
           <NavItem>
             <NavLink
               style={{ cursor: "pointer" }}
@@ -92,7 +124,7 @@ const LanguagesTabs = () => {
             >
               <span className="d-none d-sm-block">Espanol</span>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
         </Nav>
         {/* Buttons fot toggle */}
         <TabContent activeTab={activeTab}>
