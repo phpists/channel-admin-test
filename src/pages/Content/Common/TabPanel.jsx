@@ -51,7 +51,7 @@ const TabPanel = (props) => {
     toForm,
     defaultChannel,
     playlists,
-    count,
+    countVideos,
     selectedPage,
     setSelectedPage,
   } = props;
@@ -200,17 +200,19 @@ const TabPanel = (props) => {
                   handleChange,
                   checkedItems,
                   setChekedItems,
+                  toForm
                 }}
               />
               {getPlaylist === null ? (
                 <PaginationVideos
                   {...{
-                    count,
+                    countVideos,
                     onGetVideos,
                     updateDragVideo,
                     videos,
                     selectedPage,
                     setSelectedPage,
+                    toForm
                   }}
                 />
               ) : null}

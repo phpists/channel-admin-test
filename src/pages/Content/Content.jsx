@@ -34,7 +34,8 @@ const Content = (props) => {
     videosByPlaylist,
     onGetVideos,
     videos,
-    count,
+    countVideos,
+    countPlaylists
   } = props;
 
   // State local
@@ -148,7 +149,7 @@ const Content = (props) => {
               <Card>
                 <CardBody>
                   <TabButton
-                    {...{ activeTab, toggleTab, characters, dragVIdeo }}
+                    {...{ activeTab, toggleTab, characters, dragVIdeo, countPlaylists, countVideos }}
                   />
                 </CardBody>
               </Card>
@@ -200,7 +201,7 @@ const Content = (props) => {
                       toForm,
                       defaultChannel,
                       playlists,
-                      count,
+                      countVideos,
                       selectedPage,
                       setSelectedPage,
                     }}
@@ -250,7 +251,7 @@ const Content = (props) => {
                       toForm,
                       defaultChannel,
                       playlists,
-                      count,
+                      countVideos,
                       selectedPage,
                       setSelectedPage,
                     }}
@@ -277,7 +278,8 @@ const mapStatetoProps = (state) => ({
   onePlayist: selectors.playlists.onePlaylist(state),
   videos: selectors.videos.videos(state),
   videosByPlaylist: selectors.videos.videosByPlaylist(state),
-  count: selectors.videos.count(state),
+  countVideos: selectors.videos.count(state),
+  countPlaylists: selectors.playlists.count(state),
 });
 
 // Get redux state function

@@ -3,11 +3,11 @@ import classnames from "classnames";
 import { Button, Nav, NavItem, NavLink } from "reactstrap";
 
 const TabButton = (props) => {
-  const { activeTab, toggleTab, characters, dragVIdeo } = props;
+  const { activeTab, toggleTab, characters, dragVIdeo, countPlaylists, countVideos } = props;
   const buttons = [
     { name: "Upload", tab: "3" },
-    { name: "Playlists", tab: "1", total: characters?.length },
-    { name: "Videos", tab: "2", total: dragVIdeo?.length },
+    { name: "Playlists", tab: "1", total: countPlaylists },
+    { name: "Videos", tab: "2", total: countVideos },
   ];
   return (
     <Nav className="border-0 navi" vertical>

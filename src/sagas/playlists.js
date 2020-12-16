@@ -73,7 +73,7 @@ export function* watchGetPlaylists(action) {
       );
     } else {
       yield put(
-        Actions.playlists.getPlaylistsSuccess(response?.data?.playlists)
+        Actions.playlists.getPlaylistsSuccess(response?.data)
       );
     }
   } else {

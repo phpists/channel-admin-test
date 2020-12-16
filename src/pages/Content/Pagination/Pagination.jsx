@@ -3,7 +3,7 @@ import PaginationComponent from "react-reactstrap-pagination";
 
 const PaginationVideos = (props) => {
   const {
-    count,
+    countVideos,
     onGetVideos,
     updateDragVideo,
     videos,
@@ -25,7 +25,7 @@ const PaginationVideos = (props) => {
   return (
     <div className="d-flex justify-content-center">
       <PaginationComponent
-        totalItems={count}
+        totalItems={countVideos}
         pageSize={25}
         onSelect={handleSelected}
         defaultActivePage={selectedPage}
