@@ -2,7 +2,7 @@ import { axiosInstance } from "./index";
 import { sha1 } from "../sha1";
 
 export default {
-    addVideoToPlaylist: async (data) => {
+  addVideoToPlaylist: async (data) => {
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
@@ -48,11 +48,11 @@ export default {
     };
 
     return await axiosInstance
-        .post(`?${queryString}`, formData, config)
-        .then((response) => {
-          return response;
-        })
-        .catch((error) => ({ error }))
+      .post(`?${queryString}`, formData, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => ({ error }));
   },
 
   updateVideo: async (data) => {
@@ -76,15 +76,14 @@ export default {
     };
 
     return await axiosInstance
-        .post(`?${queryString}`, formData, config)
-        .then((response) => {
-          return response;
-        })
-        .catch((error) => ({ error }))
+      .post(`?${queryString}`, formData, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => ({ error }));
   },
 
   getVideos: async (data) => {
-    debugger;
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
@@ -109,7 +108,7 @@ export default {
       : null;
     if (!authData) return false;
     const queryString = `action=GetVideosByPlaylists&openKey=${authData.openKey}&where=playlist_id=${data}`;
-    const jsonData = JSON.stringify({where: data});
+    const jsonData = JSON.stringify({ where: data });
     const formData = new FormData();
     formData.append("jsonData", jsonData);
     const signature = sha1(queryString + authData.privateKey + jsonData);
@@ -123,7 +122,6 @@ export default {
     return await axiosInstance
       .get(`?${queryString}`, formData, config)
       .then((response) => {
-        console.log("videos: ", response);
         return response;
       })
       .catch((error) => ({ error }));

@@ -32,24 +32,22 @@ import "./channels.scss";
 const ChannelSettings = React.memo((props) => {
   const { activeChannel, onChannelUpdate } = props;
   const [activeTab, setActiveTab] = useState("1");
-  const [channelName, setChannelName] = useState(activeChannel ?.name || "");
+  const [channelName, setChannelName] = useState(activeChannel?.name || "");
   const [channelDomain, setChannelDomain] = useState(
-    activeChannel ?.domain || ""
+    activeChannel?.domain || ""
   );
   const [channelSubDomain, setChannelSubDomain] = useState(
-    activeChannel ?.subdomain || ""
+    activeChannel?.subdomain || ""
   );
   const [modal, setModal] = useState(false);
-
-  const [checkedName, setCheckedName] = useState(["English"]);
+  const [checkedName, setCheckedName] = useState([]);
   const lang = ["English", "Deutsch", "Espanol", "Italy", "Russian"];
-  const [lng, setLng] = useState("eng");
-
-
+  // const [lng, setLng] = useState("eng");
+  let defaultLang = JSON.parse(localStorage.getItem("channelLangs"));
+  
 
   const onChecked = (e) => {
     const name = e.target.name;
-
     const clickedCategory = checkedName?.indexOf(name);
     const all = [...checkedName];
 
@@ -59,26 +57,38 @@ const ChannelSettings = React.memo((props) => {
       all.splice(clickedCategory, 1);
     }
     setCheckedName(all);
+    localStorage.setItem("channelLangs", JSON.stringify(all));
 
-    if (name === "English") {
-      //setLng("eng");
-    } else if (name === "Deutsch") {
-      //setLng("gr");
-    } else if (name === "Espanol") {
-      //setLng("sp");
-    } else if (name === "Italy") {
-      //setLng("it");
-    } else if (name === "Russian") {
-      //setLng("rs");
-    }
+    // if (name === "English") {
+    //   //setLng("eng");
+    // } else if (name === "Deutsch") {
+    //   //setLng("gr");
+    // } else if (name === "Espanol") {
+    //   //setLng("sp");
+    // } else if (name === "Italy") {
+    //   //setLng("it");
+    // } else if (name === "Russian") {
+    //   //setLng("rs");
+    // }
+  };
+
+  const onSubmit = () => {
+    onChannelUpdate({
+      id: activeChannel.id,
+      name: channelName,
+      domain: channelDomain.replace(/\s/g, ""),
+      subdomain: channelSubDomain.replace(/\s/g, ""),
+    });
   };
 
   useEffect(() => {
-    const data = localStorage.getItem("channelLangs");
-    const languages = data?.split(',');
-    setCheckedName(languages);
-    i18n.changeLanguage(lng);
-  }, [lng]);
+    if(defaultLang === null) {
+      localStorage.setItem("channelLangs", JSON.stringify(checkedName));
+    }
+    defaultLang = JSON.parse(localStorage.getItem("channelLangs"));
+      setCheckedName(defaultLang);
+    // i18n.changeLanguage(lng);
+  }, []);
 
   const customValidation = (value) => {
     return validate.isChannelNameValid(value)
@@ -98,9 +108,9 @@ const ChannelSettings = React.memo((props) => {
 
   useEffect(() => {
     if (activeChannel) {
-      setChannelName(activeChannel ?.name);
-      setChannelDomain(activeChannel ?.domain || "");
-      setChannelSubDomain(activeChannel ?.subdomain || "");
+      setChannelName(activeChannel?.name);
+      setChannelDomain(activeChannel?.domain || "");
+      setChannelSubDomain(activeChannel?.subdomain || "");
     }
   }, [activeChannel]);
 
@@ -108,16 +118,6 @@ const ChannelSettings = React.memo((props) => {
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
-  };
-
-  const onSubmit = () => {
-    localStorage.setItem("channelLangs", checkedName)
-    onChannelUpdate({
-      id: activeChannel.id,
-      name: channelName,
-      domain: channelDomain.replace(/\s/g, ""),
-      subdomain: channelSubDomain.replace(/\s/g, ""),
-    });
   };
 
   const renderChannelSettings = () => {
@@ -215,14 +215,20 @@ const ChannelSettings = React.memo((props) => {
                       />
                     </div>
                     <div className="form-group">
-                      <Label className="m-0 font-weight-bold" >Supported languages</Label>
+                      <Label className="m-0 font-weight-bold">
+                        Supported languages
+                      </Label>
                       <FormText color="muted">
                         Enable languages so that viewers can see translated
                         content on your website
                       </FormText>
                       {lang.map((label, index) => {
                         return (
-                          <Label check key={index} className="d-block ml-4 mt-2 font-weight-bold">
+                          <Label
+                            check
+                            key={index}
+                            className="d-block ml-4 mt-2 font-weight-bold"
+                          >
                             <Input
                               type="checkbox"
                               name={label}

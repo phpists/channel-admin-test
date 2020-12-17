@@ -35,7 +35,7 @@ const Content = (props) => {
     onGetVideos,
     videos,
     countVideos,
-    countPlaylists
+    countPlaylists,
   } = props;
 
   // State local
@@ -62,6 +62,24 @@ const Content = (props) => {
   // Handle event
 
   // Change page on click Create Playlist || Edit Playlist
+
+  const toEdit = (p, name) => {
+    if (name === "editVideo") {
+      setEditName(p.vimeo_name);
+      setEditDescription(JSON.parse(p.description)["EN"]);
+      setCheckName(p.vimeo_name);
+      setCheckDesc(JSON.parse(p.description)["EN"]);
+      setChangePage(true);
+    } else {
+      setEditName(p.name);
+      setEditDescription(p.description);
+      setCheckName(p.name);
+      setCheckDesc(p.description);
+      setChangePage(true);
+    }
+    setValueButton(name);
+  };
+
   const toForm = (e) => {
     const nameButton = e.target.value;
     switch (nameButton) {
@@ -133,10 +151,10 @@ const Content = (props) => {
   };
 
   useEffect(() => {
-    if (defaultChannel !== props.activeChannel) {
+    if (defaultChannel !== activeChannel) {
       setChekedItems([]);
     }
-  }, [props.activeChannel]);
+  }, [activeChannel]);
 
   return (
     <>
@@ -149,7 +167,14 @@ const Content = (props) => {
               <Card>
                 <CardBody>
                   <TabButton
-                    {...{ activeTab, toggleTab, characters, dragVIdeo, countPlaylists, countVideos }}
+                    {...{
+                      activeTab,
+                      toggleTab,
+                      characters,
+                      dragVIdeo,
+                      countPlaylists,
+                      countVideos,
+                    }}
                   />
                 </CardBody>
               </Card>
@@ -198,12 +223,14 @@ const Content = (props) => {
                       onGetPlaylist,
                       onUpdatePlaylist,
                       activeTab,
-                      toForm,
                       defaultChannel,
                       playlists,
                       countVideos,
                       selectedPage,
                       setSelectedPage,
+                      toEdit,
+                      setActiveTab,
+                      toForm,
                     }}
                   />
                 </TabPane>
@@ -254,6 +281,8 @@ const Content = (props) => {
                       countVideos,
                       selectedPage,
                       setSelectedPage,
+                      toEdit,
+                      setActiveTab,
                     }}
                   />
                 </TabPane>

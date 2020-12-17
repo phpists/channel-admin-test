@@ -44,7 +44,7 @@ const FormaData = (props) => {
   };
 
   return (
-    <FormGroup className="w-50">
+    <FormGroup className="w-50 mt-4">
       <AvField
         name="title"
         className="form-control"

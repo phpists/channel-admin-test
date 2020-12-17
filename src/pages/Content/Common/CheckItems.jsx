@@ -11,6 +11,7 @@ const CheckItems = (props) => {
     handleOnDragEnd,
     handleChange,
     characters,
+    toEdit,
   } = props;
 
   return (
@@ -54,7 +55,15 @@ const CheckItems = (props) => {
                             />
                             <span className="title mr-3">{index + 1}</span>
                             {items === characters ? (
-                              p.name
+                              <>
+                              {" "}
+                              <span
+                                id="editPlaylist"
+                                onClick={(e) => toEdit(p, e.currentTarget.id)}
+                              >
+                                {p.name}{" "}
+                              </span>
+                              </>
                             ) : (
                               <>
                                 {" "}
@@ -62,7 +71,12 @@ const CheckItems = (props) => {
                                   src={JSON.parse(p.pictures)["100"]}
                                   className="picture"
                                 />
-                                {p.vimeo_name}{" "}
+                                <span
+                                  id="editVideo"
+                                  onClick={(e) => toEdit(p, e.currentTarget.id)}
+                                >
+                                  {p.vimeo_name}{" "}
+                                </span>
                               </>
                             )}
                             <div className="col-mail col-mail-2">
