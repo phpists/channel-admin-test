@@ -47,7 +47,7 @@ const CreateEdit = (props) => {
   } = props;
   // State local
   const [require, setRequire] = useState(false);
-  const [playlistId, setPlaylistId] = useState(characters[0].id);
+  const [playlistId, setPlaylistId] = useState(characters[0]?.id);
 
   function onSubmit() {
     if (editName === "" || editDescription === "") {

@@ -102,12 +102,75 @@ export default {
       .catch((error) => ({ error }));
   },
 
+  getVideosByPage: async (data) => {
+    const authData = sessionStorage.getItem("bringStreamAuth")
+    ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
+    : null;
+  if (!authData) return false;
+  const queryString = `action=GetVideos&openKey=${authData.openKey}&offset=${data.count}&where=channel_id=${data.id}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return await axiosInstance
+    .get(`?${queryString}`, config)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => ({ error }));
+  },
+
+  getOneVideo: async (data) => {
+    const authData = sessionStorage.getItem("bringStreamAuth")
+    ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
+    : null;
+  if (!authData) return false;
+  const queryString = `action=GetVideos&openKey=${authData.openKey}&where=id=${data}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return await axiosInstance
+    .get(`?${queryString}`, config)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => ({ error }));
+  },
+
   getVideosByPlaylists: async (data) => {
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
     const queryString = `action=GetVideosByPlaylists&openKey=${authData.openKey}&where=playlist_id=${data}`;
+    const jsonData = JSON.stringify({ where: data });
+    const formData = new FormData();
+    formData.append("jsonData", jsonData);
+    const signature = sha1(queryString + authData.privateKey + jsonData);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      signature: signature,
+    };
+
+    return await axiosInstance
+      .get(`?${queryString}`, formData, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => ({ error }));
+  },
+
+  getVideosByPlaylistsByPage: async (data) => {
+    const authData = sessionStorage.getItem("bringStreamAuth")
+      ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
+      : null;
+    if (!authData) return false;
+    const queryString = `action=GetVideosByPlaylists&openKey=${authData.openKey}&where=playlist_id=${data}offset=${data}`;
     const jsonData = JSON.stringify({ where: data });
     const formData = new FormData();
     formData.append("jsonData", jsonData);

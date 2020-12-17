@@ -231,6 +231,7 @@ const Content = (props) => {
                       toEdit,
                       setActiveTab,
                       toForm,
+                      countPlaylists
                     }}
                   />
                 </TabPane>
@@ -283,6 +284,7 @@ const Content = (props) => {
                       setSelectedPage,
                       toEdit,
                       setActiveTab,
+                      countPlaylists
                     }}
                   />
                 </TabPane>

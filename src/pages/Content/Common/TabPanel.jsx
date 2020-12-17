@@ -52,6 +52,7 @@ const TabPanel = (props) => {
     defaultChannel,
     playlists,
     countVideos,
+    countPlaylists,
     selectedPage,
     setSelectedPage,
     toEdit,
@@ -194,7 +195,6 @@ const TabPanel = (props) => {
           ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
             <EmptyMessage {...{ setActiveTab, activeTab }} />
           ) : (
-            <>
               <CheckItems
                 items={dragVIdeo}
                 updateItems={updateDragVideo}
@@ -207,23 +207,21 @@ const TabPanel = (props) => {
                   toEdit,
                 }}
               />
-               {getPlaylist === null ? (
-            <PaginationVideos
-              {...{
-                countVideos,
-                onGetVideos,
-                updateDragVideo,
-                videos,
-                selectedPage,
-                setSelectedPage,
-                toEdit,
-                defaultChannel,
-              }}
-            />
-          ) : null}
-            </>
           )}
-         
+            {getPlaylist === null || countVideos > 25 ? (
+              <PaginationVideos
+                {...{
+                  countVideos,
+                  onGetVideos,
+                  updateDragVideo,
+                  videos,
+                  selectedPage,
+                  setSelectedPage,
+                  toEdit,
+                  defaultChannel,
+                }}
+              />
+            ) : null}
         </CardBody>
       )}
     </Card>
