@@ -84,11 +84,12 @@ export default {
   },
 
   getPlaylists: async (data) => {
+    debugger
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
-    const queryString = `action=GetPlaylists&openKey=${authData.openKey}&where=channel_id=${data.id}`;
+    const queryString = `action=GetPlaylists&openKey=${authData.openKey}&where=channel_id=${data.id}&offset=${data.count}`;
     const config = {
       headers: {
         "Content-Type": "application/json",

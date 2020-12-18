@@ -14,6 +14,15 @@ const CheckItems = (props) => {
     toEdit,
   } = props;
 
+  let allItems = [];
+  for (let str of items) {
+    if (!allItems.includes(str)) {
+      allItems.push(str);
+    }
+  }
+
+  console.log("Uniqe: ", allItems);
+
   return (
     <Form>
       <DragDropContext

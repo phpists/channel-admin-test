@@ -27,7 +27,7 @@ const Header = (props) => {
       onGetChannels()
     }
     if(defaultChannel !== activeChannel) {
-      onGetPlaylist({id: defaultChannel?.id || "1"});
+      onGetPlaylist({id: defaultChannel?.id || "1", count: 0});
     }
     setActiveChannel(defaultChannel)
   }, [channels, onGetChannels, activeChannel, defaultChannel, onGetPlaylist, setActiveChannel])

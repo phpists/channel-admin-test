@@ -56,12 +56,13 @@ const TabPanel = (props) => {
     selectedPage,
     setSelectedPage,
     toEdit,
-    setActiveTab
+    setActiveTab,
+    countVideosByPlaylist,
   } = props;
 
   useEffect(() => {
     if (playlists === null) {
-      onGetPlaylist({ id: defaultChannel?.id || "1" });
+      onGetPlaylist({ id: defaultChannel?.id || "1", count: 0 });
     }
     if (
       characters === null ||
@@ -78,7 +79,7 @@ const TabPanel = (props) => {
         checkName == editName
       ) {
         updateDragVideo(videosByPlaylist);
-        onGetPlaylist({ id: defaultChannel?.id || "1" });
+        onGetPlaylist({ id: defaultChannel?.id || "1", count: 0 });
       }
     }
     if (selectedPage === null) {
@@ -118,12 +119,14 @@ const TabPanel = (props) => {
               getPlaylist,
               characters,
               checkName,
+              selectedPage,
+              setSelectedPage,
             }}
           />
         </CardBody>
       ) : (
         <CardBody className="w-100">
-          <CardTitle>Playlists</CardTitle>
+          <CardTitle>{activeTab === "1" ? "Playlists" : "Videos"}</CardTitle>
           <CardSubtitle className="mb-3">
             {activeTab === "1" ? characters?.length : dragVIdeo?.length || 0}{" "}
             Total
@@ -150,7 +153,7 @@ const TabPanel = (props) => {
                 dragVIdeo,
                 toForm,
                 checkedItems,
-                selectedPage,
+                setSelectedPage,
                 updateDragVideo,
                 videos,
                 defaultChannel,
@@ -173,28 +176,50 @@ const TabPanel = (props) => {
               onRemoveVideoFromPlaylist,
               getPlaylist,
               onGetVideosByPlaylist,
+              setSelectedPage,
             }}
           />
           {activeTab === "1" ? (
             characters?.length === 0 || characters === null ? (
               <EmptyMessage {...{ setActiveTab, activeTab }} />
             ) : (
-              <CheckItems
-                items={characters}
-                updateItems={updateCharacters}
-                {...{
-                  checkedItems,
-                  setChekedItems,
-                  handleOnDragEnd,
-                  handleChange,
-                  characters,
-                  toEdit
-                }}
-              />
+              <>
+                <CheckItems
+                  items={characters}
+                  updateItems={updateCharacters}
+                  {...{
+                    checkedItems,
+                    setChekedItems,
+                    handleOnDragEnd,
+                    handleChange,
+                    characters,
+                    toEdit,
+                  }}
+                />
+                <PaginationVideos
+                  {...{
+                    countVideos,
+                    onGetVideos,
+                    countVideosByPlaylist,
+                    updateDragVideo,
+                    videos,
+                    selectedPage,
+                    setSelectedPage,
+                    toEdit,
+                    defaultChannel,
+                    getPlaylist,
+                    onGetVideosByPlaylist,
+                    onGetPlaylist,
+                    countPlaylists,
+                    activeTab,
+                  }}
+                />
+              </>
             )
           ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
             <EmptyMessage {...{ setActiveTab, activeTab }} />
           ) : (
+            <>
               <CheckItems
                 items={dragVIdeo}
                 updateItems={updateDragVideo}
@@ -207,21 +232,26 @@ const TabPanel = (props) => {
                   toEdit,
                 }}
               />
+              {getPlaylist === null ? (
+                <PaginationVideos
+                  {...{
+                    countVideos,
+                    onGetVideos,
+                    countVideosByPlaylist,
+                    updateDragVideo,
+                    videos,
+                    selectedPage,
+                    setSelectedPage,
+                    toEdit,
+                    defaultChannel,
+                    getPlaylist,
+                    onGetVideosByPlaylist,
+                    activeTab,
+                  }}
+                />
+              ) : null}
+            </>
           )}
-            {getPlaylist === null || countVideos > 25 ? (
-              <PaginationVideos
-                {...{
-                  countVideos,
-                  onGetVideos,
-                  updateDragVideo,
-                  videos,
-                  selectedPage,
-                  setSelectedPage,
-                  toEdit,
-                  defaultChannel,
-                }}
-              />
-            ) : null}
         </CardBody>
       )}
     </Card>

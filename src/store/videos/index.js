@@ -2,8 +2,12 @@ import { Types } from "./actions";
 
 const initialState = {
   videos: null,
-  count: null,
+  countVideos: null,
+  
   videosByPlaylist: null,
+  countVideosByPlaylist: null,
+
+  oneVideo: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -13,7 +17,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         ...{
           videos: action.payload.playlists,
-          count: action.payload.count
+          countVideos: action.payload.count
         },
       };
     }
@@ -21,7 +25,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...{
-          videosByPlaylist: action.payload,
+          videosByPlaylist: action.payload.videos,
+          countVideosByPlaylist: action.payload.count
         },
       };
     }

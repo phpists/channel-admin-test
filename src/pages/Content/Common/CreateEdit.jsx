@@ -44,6 +44,7 @@ const CreateEdit = (props) => {
     onGetVideosByPlaylist,
     getPlaylist,
     characters,
+    setSelectedPage
   } = props;
   // State local
   const [require, setRequire] = useState(false);
@@ -56,7 +57,8 @@ const CreateEdit = (props) => {
       switch (valueButton) {
         case "editPlaylist":
           onUpdatePlaylist({ id: checkedItems[0], name: editName });
-          onGetPlaylist({ id: activeChannel.id });
+          onGetPlaylist({ id: activeChannel.id, count: 0 });
+          setSelectedPage(1);
           break;
         case "newPlaylist":
           onAddPlaylist({
@@ -64,18 +66,20 @@ const CreateEdit = (props) => {
             description: editDescription,
             channel_id: activeChannel.id,
           });
-          onGetPlaylist({ id: activeChannel.id });
+          onGetPlaylist({ id: activeChannel.id, count: 0 });
           break;
         case "editVideo":
           onUpdateVideo({ id: checkedItems[0], name: editName });
-          onGetVideosByPlaylist(getPlaylist);
+          onGetVideosByPlaylist({id: getPlaylist, count: 0});
+          setSelectedPage(1)
           break;
         case "newVideo":
           onAddVideoToPlaylist({
             playlist_id: playlistId,
             video_id: checkedItems[0],
           });
-          onGetVideosByPlaylist(getPlaylist);
+          onGetVideosByPlaylist({id: getPlaylist, count: 0});
+          setSelectedPage(1)
           break;
       }
       setCheckName("");

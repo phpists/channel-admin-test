@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PaginationComponent from "react-reactstrap-pagination";
 
 const PaginationVideos = (props) => {
@@ -9,12 +9,30 @@ const PaginationVideos = (props) => {
     videos,
     selectedPage,
     setSelectedPage,
-    defaultChannel
+    defaultChannel,
+    onGetPlaylist,
+    countPlaylists,
+    activeTab,
+    countVideosByPlaylist,
+    getPlaylist,
+    onGetVideosByPlaylist
   } = props;
 
   const handleSelected = (page) => {
-    onGetVideos( {id: defaultChannel?.id, count: ((page - 1) * 25)});
-    setSelectedPage(page);
+    // if(getPlaylist === null) {
+    
+    // } else {
+    //   onGetVideosByPlaylist( {id: getPlaylist?.id, count: ((page - 1) * 25)});
+    //   setSelectedPage(page);
+    // }
+
+    if(activeTab === "1") {
+      onGetPlaylist( {id: defaultChannel?.id, count: ((page - 1) * 25)});
+      setSelectedPage(page);
+    } else {
+      onGetVideos( {id: defaultChannel?.id, count: ((page - 1) * 25)});
+      setSelectedPage(page);
+    }
   };
 
   useEffect(() => {
@@ -26,7 +44,7 @@ const PaginationVideos = (props) => {
   return (
     <div className="d-flex justify-content-center">
       <PaginationComponent
-        totalItems={countVideos}
+        totalItems={activeTab === "1" ? countPlaylists : countVideos}
         pageSize={25}
         onSelect={handleSelected}
         defaultActivePage={selectedPage}

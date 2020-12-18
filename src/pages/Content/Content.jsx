@@ -36,6 +36,7 @@ const Content = (props) => {
     videos,
     countVideos,
     countPlaylists,
+    countVideosByPlaylist,
   } = props;
 
   // State local
@@ -123,6 +124,9 @@ const Content = (props) => {
       }
       setChangePage(false);
       setChekedItems([]);
+      setSelectedPage(1);
+      onGetPlaylist({ id: defaultChannel?.id, count: 0 });
+      onGetVideos({ id: defaultChannel?.id, count: 0 });
     }
   };
 
@@ -231,7 +235,8 @@ const Content = (props) => {
                       toEdit,
                       setActiveTab,
                       toForm,
-                      countPlaylists
+                      countPlaylists,
+                      countVideosByPlaylist,
                     }}
                   />
                 </TabPane>
@@ -284,7 +289,8 @@ const Content = (props) => {
                       setSelectedPage,
                       toEdit,
                       setActiveTab,
-                      countPlaylists
+                      countPlaylists,
+                      countVideosByPlaylist,
                     }}
                   />
                 </TabPane>
@@ -304,13 +310,16 @@ const Content = (props) => {
 
 // Get redux state values
 const mapStatetoProps = (state) => ({
-  playlists: selectors.playlists.playlists(state),
   activeChannel: selectors.channels.activeChannel(state),
+
+  playlists: selectors.playlists.playlists(state),
   onePlayist: selectors.playlists.onePlaylist(state),
+  countPlaylists: selectors.playlists.count(state),
+
   videos: selectors.videos.videos(state),
   videosByPlaylist: selectors.videos.videosByPlaylist(state),
-  countVideos: selectors.videos.count(state),
-  countPlaylists: selectors.playlists.count(state),
+  countVideos: selectors.videos.countVideos(state),
+  countVideosByPlaylist: selectors.videos.countVideosByPlaylist(state),
 });
 
 // Get redux state function

@@ -80,7 +80,7 @@ export function* watchGetVideoByPlaylists(action) {
       );
     } else {
       yield put(
-        Actions.videos.getVideoByPlaylistSuccess(response?.data?.videos)
+        Actions.videos.getVideoByPlaylistSuccess(response?.data)
       );
     }
   } else {

@@ -7,10 +7,12 @@ const videosByPlaylist = deepEqualSelector(
   self,
   (data) => data.videosByPlaylist
 );
-const count = deepEqualSelector(self, (data) => data.count)
+const countVideos = deepEqualSelector(self, (data) => data.countVideos);
+const countVideosByPlaylist = deepEqualSelector(self, (data) => data.countVideosByPlaylist)
 
 export default {
   videos,
-  count,
+  countVideos,
   videosByPlaylist,
+  countVideosByPlaylist
 };

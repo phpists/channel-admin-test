@@ -19,7 +19,7 @@ const ButtonsAPIVideo = (props) => {
     dragVIdeo,
     toForm,
     checkedItems,
-    selectedPage,
+    setSelectedPage,
     updateDragVideo,
     videos,
     defaultChannel
@@ -44,7 +44,8 @@ const ButtonsAPIVideo = (props) => {
           <DropdownItem
             onClick={() => {
               setGetPlaylist(null);
-              onGetVideos( {id: defaultChannel?.id, count: ((selectedPage - 1) * 25)});
+              onGetVideos( {id: defaultChannel?.id, count: 0});
+              setSelectedPage(1);
               setChekedItems([]);
               updateDragVideo(videos);
             }}
@@ -56,9 +57,10 @@ const ButtonsAPIVideo = (props) => {
               <DropdownItem
                 key={c.id}
                 onClick={() => {
-                  onGetVideosByPlaylist(c.id);
+                  onGetVideosByPlaylist({id: c.id, count: 0});
                   setGetPlaylist(c);
                   setChekedItems([]);
+                  setSelectedPage(1);
                 }}
               >
                 {c.name}
