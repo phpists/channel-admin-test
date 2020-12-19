@@ -48,7 +48,7 @@ const LanguagesTabs = () => {
         </Nav>
         {/* Buttons fot toggle */}
         <TabContent activeTab={activeTab}>
-          {langs.map((item, index) => {
+          {langs?.map((item, index) => {
             return <TabPane tabId={index + 1} className="p-3"></TabPane>;
           })}
         </TabContent>
