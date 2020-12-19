@@ -127,7 +127,7 @@ export default {
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
-    const queryString = `action=GetVideosByPlaylists&openKey=${authData.openKey}&where=playlist_id=${data.id}&offset=${data.count}`;
+    const queryString = `action=GetVideosByPlaylists&openKey=${authData.openKey}&where=playlist_id=${data.id} and channel_id=${data.channel}&offset=${data.count}`;
     const jsonData = JSON.stringify({ where: data });
     const formData = new FormData();
     formData.append("jsonData", jsonData);

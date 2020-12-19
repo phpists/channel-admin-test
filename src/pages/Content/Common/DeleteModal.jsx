@@ -15,11 +15,10 @@ export const DeleteModal = (props) => {
     activeChannel,
     checkedItems,
     item,
-    setSelectedPage,
-
     onRemoveVideoFromPlaylist,
     getPlaylist,
     onGetVideosByPlaylist,
+    defaultChannel
   } = props;
 
   // DELETE PLAYLIST
@@ -40,7 +39,7 @@ export const DeleteModal = (props) => {
       await Promise.all(promises);
       toggleDelete();
       item.length === 0
-        ? onGetVideosByPlaylist({ id: getPlaylist.id, count: 0 })
+        ? onGetVideosByPlaylist({ id: getPlaylist.id, channel: defaultChannel?.id, count: 0 })
         : onGetPlaylist({ id: activeChannel?.id, count: 0 });
       setCheckName("");
       setCheckDesc("");

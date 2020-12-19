@@ -17,14 +17,14 @@ import {
 import { AvField, AvForm } from "availity-reactstrap-validation";
 import LanguagesTabs from "./LanguagesTabs";
 import FormaData from "./FormaData";
-import { Prompt } from 'react-router'
+import { Prompt } from "react-router";
 
 const CreateEdit = (props) => {
   // Get props
   const {
     onAddPlaylist,
     onUpdatePlaylist,
-    activeChannel,
+    defaultChannel,
     setChangePage,
     onGetPlaylist,
     valueButton,
@@ -44,7 +44,7 @@ const CreateEdit = (props) => {
     onGetVideosByPlaylist,
     getPlaylist,
     characters,
-    setSelectedPage
+    setSelectedPage,
   } = props;
   // State local
   const [require, setRequire] = useState(false);
@@ -57,29 +57,37 @@ const CreateEdit = (props) => {
       switch (valueButton) {
         case "editPlaylist":
           onUpdatePlaylist({ id: checkedItems[0], name: editName });
-          onGetPlaylist({ id: activeChannel.id, count: 0 });
+          onGetPlaylist({ id: defaultChannel.id, count: 0 });
           setSelectedPage(1);
           break;
         case "newPlaylist":
           onAddPlaylist({
             name: editName,
             description: editDescription,
-            channel_id: activeChannel.id,
+            channel_id: defaultChannel.id,
           });
-          onGetPlaylist({ id: activeChannel.id, count: 0 });
+          onGetPlaylist({ id: defaultChannel.id, count: 0 });
           break;
         case "editVideo":
           onUpdateVideo({ id: checkedItems[0], name: editName });
-          onGetVideosByPlaylist({id: getPlaylist, count: 0});
-          setSelectedPage(1)
+          onGetVideosByPlaylist({
+            id: getPlaylist,
+            channel: defaultChannel?.id,
+            count: 0,
+          });
+          setSelectedPage(1);
           break;
         case "newVideo":
           onAddVideoToPlaylist({
             playlist_id: playlistId,
             video_id: checkedItems[0],
           });
-          onGetVideosByPlaylist({id: getPlaylist, count: 0});
-          setSelectedPage(1)
+          onGetVideosByPlaylist({
+            id: getPlaylist,
+            channel: defaultChannel?.id,
+            count: 0,
+          });
+          setSelectedPage(1);
           break;
       }
       setCheckName("");
@@ -97,18 +105,18 @@ const CreateEdit = (props) => {
 
   useEffect(() => {
     if (checkName !== editName) {
-      window.onbeforeunload = () => true
+      window.onbeforeunload = () => true;
     } else {
-      window.onbeforeunload = undefined
+      window.onbeforeunload = undefined;
     }
-  }, [checkName, editName])
+  }, [checkName, editName]);
 
   return (
     <Card>
       <Prompt
-      when={checkName !== editName}
-      message='You have unsaved data. You want to leave the page?'
-    />
+        when={checkName !== editName}
+        message="You have unsaved data. You want to leave the page?"
+      />
       <AvForm onValidSubmit={onSubmit}>
         <CardBody>
           {/* Toggle languages */}
@@ -120,26 +128,10 @@ const CreateEdit = (props) => {
               editName,
               setEditName,
               editDescription,
-              setChekedItems,
-              setChangePage,
-              setCheckName,
-              setCheckDesc,
-              setEditDescription,
-              onUpdatePlaylist,
-              checkedItems,
-              onGetPlaylist,
-              activeChannel,
-              onAddPlaylist,
-              modalSave,
-              setModalSave,
-              onUpdateVideo,
-              onAddVideoToPlaylist,
-              onGetVideosByPlaylist,
-              getPlaylist,
-              characters,
-              playlistId,
               setPlaylistId,
-              require
+              setEditDescription,
+              characters,
+              require,
             }}
           />
         </CardBody>

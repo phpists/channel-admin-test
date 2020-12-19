@@ -96,7 +96,6 @@ const TabPanel = (props) => {
           {" "}
           <CreateEdit
             {...{
-              activeChannel,
               onAddPlaylist,
               setChangePage,
               onGetPlaylist,
@@ -121,6 +120,8 @@ const TabPanel = (props) => {
               checkName,
               selectedPage,
               setSelectedPage,
+              defaultChannel,
+              countVideosByPlaylist
             }}
           />
         </CardBody>
@@ -162,21 +163,21 @@ const TabPanel = (props) => {
           )}
           <DeleteModal
             {...{
-              checkName,
-              checkedItems,
-              setCheckName,
-              setCheckDesc,
               modalDelete,
               toggleDelete,
               onPlaylistDelete,
+              checkName,
               onGetPlaylist,
-              activeChannel,
+              setCheckName,
+              setCheckDesc,
               setChekedItems,
+              activeChannel,
+              checkedItems,
               item,
               onRemoveVideoFromPlaylist,
               getPlaylist,
               onGetVideosByPlaylist,
-              setSelectedPage,
+              defaultChannel,
             }}
           />
           {activeTab === "1" ? (
@@ -196,24 +197,27 @@ const TabPanel = (props) => {
                     toEdit,
                   }}
                 />
-                <PaginationVideos
-                  {...{
-                    countVideos,
-                    onGetVideos,
-                    countVideosByPlaylist,
-                    updateDragVideo,
-                    videos,
-                    selectedPage,
-                    setSelectedPage,
-                    toEdit,
-                    defaultChannel,
-                    getPlaylist,
-                    onGetVideosByPlaylist,
-                    onGetPlaylist,
-                    countPlaylists,
-                    activeTab,
-                  }}
-                />
+                {countPlaylists > 25 || characters?.length > 25 ?  (
+                  <PaginationVideos
+                    {...{
+                      countVideos,
+                      onGetVideos,
+                      updateDragVideo,
+                      videos,
+                      selectedPage,
+                      setSelectedPage,
+                      defaultChannel,
+                      onGetPlaylist,
+                      countPlaylists,
+                      activeTab,
+                      getPlaylist,
+                      onGetVideosByPlaylist,
+                      countVideosByPlaylist,
+                      updateCharacters,
+                      playlists
+                    }}
+                  />
+                ) : null}
               </>
             )
           ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
@@ -232,21 +236,24 @@ const TabPanel = (props) => {
                   toEdit,
                 }}
               />
-              {getPlaylist === null ? (
+              {countVideos > 25 || dragVIdeo?.length > 25 || countVideosByPlaylist > 25? (
                 <PaginationVideos
                   {...{
                     countVideos,
                     onGetVideos,
-                    countVideosByPlaylist,
                     updateDragVideo,
                     videos,
                     selectedPage,
                     setSelectedPage,
-                    toEdit,
                     defaultChannel,
+                    onGetPlaylist,
+                    countPlaylists,
+                    activeTab,
                     getPlaylist,
                     onGetVideosByPlaylist,
-                    activeTab,
+                    countVideosByPlaylist,
+                    updateCharacters,
+                    playlists
                   }}
                 />
               ) : null}

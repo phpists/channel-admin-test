@@ -13,38 +13,39 @@ const PaginationVideos = (props) => {
     onGetPlaylist,
     countPlaylists,
     activeTab,
-    countVideosByPlaylist,
     getPlaylist,
-    onGetVideosByPlaylist
+    onGetVideosByPlaylist,
+    countVideosByPlaylist,
+    updateCharacters,
+    playlists
   } = props;
 
   const handleSelected = (page) => {
-    // if(getPlaylist === null) {
-    
-    // } else {
-    //   onGetVideosByPlaylist( {id: getPlaylist?.id, count: ((page - 1) * 25)});
-    //   setSelectedPage(page);
-    // }
-
     if(activeTab === "1") {
       onGetPlaylist( {id: defaultChannel?.id, count: ((page - 1) * 25)});
       setSelectedPage(page);
     } else {
-      onGetVideos( {id: defaultChannel?.id, count: ((page - 1) * 25)});
-      setSelectedPage(page);
+      if(getPlaylist === null) {
+        onGetVideos( {id: defaultChannel?.id, count: ((page - 1) * 25)});
+        setSelectedPage(page);
+      } else {
+        onGetVideosByPlaylist( {id: getPlaylist?.id, channel: defaultChannel?.id, count: ((page - 1) * 25)});
+        setSelectedPage(page);
+      }
     }
   };
 
   useEffect(() => {
     if (selectedPage) {
       updateDragVideo(videos);
+      updateCharacters(playlists)
     }
   }, [selectedPage, videos]);
 
   return (
     <div className="d-flex justify-content-center">
       <PaginationComponent
-        totalItems={activeTab === "1" ? countPlaylists : countVideos}
+        totalItems={activeTab === "1" ? countPlaylists : getPlaylist === null ? countVideos : countVideosByPlaylist}
         pageSize={25}
         onSelect={handleSelected}
         defaultActivePage={selectedPage}

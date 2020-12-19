@@ -14,7 +14,6 @@ const FormaData = (props) => {
     editName,
     setEditName,
     editDescription,
-    playlistId,
     setPlaylistId,
     setEditDescription,
     characters,

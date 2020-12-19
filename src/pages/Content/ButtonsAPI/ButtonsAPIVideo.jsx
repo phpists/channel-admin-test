@@ -57,7 +57,7 @@ const ButtonsAPIVideo = (props) => {
               <DropdownItem
                 key={c.id}
                 onClick={() => {
-                  onGetVideosByPlaylist({id: c.id, count: 0});
+                  onGetVideosByPlaylist({id: c.id, channel: defaultChannel?.id,  count: 0});
                   setGetPlaylist(c);
                   setChekedItems([]);
                   setSelectedPage(1);
