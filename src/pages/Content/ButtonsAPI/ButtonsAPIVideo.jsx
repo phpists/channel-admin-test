@@ -31,7 +31,7 @@ const ButtonsAPIVideo = (props) => {
 
   return (
     <div className="btn-toolbar py-3" role="toolbar">
-      <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} direction="up">
+      <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
         <DropdownToggle
           caret
           color="secondary mr-2"
@@ -40,7 +40,7 @@ const ButtonsAPIVideo = (props) => {
           {getPlaylist?.name || "All playlists"}
           <span className="arrow-down" />
         </DropdownToggle>
-        <DropdownMenu>
+        <DropdownMenu className="scrollable-menu">
           <DropdownItem
             onClick={() => {
               setGetPlaylist(null);

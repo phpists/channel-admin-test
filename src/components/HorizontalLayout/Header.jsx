@@ -30,7 +30,7 @@ const Header = (props) => {
       onGetPlaylist({id: defaultChannel?.id || "1", count: 0});
     }
     setActiveChannel(defaultChannel)
-  }, [channels, onGetChannels, activeChannel, defaultChannel, onGetPlaylist, setActiveChannel])
+  }, [channels, activeChannel, defaultChannel])
 
   function toggleFullscreen() {
     if (

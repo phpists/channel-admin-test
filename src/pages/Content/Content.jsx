@@ -127,7 +127,6 @@ const Content = (props) => {
       setSelectedPage(1);
       onGetPlaylist({ id: defaultChannel?.id, count: 0 });
       onGetVideos({ id: defaultChannel?.id, count: 0 });
-      onGetVideosByPlaylist({id: getPlaylist?.id, channel: defaultChannel?.id, count: 0})
     }
   };
 

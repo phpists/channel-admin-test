@@ -122,7 +122,6 @@ export default {
   },
 
   getVideosByPlaylists: async (data) => {
-    debugger
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
@@ -142,7 +141,6 @@ export default {
     return await axiosInstance
       .get(`?${queryString}`, formData, config)
       .then((response) => {
-        console.log(response)
         return response;
       })
       .catch((error) => ({ error }));

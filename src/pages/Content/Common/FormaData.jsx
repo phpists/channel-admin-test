@@ -66,7 +66,7 @@ const FormaData = (props) => {
         onChange={onChanged(setEditDescription)}
       />
       {valueButton === "editVideo" || valueButton === "newVideo" ? (
-        <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} direction="left">
+        <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
           <DropdownToggle
             caret
             color="secondary"
@@ -75,7 +75,7 @@ const FormaData = (props) => {
             {playlistName || "Chose playlist"}
             <span className="arrow-down" />
           </DropdownToggle>
-          <DropdownMenu>
+          <DropdownMenu className="scrollable-menu">
             {characters?.map((c) => {
               return (
                 <DropdownItem

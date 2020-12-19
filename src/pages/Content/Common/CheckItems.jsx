@@ -21,8 +21,6 @@ const CheckItems = (props) => {
     }
   }
 
-  console.log("Uniqe: ", allItems);
-
   return (
     <Form>
       <DragDropContext

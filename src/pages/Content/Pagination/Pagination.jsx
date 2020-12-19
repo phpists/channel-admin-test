@@ -17,7 +17,8 @@ const PaginationVideos = (props) => {
     onGetVideosByPlaylist,
     countVideosByPlaylist,
     updateCharacters,
-    playlists
+    playlists,
+    videosByPlaylist
   } = props;
 
   const handleSelected = (page) => {
@@ -37,8 +38,11 @@ const PaginationVideos = (props) => {
 
   useEffect(() => {
     if (selectedPage) {
-      updateDragVideo(videos);
-      updateCharacters(playlists)
+      if(getPlaylist === null) {
+        updateDragVideo(videos);
+      } else {
+        updateDragVideo(videosByPlaylist)
+      }
     }
   }, [selectedPage, videos]);
 

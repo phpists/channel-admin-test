@@ -79,7 +79,6 @@ const TabPanel = (props) => {
         checkName == editName
       ) {
         updateDragVideo(videosByPlaylist);
-        onGetPlaylist({ id: defaultChannel?.id || "1", count: 0 });
       }
     }
     if (selectedPage === null) {
@@ -197,7 +196,6 @@ const TabPanel = (props) => {
                     toEdit,
                   }}
                 />
-                {countPlaylists > 25 || characters?.length > 25 ?  (
                   <PaginationVideos
                     {...{
                       countVideos,
@@ -214,10 +212,10 @@ const TabPanel = (props) => {
                       onGetVideosByPlaylist,
                       countVideosByPlaylist,
                       updateCharacters,
-                      playlists
+                      playlists,
+                      videosByPlaylist
                     }}
                   />
-                ) : null}
               </>
             )
           ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
@@ -236,7 +234,7 @@ const TabPanel = (props) => {
                   toEdit,
                 }}
               />
-              {countVideos > 25 || dragVIdeo?.length > 25 || countVideosByPlaylist > 25? (
+              {countVideosByPlaylist > 25 || getPlaylist === null ? (
                 <PaginationVideos
                   {...{
                     countVideos,
@@ -253,7 +251,8 @@ const TabPanel = (props) => {
                     onGetVideosByPlaylist,
                     countVideosByPlaylist,
                     updateCharacters,
-                    playlists
+                    playlists,
+                    videosByPlaylist
                   }}
                 />
               ) : null}
