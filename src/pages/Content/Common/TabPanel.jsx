@@ -58,6 +58,7 @@ const TabPanel = (props) => {
     toEdit,
     setActiveTab,
     countVideosByPlaylist,
+    checkId
   } = props;
 
   useEffect(() => {
@@ -74,19 +75,17 @@ const TabPanel = (props) => {
 
     if (getPlaylist !== null) {
       if (
-        videosByPlaylist === null ||
+        dragVIdeo === null ||
         videosByPlaylist?.length !== dragVIdeo?.length ||
         checkName == editName
       ) {
         updateDragVideo(videosByPlaylist);
       }
     }
-    if (selectedPage === null) {
+    if(videos === null) {
       onGetVideos({ id: defaultChannel?.id, count: 0 });
-      updateDragVideo(videos);
-      setSelectedPage(1);
     }
-  }, [defaultChannel, playlists, videosByPlaylist, videos, getPlaylist]);
+  }, [playlists, videosByPlaylist, videos, getPlaylist]);
 
   return (
     <Card className="flex-column align-items-start">
@@ -120,7 +119,8 @@ const TabPanel = (props) => {
               selectedPage,
               setSelectedPage,
               defaultChannel,
-              countVideosByPlaylist
+              countVideosByPlaylist,
+              checkId
             }}
           />
         </CardBody>

@@ -32,7 +32,6 @@ const FormaData = (props) => {
     const id = arr[0]?.id;
     setPlaylistId(id);
     setPlaylistName(name);
-    debugger;
   };
 
   // Modal window (Save changes)

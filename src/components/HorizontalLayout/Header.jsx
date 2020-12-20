@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { showRightSidebarAction, toggleLeftmenu } from "../../store/actions";
-import { Dropdown, DropdownItem, DropdownToggle, DropdownMenu, Button } from "reactstrap";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownToggle,
+  DropdownMenu,
+  Button,
+} from "reactstrap";
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 import logo from "../../assets/images/bring-stream_logo-wite.png";
 import { connect } from "react-redux";
-import Actions from '../../store/actions'
-import selectors from '../../selectors'
-import { withNamespaces } from 'react-i18next';
+import Actions from "../../store/actions";
+import selectors from "../../selectors";
+import { withNamespaces } from "react-i18next";
 import "./styles.scss";
 
 const Header = (props) => {
@@ -18,19 +24,19 @@ const Header = (props) => {
     activeChannel,
     setActiveChannel,
     onGetChannels,
-    onGetPlaylist
-  } = props
+    onGetPlaylist,
+  } = props;
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
 
   useEffect(() => {
     if (channels === null) {
-      onGetChannels()
+      onGetChannels();
     }
-    if(defaultChannel !== activeChannel) {
-      onGetPlaylist({id: defaultChannel?.id || "1", count: 0});
+    if (defaultChannel !== activeChannel) {
+      onGetPlaylist({ id: defaultChannel?.id || "1", count: 0 });
     }
-    setActiveChannel(defaultChannel)
-  }, [channels, activeChannel, defaultChannel])
+    setActiveChannel(defaultChannel);
+  }, [channels, activeChannel]);
 
   function toggleFullscreen() {
     if (
@@ -64,10 +70,11 @@ const Header = (props) => {
       return (
         <Link to="/channels/create">
           <Button color="secondary" outline className="waves-effect">
-            <i className="bx bx-plus font-size-16 align-middle mr-2" />Creacte a new project
+            <i className="bx bx-plus font-size-16 align-middle mr-2" />
+            Creacte a new project
           </Button>
         </Link>
-      )
+      );
     } else {
       return (
         <>
@@ -76,36 +83,44 @@ const Header = (props) => {
               {activeChannel?.name} <i className="mdi mdi-chevron-down" />
             </DropdownToggle>
             <DropdownMenu>
-              {
-                channels?.map(item => (
-                  <Link to="/dashboard"> <DropdownItem
-                    key={item.id}
+              {channels?.map((item) => (
+                <Link to="/dashboard" key={item.id}>
+                  {" "}
+                  <DropdownItem
                     onClick={() => {
-                      setActiveChannel(item)
-                      localStorage.setItem("channel", JSON.stringify(item))
-                      
+                      setActiveChannel(item);
+                      localStorage.setItem("channel", JSON.stringify(item));
                     }}
-                    
-                  >{item.name}</DropdownItem></Link>
-                ))
-              }
+                  >
+                    {item.name}
+                  </DropdownItem>
+                </Link>
+              ))}
 
               <DropdownItem>
                 <Link to="/channels/create">
-                  <i className="bx bx-plus font-size-16 align-middle mr-2" />Creacte a new project
-              </Link>
+                  <i className="bx bx-plus font-size-16 align-middle mr-2" />
+                  Creacte a new project
+                </Link>
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
-          {
-            activeChannel?.url_bs && <a className="visite-site-link" href={activeChannel?.url_bs} rel="noopener noreferrer" target="_blank">
-              <Button color="secondary" outline className="btn-sm">Visit Site</Button>
+          {activeChannel?.url_bs && (
+            <a
+              className="visite-site-link"
+              href={activeChannel?.url_bs}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Button color="secondary" outline className="btn-sm">
+                Visit Site
+              </Button>
             </a>
-          }
+          )}
         </>
-      )
+      );
     }
-  }
+  };
 
   return (
     <React.Fragment>
@@ -123,26 +138,30 @@ const Header = (props) => {
               type="button"
               className="btn btn-sm px-3 font-size-16 d-lg-none header-item waves-effect waves-light"
               data-toggle="collapse"
-              onClick={() => { props.toggleLeftmenu(!props.leftMenu); }}
-              data-target="#topnav-menu-content">
+              onClick={() => {
+                props.toggleLeftmenu(!props.leftMenu);
+              }}
+              data-target="#topnav-menu-content"
+            >
               <i className="fa fa-fw fa-bars"></i>
             </button>
 
-            <div className="header-buttons-wrapper">
-              {mapChannelsSelect()}
-            </div>
+            <div className="header-buttons-wrapper">{mapChannelsSelect()}</div>
           </div>
 
           <div className="d-flex">
-
             <LanguageDropdown />
 
             <div className="dropdown d-none d-lg-inline-block ml-1">
               <button
                 type="button"
                 className="btn header-item noti-icon waves-effect"
-                onClick={() => { toggleFullscreen() }}
-                data-toggle="fullscreen"><i className="bx bx-fullscreen"></i>
+                onClick={() => {
+                  toggleFullscreen();
+                }}
+                data-toggle="fullscreen"
+              >
+                <i className="bx bx-fullscreen"></i>
               </button>
             </div>
 
@@ -161,9 +180,9 @@ const Header = (props) => {
       </header>
     </React.Fragment>
   );
-}
+};
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   const { layoutType, showRightSidebar, leftMenu } = state.Layout;
   return {
     layoutType,
@@ -179,9 +198,11 @@ const mapDispatchToProps = (dispatch) => ({
   toggleLeftmenu: (value) => dispatch(toggleLeftmenu(value)),
   onGetChannels: () => dispatch(Actions.channels.getChannelsRequest()),
   setActiveChannel: (data) => dispatch(Actions.channels.setActiveChannel(data)),
-  onGetPlaylist: (data) => dispatch(Actions.playlists.getPlaylistsRequest(data)),
-})
+  onGetPlaylist: (data) =>
+    dispatch(Actions.playlists.getPlaylistsRequest(data)),
+});
 
-export default connect(mapStatetoProps, mapDispatchToProps)(withNamespaces()(Header));
-
-
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps
+)(withNamespaces()(Header));

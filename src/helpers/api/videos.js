@@ -1,7 +1,7 @@
 import { axiosInstance } from "./index";
 import { sha1 } from "../sha1";
 
-export default {
+export const videos = {
   addVideoToPlaylist: async (data) => {
     const authData = sessionStorage.getItem("bringStreamAuth")
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))

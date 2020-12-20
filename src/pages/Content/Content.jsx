@@ -43,6 +43,7 @@ const Content = (props) => {
   const [changePage, setChangePage] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [checkName, setCheckName] = useState("");
+  const [checkId, setCheckId] = useState(null)
   const [checkDesc, setCheckDesc] = useState("");
   const [activeTab, setActiveTab] = useState("1");
   const [valueButton, setValueButton] = useState("");
@@ -53,7 +54,7 @@ const Content = (props) => {
   const [editDescription, setEditDescription] = useState("");
   const [dragVIdeo, updateDragVideo] = useState(videosByPlaylist);
   const [getPlaylist, setGetPlaylist] = useState(null);
-  const [selectedPage, setSelectedPage] = useState(null);
+  const [selectedPage, setSelectedPage] = useState(1);
 
   // Vallues
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
@@ -70,12 +71,14 @@ const Content = (props) => {
       setEditDescription(JSON.parse(p.description)["EN"]);
       setCheckName(p.vimeo_name);
       setCheckDesc(JSON.parse(p.description)["EN"]);
+      setCheckId(p.id);
       setChangePage(true);
     } else {
       setEditName(p.name);
       setEditDescription(p.description);
       setCheckName(p.name);
       setCheckDesc(p.description);
+      setCheckId(p.id);
       setChangePage(true);
     }
     setValueButton(name);
@@ -89,6 +92,7 @@ const Content = (props) => {
         setEditDescription(item[0].description);
         setCheckName(item[0].name);
         setCheckDesc(item[0].description);
+        setCheckId(item[0].id);
         setChangePage(true);
         break;
       case "newPlaylist":
@@ -100,8 +104,11 @@ const Content = (props) => {
         setEditDescription(JSON.parse(itemVideos[0].description)["EN"] || "");
         setCheckName(itemVideos[0].vimeo_name);
         setCheckDesc(JSON.parse(itemVideos[0].description)["EN"] || "");
+        setCheckId(itemVideos[0].id);
         setChangePage(true);
         break;
+      default:
+        return;
     }
     setValueButton(nameButton);
   };
@@ -227,17 +234,17 @@ const Content = (props) => {
                       onGetPlaylist,
                       onUpdatePlaylist,
                       activeTab,
+                      toForm,
                       defaultChannel,
                       playlists,
                       countVideos,
+                      countPlaylists,
                       selectedPage,
                       setSelectedPage,
                       toEdit,
                       setActiveTab,
-                      toForm,
-                      countPlaylists,
                       countVideosByPlaylist,
-                      updateCharacters
+                      checkId
                     }}
                   />
                 </TabPane>
@@ -286,13 +293,13 @@ const Content = (props) => {
                       defaultChannel,
                       playlists,
                       countVideos,
+                      countPlaylists,
                       selectedPage,
                       setSelectedPage,
                       toEdit,
                       setActiveTab,
-                      countPlaylists,
                       countVideosByPlaylist,
-                      updateCharacters
+                      checkId
                     }}
                   />
                 </TabPane>

@@ -45,6 +45,7 @@ const CreateEdit = (props) => {
     getPlaylist,
     characters,
     setSelectedPage,
+    checkId,
   } = props;
   // State local
   const [require, setRequire] = useState(false);
@@ -56,9 +57,10 @@ const CreateEdit = (props) => {
     } else {
       switch (valueButton) {
         case "editPlaylist":
-          onUpdatePlaylist({ id: checkedItems[0], name: editName });
-          onGetPlaylist({ id: defaultChannel.id, count: 0 });
-          setSelectedPage(1);
+          onUpdatePlaylist({ id: checkId, name: editName });
+          setTimeout(() => {
+            onGetPlaylist({ id: defaultChannel.id, count: 0 });
+          }, 1000);
           break;
         case "newPlaylist":
           onAddPlaylist({
@@ -66,29 +68,35 @@ const CreateEdit = (props) => {
             description: editDescription,
             channel_id: defaultChannel.id,
           });
-          onGetPlaylist({ id: defaultChannel.id, count: 0 });
+          setTimeout(() => {
+            onGetPlaylist({ id: defaultChannel.id, count: 0 });
+          }, 1000);
           break;
         case "editVideo":
-          onUpdateVideo({ id: checkedItems[0], name: editName });
-          onGetVideosByPlaylist({
-            id: getPlaylist,
-            channel: defaultChannel?.id,
-            count: 0,
-          });
-          setSelectedPage(1);
+          onUpdateVideo({ id: checkId, name: editName });
+          setTimeout(() => {
+            onGetVideosByPlaylist({
+              id: getPlaylist,
+              channel: defaultChannel?.id,
+              count: 0,
+            });
+          }, 1000);
           break;
         case "newVideo":
           onAddVideoToPlaylist({
             playlist_id: playlistId,
-            video_id: checkedItems[0],
+            video_id: checkId,
           });
-          onGetVideosByPlaylist({
-            id: getPlaylist,
-            channel: defaultChannel?.id,
-            count: 0,
-          });
-          setSelectedPage(1);
+          setTimeout(() => {
+            onGetVideosByPlaylist({
+              id: getPlaylist,
+              channel: defaultChannel?.id,
+              count: 0,
+            });
+          }, 1000);
           break;
+        default:
+          return;
       }
       setCheckName("");
       setCheckDesc("");
@@ -96,6 +104,7 @@ const CreateEdit = (props) => {
       setEditDescription("");
       setChangePage(false);
       setChekedItems([]);
+      setSelectedPage(1);
     }
   }
 

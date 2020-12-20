@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import classnames from "classnames";
-import i18n from "../../../i18n";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 
 const LanguagesTabs = () => {
@@ -29,7 +28,7 @@ const LanguagesTabs = () => {
           {langs?.map((item, index) => {
             const num = index + 1;
             return (
-              <NavItem>
+              <NavItem key={index}>
                 <NavLink
                   style={{ cursor: "pointer" }}
                   className={classnames({
@@ -49,7 +48,7 @@ const LanguagesTabs = () => {
         {/* Buttons fot toggle */}
         <TabContent activeTab={activeTab}>
           {langs?.map((item, index) => {
-            return <TabPane tabId={index + 1} className="p-3"></TabPane>;
+            return <TabPane key={index} tabId={index + 1} className="p-3"></TabPane>;
           })}
         </TabContent>
       </TabPane>

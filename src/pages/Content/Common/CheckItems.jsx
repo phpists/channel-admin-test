@@ -77,6 +77,7 @@ const CheckItems = (props) => {
                                 <img
                                   src={JSON.parse(p.pictures)["100"]}
                                   className="picture"
+                                  alt="img"
                                 />
                                 <span
                                   id="editVideo"

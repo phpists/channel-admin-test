@@ -1,6 +1,6 @@
 import { axiosInstance } from './index'
 
-export default {
+export const authorization = {
   logIn: async (data) => {
     const config = {
       headers: {

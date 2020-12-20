@@ -1,8 +1,7 @@
 import { axiosInstance } from './index'
 import { sha1 } from '../sha1'
 
-export default {
- 
+export const profile = {
   getUserProfile: async () => {
     const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null 
     if(!authData) return false

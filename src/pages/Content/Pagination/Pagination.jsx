@@ -16,8 +16,6 @@ const PaginationVideos = (props) => {
     getPlaylist,
     onGetVideosByPlaylist,
     countVideosByPlaylist,
-    updateCharacters,
-    playlists,
     videosByPlaylist
   } = props;
 

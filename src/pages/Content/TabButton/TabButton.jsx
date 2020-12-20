@@ -3,7 +3,7 @@ import classnames from "classnames";
 import { Button, Nav, NavItem, NavLink } from "reactstrap";
 
 const TabButton = (props) => {
-  const { activeTab, toggleTab, characters, dragVIdeo, countPlaylists, countVideos } = props;
+  const { activeTab, toggleTab, countPlaylists, countVideos } = props;
   const buttons = [
     { name: "Upload", tab: "3" },
     { name: "Playlists", tab: "1", total: countPlaylists },

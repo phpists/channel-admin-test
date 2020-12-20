@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import Actions from "./../../store/actions";
 import { Link } from "react-router-dom";
 import selectors from "./../../selectors";
-import i18n from "../../i18n";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { validate } from "./../../helpers/validation";
 import {
