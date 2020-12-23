@@ -1,4 +1,4 @@
-import { all, takeEvery } from "redux-saga/effects";
+import { all, takeLatest } from "redux-saga/effects";
 import { Types as AuthorizationTypes } from "../store/authorization/actions";
 import { Types as ProfileTypes } from "../store/profile/actions";
 import { Types as ChannelsTypes } from "../store/channels/actions";
@@ -40,36 +40,36 @@ import {
 
 export function* rootSaga() {
   yield all([
-    takeEvery(AuthorizationTypes.LOGIN_REQUEST, watchlogin),
-    takeEvery(AuthorizationTypes.REGISTER_USER_REQUEST, watchRegisterUser),
-    takeEvery(AuthorizationTypes.FORGOT_PASSWORD_REQUEST, watchForgotPassword),
-    takeEvery(AuthorizationTypes.SEND_NEW_PASSAWORD_REQUEST, watchNewPassword),
+    takeLatest(AuthorizationTypes.LOGIN_REQUEST, watchlogin),
+    takeLatest(AuthorizationTypes.REGISTER_USER_REQUEST, watchRegisterUser),
+    takeLatest(AuthorizationTypes.FORGOT_PASSWORD_REQUEST, watchForgotPassword),
+    takeLatest(AuthorizationTypes.SEND_NEW_PASSAWORD_REQUEST, watchNewPassword),
 
-    takeEvery(ProfileTypes.GET_USER_PROFILE_REQUEST, watchGetUserProfile),
-    takeEvery(ProfileTypes.CHANGE_USER_PROFILE_REQUEST, watchChangeUserProfile),
+    takeLatest(ProfileTypes.GET_USER_PROFILE_REQUEST, watchGetUserProfile),
+    takeLatest(ProfileTypes.CHANGE_USER_PROFILE_REQUEST, watchChangeUserProfile),
 
-    takeEvery(ChannelsTypes.ADD_CHANNEL_REQUEST, watchAddChannel),
-    takeEvery(ChannelsTypes.GET_CHANNELS_REQUEST, watchGetChannels),
-    takeEvery(ChannelsTypes.DELETE_CHANNEL_REQUEST, watchDeleteChannel),
-    takeEvery(ChannelsTypes.UPDATE_CHANNEL_REQUEST, watchUpdateChannel),
+    takeLatest(ChannelsTypes.ADD_CHANNEL_REQUEST, watchAddChannel),
+    takeLatest(ChannelsTypes.GET_CHANNELS_REQUEST, watchGetChannels),
+    takeLatest(ChannelsTypes.DELETE_CHANNEL_REQUEST, watchDeleteChannel),
+    takeLatest(ChannelsTypes.UPDATE_CHANNEL_REQUEST, watchUpdateChannel),
 
-    takeEvery(PlaylistsTypes.ADD_PLAYLIST_REQUEST, watchAddPlaylist),
-    takeEvery(PlaylistsTypes.GET_PLAYLISTS_REQUEST, watchGetPlaylists),
-    takeEvery(PlaylistsTypes.DELETE_PLAYLIST_REQUEST, watchDeletePlaylist),
-    takeEvery(PlaylistsTypes.UPDATE_PLAYLIST_REQUEST, watchUpdatePlaylist),
-    takeEvery(PlaylistsTypes.GET_ONE_PLAYLIST_REQUEST, watchGetOnePlaylist),
+    takeLatest(PlaylistsTypes.ADD_PLAYLIST_REQUEST, watchAddPlaylist),
+    takeLatest(PlaylistsTypes.GET_PLAYLISTS_REQUEST, watchGetPlaylists),
+    takeLatest(PlaylistsTypes.DELETE_PLAYLIST_REQUEST, watchDeletePlaylist),
+    takeLatest(PlaylistsTypes.UPDATE_PLAYLIST_REQUEST, watchUpdatePlaylist),
+    takeLatest(PlaylistsTypes.GET_ONE_PLAYLIST_REQUEST, watchGetOnePlaylist),
 
-    takeEvery(
+    takeLatest(
       VideosTypes.ADD_VIDEO_TO_PLAYLIST_REQUEST,
       watchAddVideoToPlaylist
     ),
-    takeEvery(
+    takeLatest(
       VideosTypes.REMOVE_VIDEO_FROM_PLAYLIST_REQUEST,
       watchRemoveVideoFromPlaylist
     ),
-    takeEvery(VideosTypes.UPDATE_VIDEO_REQUEST, watchUpdateVideo),
-    takeEvery(VideosTypes.GET_VIDEOS_REQUEST, watchGetVideos),
-    takeEvery(
+    takeLatest(VideosTypes.UPDATE_VIDEO_REQUEST, watchUpdateVideo),
+    takeLatest(VideosTypes.GET_VIDEOS_REQUEST, watchGetVideos),
+    takeLatest(
       VideosTypes.GET_VIDEO_BY_PLAYLIST_REQUEST,
       watchGetVideoByPlaylists
     ),

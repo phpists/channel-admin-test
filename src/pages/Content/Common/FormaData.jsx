@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import { AvField } from "availity-reactstrap-validation";
 import {
   FormGroup,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownItem,
-  DropdownMenu,
 } from "reactstrap";
 
 const FormaData = (props) => {
@@ -21,17 +17,11 @@ const FormaData = (props) => {
   } = props;
 
   // On submit
-  const [playlistName, setPlaylistName] = useState();
-  const [dropdownOpen, setOpen] = useState(false);
-
-  const toggle = () => setOpen(!dropdownOpen);
-
   const getPlailistId = (e) => {
-    const name = e.target.name;
+    const name = e.target.value;
     const arr = characters?.filter((c) => c.name == name);
     const id = arr[0]?.id;
     setPlaylistId(id);
-    setPlaylistName(name);
   };
 
   // Modal window (Save changes)
@@ -65,30 +55,23 @@ const FormaData = (props) => {
         onChange={onChanged(setEditDescription)}
       />
       {valueButton === "editVideo" || valueButton === "newVideo" ? (
-        <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
-          <DropdownToggle
-            caret
-            color="secondary"
-            className="btn btn-primary waves-light waves-effect"
-          >
-            {playlistName || "Chose playlist"}
-            <span className="arrow-down" />
-          </DropdownToggle>
-          <DropdownMenu className="scrollable-menu">
-            {characters?.map((c) => {
-              return (
-                <DropdownItem
-                  key={c.id}
-                  onClick={(e) => getPlailistId(e)}
-                  name={c.name}
-                  id={c.id}
-                >
-                  {c.name}
-                </DropdownItem>
-              );
-            })}
-          </DropdownMenu>
-        </ButtonDropdown>
+        <AvField
+          type="select"
+          name="select"
+          label="Chose playlist"
+          onChange={(e) => getPlailistId(e)}
+        >
+          {characters?.map((c) => {
+            return (
+              <option
+                key={c.id}
+                value={c.name}
+              >
+                {c.name}
+              </option>
+            );
+          })}
+        </AvField>
       ) : null}
     </FormGroup>
   );

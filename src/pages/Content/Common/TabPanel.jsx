@@ -58,7 +58,7 @@ const TabPanel = (props) => {
     toEdit,
     setActiveTab,
     countVideosByPlaylist,
-    checkId
+    checkId,
   } = props;
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const TabPanel = (props) => {
         updateDragVideo(videosByPlaylist);
       }
     }
-    if(videos === null) {
+    if (videos === null) {
       onGetVideos({ id: defaultChannel?.id, count: 0 });
     }
   }, [playlists, videosByPlaylist, videos, getPlaylist]);
@@ -120,7 +120,7 @@ const TabPanel = (props) => {
               setSelectedPage,
               defaultChannel,
               countVideosByPlaylist,
-              checkId
+              checkId,
             }}
           />
         </CardBody>
@@ -177,6 +177,7 @@ const TabPanel = (props) => {
               getPlaylist,
               onGetVideosByPlaylist,
               defaultChannel,
+              setSelectedPage
             }}
           />
           {activeTab === "1" ? (
@@ -196,26 +197,26 @@ const TabPanel = (props) => {
                     toEdit,
                   }}
                 />
-                  <PaginationVideos
-                    {...{
-                      countVideos,
-                      onGetVideos,
-                      updateDragVideo,
-                      videos,
-                      selectedPage,
-                      setSelectedPage,
-                      defaultChannel,
-                      onGetPlaylist,
-                      countPlaylists,
-                      activeTab,
-                      getPlaylist,
-                      onGetVideosByPlaylist,
-                      countVideosByPlaylist,
-                      updateCharacters,
-                      playlists,
-                      videosByPlaylist
-                    }}
-                  />
+                <PaginationVideos
+                  {...{
+                    countVideos,
+                    onGetVideos,
+                    updateDragVideo,
+                    videos,
+                    selectedPage,
+                    setSelectedPage,
+                    defaultChannel,
+                    onGetPlaylist,
+                    countPlaylists,
+                    activeTab,
+                    getPlaylist,
+                    onGetVideosByPlaylist,
+                    countVideosByPlaylist,
+                    updateCharacters,
+                    playlists,
+                    videosByPlaylist,
+                  }}
+                />
               </>
             )
           ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
@@ -252,7 +253,7 @@ const TabPanel = (props) => {
                     countVideosByPlaylist,
                     updateCharacters,
                     playlists,
-                    videosByPlaylist
+                    videosByPlaylist,
                   }}
                 />
               ) : null}
