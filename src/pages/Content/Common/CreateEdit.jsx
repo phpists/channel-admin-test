@@ -49,7 +49,7 @@ const CreateEdit = (props) => {
   } = props;
   // State local
   const [require, setRequire] = useState(false);
-  const [playlistId, setPlaylistId] = useState(characters[0]?.id);
+  const [playlistId, setPlaylistId] = useState(characters[0] ?.id);
 
   function onSubmit() {
     if (editName === "" || editDescription === "") {
@@ -77,7 +77,7 @@ const CreateEdit = (props) => {
           setTimeout(() => {
             onGetVideosByPlaylist({
               id: getPlaylist,
-              channel: defaultChannel?.id,
+              channel: defaultChannel ?.id,
               count: 0,
             });
           }, 1000);
@@ -85,12 +85,12 @@ const CreateEdit = (props) => {
         case "newVideo":
           onAddVideoToPlaylist({
             playlist_id: playlistId,
-            video_id: checkId,
+            video_id: checkId
           });
           setTimeout(() => {
             onGetVideosByPlaylist({
               id: getPlaylist,
-              channel: defaultChannel?.id,
+              channel: defaultChannel ?.id,
               count: 0,
             });
           }, 1000);
@@ -118,7 +118,14 @@ const CreateEdit = (props) => {
     } else {
       window.onbeforeunload = undefined;
     }
+
   }, [checkName, editName]);
+
+
+
+  let langs = JSON.parse(localStorage.getItem("channelLangs"));
+  //{ langs.includes("English") ? console.log("yes") : console.log("no") }
+
 
   return (
     <Card>
@@ -131,94 +138,101 @@ const CreateEdit = (props) => {
           {/* Toggle languages */}
           <LanguagesTabs />
           {/* Form group with validation */}
-          <FormaData
-            {...{
-              valueButton,
-              editName,
-              setEditName,
-              editDescription,
-              setPlaylistId,
-              setEditDescription,
-              characters,
-              require,
-            }}
-          />
-        </CardBody>
-        <CardBody>
-          <CardTitle>Meta Data</CardTitle>
-          <CardSubtitle className="mb-3">
-            Fill all information below
-          </CardSubtitle>
-          {/* Form group without validation */}
-          <FormGroup>
-            <Row>
-              <Col sm={6}>
-                <AvField
-                  id="metatitle"
-                  label="Meta title"
-                  name="productname"
-                  type="text"
-                  className="form-control"
-                />
-                <AvField
-                  label="Meta Keyword"
-                  id="metakeywords"
-                  name="manufacturername"
-                  type="text"
-                  className="form-control"
-                />
-              </Col>
 
-              <Col sm={6}>
-                <AvField
-                  label="Meta Description"
-                  type="textarea"
-                  className="form-control"
-                  id="metadescription"
-                  name="Meta Description"
-                  rows="5"
-                />
-              </Col>
-            </Row>
-          </FormGroup>
-          <FormGroup>
-            <Button
-              type="submit"
-              color="primary"
-              className="mr-1 waves-effect waves-light"
-            >
-              Save Changes
+          {langs.includes("English") &&
+            <>
+              <FormaData
+                {...{
+                  valueButton,
+                  editName,
+                  setEditName,
+                  editDescription,
+                  setPlaylistId,
+                  setEditDescription,
+                  characters,
+                  require,
+                }}
+              />
+           
+            <CardBody>
+              <CardTitle>Meta Data</CardTitle>
+              <CardSubtitle className="mb-3">
+                Fill all information below
+          </CardSubtitle>
+              {/* Form group without validation */}
+              <FormGroup>
+                <Row>
+                  <Col sm={6}>
+                    <AvField
+                      id="metatitle"
+                      label="Meta title"
+                      name="productname"
+                      type="text"
+                      className="form-control"
+                    />
+                    <AvField
+                      label="Meta Keyword"
+                      id="metakeywords"
+                      name="manufacturername"
+                      type="text"
+                      className="form-control"
+                    />
+                  </Col>
+
+                  <Col sm={6}>
+                    <AvField
+                      label="Meta Description"
+                      type="textarea"
+                      className="form-control"
+                      id="metadescription"
+                      name="Meta Description"
+                      rows="5"
+                    />
+                  </Col>
+                </Row>
+              </FormGroup>
+              <FormGroup>
+                <Button
+                  type="submit"
+                  color="primary"
+                  className="mr-1 waves-effect waves-light"
+                >
+                  Save Changes
             </Button>
-            <Button
-              onClick={() => {
-                setChekedItems([]);
-                setChangePage(false);
-                setCheckName("");
-                setCheckDesc("");
-                setEditName("");
-                setEditDescription("");
-              }}
-              type="button"
-              color="secondary"
-              className="waves-effect"
-            >
-              Cancel
+                <Button
+                  onClick={() => {
+                    setChekedItems([]);
+                    setChangePage(false);
+                    setCheckName("");
+                    setCheckDesc("");
+                    setEditName("");
+                    setEditDescription("");
+                  }}
+                  type="button"
+                  color="secondary"
+                  className="waves-effect"
+                >
+                  Cancel
             </Button>
-          </FormGroup>
-          <Modal isOpen={modalSave} toggle={toggleSave}>
-            <ModalHeader toggle={toggleSave}>Are you sure?</ModalHeader>
-            <ModalBody>
-              You have unsaved data. You want to leave the page?
+              </FormGroup>
+              <Modal isOpen={modalSave} toggle={toggleSave}>
+                <ModalHeader toggle={toggleSave}>Are you sure?</ModalHeader>
+                <ModalBody>
+                  You have unsaved data. You want to leave the page?
             </ModalBody>
-            <ModalFooter>
-              <Button color="secondary" className="w-sm" onClick={toggleSave}>
-                Cancel
+                <ModalFooter>
+                  <Button color="secondary" className="w-sm" onClick={toggleSave}>
+                    Cancel
               </Button>
-              <Button color="danger" className="w-sm" onClick={onSubmit}>
-                Save Changes
+                  <Button color="danger" className="w-sm" onClick={onSubmit}>
+                    Save Changes
               </Button>
-            </ModalFooter>
-          </Modal>
+                </ModalFooter>
+              </Modal>
+            </CardBody>
+          </>
+        }
+
         </CardBody>
       </AvForm>
     </Card>
