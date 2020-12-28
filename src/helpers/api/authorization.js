@@ -8,14 +8,15 @@ export const authorization = {
       }
     }
 
+    const jsonData = JSON.stringify(data);
     const formData = new FormData()
-    formData.append('jsonData', JSON.stringify(data))
+    formData.append('jsonData', jsonData)
 
     return await axiosInstance.post('?action=Login', formData, config).then(response => {
       return response
     }).catch(error => ({ error }))
   },
-  
+
   registerUser: async (data) => {
     const config = {
       headers: {
@@ -23,14 +24,15 @@ export const authorization = {
       }
     }
 
+    const jsonData = JSON.stringify(data);
     const formData = new FormData()
-    formData.append('jsonData', JSON.stringify(data))
+    formData.append('jsonData', jsonData)
 
     return await axiosInstance.post('?action=Register', formData, config).then(response => {
       return response
     }).catch(error => ({ error }))
   },
-  
+
   forgotPassword: async (data) => {
     const config = {
       headers: {
@@ -38,8 +40,9 @@ export const authorization = {
       }
     }
 
+    const jsonData = JSON.stringify(data);
     const formData = new FormData()
-    formData.append('jsonData', JSON.stringify(data))
+    formData.append('jsonData', jsonData)
 
     return await axiosInstance.post('?action=ForgotPassword', formData, config).then(response => {
       return response
@@ -52,9 +55,9 @@ export const authorization = {
         'Content-Type': 'multipart/form-data'
       }
     }
-
+    const jsonData = JSON.stringify(data);
     const formData = new FormData()
-    formData.append('jsonData', JSON.stringify(data))
+    formData.append('jsonData', jsonData)
 
     return await axiosInstance.post('?action=NewPassword', formData, config).then(response => {
       return response
