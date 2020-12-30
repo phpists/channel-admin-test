@@ -3,22 +3,23 @@ import { sha1 } from '../sha1'
 
 export const channels = {
 
+    //good
     addChannel: async (data) => {
         const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null
         if (!authData) return false
 
         const queryString = `action=AddChannel&openKey=${authData.openKey}`
-        const jsonData = JSON.stringify({ fields: data })
+        const jsonData = JSON.stringify({ fields: data });
         const signature = sha1(queryString + authData.privateKey + jsonData);
         const formData = new FormData()
 
         formData.append('jsonData', jsonData)
+        formData.append('signature', signature)
 
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
-            signature: signature
         }
 
         return await axiosInstance.post(`?${queryString}`, formData, config).then(response => {
@@ -26,6 +27,7 @@ export const channels = {
         }).catch(error => ({ error }))
     },
 
+    //доробити редірект на головну
     deleteChannel: async (data) => {
         const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null
         if (!authData) return false
@@ -36,12 +38,12 @@ export const channels = {
         const formData = new FormData()
 
         formData.append('jsonData', jsonData)
+        formData.append('signature', signature)
 
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
-            signature: signature
         }
 
         return await axiosInstance.post(`?${queryString}`, formData, config).then(response => {
@@ -49,6 +51,7 @@ export const channels = {
         }).catch(error => ({ error }))
     },
 
+    //good
     updateChannel: async (data) => {
         const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null
         if (!authData) return false
@@ -73,7 +76,6 @@ export const channels = {
             return response
         }).catch(error => ({ error }))
     },
-
 
     getChannels: async () => {
         const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null

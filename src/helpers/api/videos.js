@@ -65,38 +65,7 @@ export const videos = {
             .catch((error) => ({ error }));
     },
 
-
-
-    // updateVideo: async (data) => {
-    //     const authData = sessionStorage.getItem("bringStreamAuth")
-    //         ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
-    //         : null;
-    //     if (!authData) return false;
-
-    //     const queryString = `action=UpdateVideo&openKey=${authData.openKey}`;
-
-    //     const jsonData = JSON.stringify({ fields: data });
-
-    //     const signature = sha1(queryString + authData.privateKey + jsonData);
-    //     const formData = new FormData();
-    //     formData.append("jsonData", jsonData);
-    //     formData.append('signature', signature)
-
-    //     const config = {
-    //         headers: {
-    //             "Content-Type": "multipart/form-data",
-    //         },
-    //     };
-
-    //     return await axiosInstance
-    //         .post(`?${queryString}`, formData, config)
-    //         .then((response) => {
-    //             return response;
-    //         })
-    //         .catch((error) => ({ error }));
-    // },
-
-
+    // ?
     updateVideo: async (data) => {
         const authData = sessionStorage.getItem("bringStreamAuth")
             ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
