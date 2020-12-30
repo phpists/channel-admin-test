@@ -83,25 +83,32 @@ export const playlists = {
         .catch((error) => ({ error }))
   },
 
-  getPlaylists: async (data) => {
-    const authData = sessionStorage.getItem("bringStreamAuth")
-      ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
-      : null;
-    if (!authData) return false;
-    const queryString = `action=GetPlaylists&openKey=${authData.openKey}&where=channel_id=${data.id}&offset=${data.count}`;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+    getPlaylists: async (data) => {
+        const authData = sessionStorage.getItem("bringStreamAuth")
+            ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
+            : null;
+        if (!authData) return false;
+        const queryString = `action=GetPlaylists&openKey=${authData.openKey}`;
 
-    return await axiosInstance
-      .get(`?${queryString}`, config)
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => ({ error }));
-  },
+        const jsonData = JSON.stringify({ where: 'channel_id = :cid', params: { cid: data.id }, offset: data.count, count: 25 });
+        const signature = sha1(queryString + authData.privateKey + jsonData);
+        const formData = new FormData();
+        formData.append("jsonData", jsonData);
+        formData.append('signature', signature)
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        };
+
+
+        return await axiosInstance
+            .post(`?${queryString}`, formData, config)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => ({ error }));
+    },
 
   getOnePlaylist: async (data) => {
     const authData = sessionStorage.getItem("bringStreamAuth")
