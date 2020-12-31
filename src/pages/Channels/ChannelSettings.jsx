@@ -29,7 +29,7 @@ import {
 import "./channels.scss";
 
 const ChannelSettings = React.memo((props) => {
-  const { activeChannel, onChannelUpdate } = props;
+  const { activeChannel, onChannelUpdate, onGetChannelLanguages } = props;
   const [activeTab, setActiveTab] = useState("1");
   const [channelName, setChannelName] = useState(activeChannel?.name || "");
   const [channelDomain, setChannelDomain] = useState(
@@ -112,6 +112,10 @@ const ChannelSettings = React.memo((props) => {
       setChannelSubDomain(activeChannel?.subdomain || "");
     }
   }, [activeChannel]);
+
+  useEffect(() => {
+    onGetChannelLanguages(activeChannel.id);
+  }, [])
 
   const toggle = () => setModal(!modal);
 
@@ -306,11 +310,13 @@ const ChannelSettings = React.memo((props) => {
 
 const mapStatetoProps = (state) => ({
   activeChannel: selectors.channels.activeChannel(state),
+  languages: selectors.languages.languages(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onChannelUpdate: (data) =>
     dispatch(Actions.channels.updateChannelRequest(data)),
+  onGetChannelLanguages: (data) => dispatch(Actions.languages.getChannelLanguagesRequest(data))
 });
 
 export default connect(mapStatetoProps, mapDispatchToProps)(ChannelSettings);

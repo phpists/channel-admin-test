@@ -11,9 +11,6 @@ export const Types = {
   DELETE_PLAYLIST_REQUEST: "DELETE_PLAYLIST_REQUEST",
 
   UPDATE_PLAYLIST_REQUEST: "UPDATE_PLAYLIST_REQUEST",
-
-  
-
 };
 
 const addPlaylistRequest = (payload) => ({

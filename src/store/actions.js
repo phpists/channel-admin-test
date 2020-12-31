@@ -4,6 +4,7 @@ import profile from './profile/actions'
 import channels from './channels/actions'
 import playlists from './playlists/actions'
 import videos from './videos/actions'
+import languages from './languages/actions'
 
 export * from './layout/actions';
 
@@ -13,5 +14,6 @@ export default {
   profile,
   channels,
   playlists,
-  videos
+  videos,
+  languages
 }

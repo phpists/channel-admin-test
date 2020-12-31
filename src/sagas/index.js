@@ -4,6 +4,7 @@ import { Types as ProfileTypes } from "../store/profile/actions";
 import { Types as ChannelsTypes } from "../store/channels/actions";
 import { Types as PlaylistsTypes } from "../store/playlists/actions";
 import { Types as VideosTypes } from "../store/videos/actions";
+import { Types as LanguagesTypes } from '../store/languages/actions'
 import LayoutSaga from "./../store/layout/saga";
 
 import {
@@ -37,6 +38,11 @@ import {
   watchGetVideos,
   watchGetVideoByPlaylists,
 } from "./videos";
+
+import {
+  watchGetChannelLanguages,
+  watchUpdateChannelLanguages
+} from './languages'
 
 export function* rootSaga() {
   yield all([
@@ -73,6 +79,8 @@ export function* rootSaga() {
       VideosTypes.GET_VIDEO_BY_PLAYLIST_REQUEST,
       watchGetVideoByPlaylists
     ),
+    takeLatest(LanguagesTypes.GET_CHANNEL_LANGUAGES_REQUEST, watchGetChannelLanguages),
+    takeLatest(LanguagesTypes.UPDATE_CHANNEL_LANGUAGES_REQUEST, watchUpdateChannelLanguages),
 
     LayoutSaga(),
   ]);

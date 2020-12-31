@@ -4,6 +4,7 @@ import common from './common'
 import channels from './channels'
 import playlists from './playlists'
 import videos from './videos'
+import languages from './languages'
 
 export default {
     authorization,
@@ -11,5 +12,6 @@ export default {
     common,
     channels,
     playlists,
-    videos
+    videos,
+    languages
 }
