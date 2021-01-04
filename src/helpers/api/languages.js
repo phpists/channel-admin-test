@@ -26,7 +26,6 @@ export const languages = {
     return await axiosInstance
       .post(`?${queryString}`, formData, config)
       .then((response) => {
-        console.log("RESSSSSSSSSSSSSPOOOOOLLLLLLLLLLLL", response);
         return response;
       })
       .catch((error) => ({ error }));
@@ -40,10 +39,7 @@ export const languages = {
 
     const queryString = `action=UpdateChannelLanguages&openKey=${authData.openKey}`;
 
-    const jsonData = JSON.stringify({
-      channelId: data,
-      languages: { en: 1, ru: 0 },
-    });
+    const jsonData = JSON.stringify(data);
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
     formData.append("jsonData", jsonData);
@@ -58,7 +54,6 @@ export const languages = {
     return await axiosInstance
       .post(`?${queryString}`, formData, config)
       .then((response) => {
-        console.log("UPDATEEEEEEEEEEEEEEEE", response);
         return response;
       })
       .catch((error) => ({ error }));

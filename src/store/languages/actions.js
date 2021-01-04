@@ -21,9 +21,8 @@ const updateChannelLanguagesRequest = (payload) => ({
     payload
 });
 
-const updateChannelLanguagesSuccess = (payload) => ({
+const updateChannelLanguagesSuccess = () => ({
     type: Types.UPDATE_CHANNEL_LANGUAGES_SUCCESS,
-    payload
 })
 
 export default {

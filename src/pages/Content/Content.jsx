@@ -54,7 +54,7 @@ const Content = (props) => {
   const [modalSave, setModalSave] = useState(false);
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
-  const [dragVIdeo, updateDragVideo] = useState(videosByPlaylist);
+  const [dragVIdeo, updateDragVideo] = useState(videos);
   const [getPlaylist, setGetPlaylist] = useState(null);
   const [selectedPage, setSelectedPage] = useState(1);
 

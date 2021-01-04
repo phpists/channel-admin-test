@@ -10,16 +10,9 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...{
-                    languages: action.payload.languages
+                    languages: action.payload
                 }
             }
-        case Types.UPDATE_CHANNEL_LANGUAGES_SUCCESS: 
-        return {
-            ...state,
-            ...{
-                languages: action.payload.languages
-            }
-        }
         default:
             return state;
     }

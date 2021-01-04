@@ -29,7 +29,13 @@ import {
 import "./channels.scss";
 
 const ChannelSettings = React.memo((props) => {
-  const { activeChannel, onChannelUpdate, onGetChannelLanguages, onUpdateChannelLanguages } = props;
+  const {
+    activeChannel,
+    onChannelUpdate,
+    onGetChannelLanguages,
+    onUpdateChannelLanguages,
+    languages,
+  } = props;
   const [activeTab, setActiveTab] = useState("1");
   const [channelName, setChannelName] = useState(activeChannel?.name || "");
   const [channelDomain, setChannelDomain] = useState(
@@ -40,10 +46,8 @@ const ChannelSettings = React.memo((props) => {
   );
   const [modal, setModal] = useState(false);
   const [checkedName, setCheckedName] = useState([]);
-  const lang = ["English", "Deutsch", "Espanol", "Italy", "Russian"];
-  // const [lng, setLng] = useState("eng");
+  const [lng, setLng] = useState(null);
   let defaultLang = JSON.parse(localStorage.getItem("channelLangs"));
-  
 
   const onChecked = (e) => {
     const name = e.target.name;
@@ -57,18 +61,6 @@ const ChannelSettings = React.memo((props) => {
     }
     setCheckedName(all);
     localStorage.setItem("channelLangs", JSON.stringify(all));
-
-    // if (name === "English") {
-    //   //setLng("eng");
-    // } else if (name === "Deutsch") {
-    //   //setLng("gr");
-    // } else if (name === "Espanol") {
-    //   //setLng("sp");
-    // } else if (name === "Italy") {
-    //   //setLng("it");
-    // } else if (name === "Russian") {
-    //   //setLng("rs");
-    // }
   };
 
   const onSubmit = () => {
@@ -78,16 +70,22 @@ const ChannelSettings = React.memo((props) => {
       domain: channelDomain.replace(/\s/g, ""),
       subdomain: channelSubDomain.replace(/\s/g, ""),
     });
-    onUpdateChannelLanguages(activeChannel.id);
+
+    const en = checkedName.includes("en") 
+    const ru = checkedName.includes("ru") 
+
+      onUpdateChannelLanguages({
+        channelId: activeChannel.id,
+        languages: { en: en ? 1 : 0, ru: ru ? 1 : 0 },
+      });
   };
 
   useEffect(() => {
-    if(defaultLang === null) {
+    if (defaultLang === null) {
       localStorage.setItem("channelLangs", JSON.stringify(checkedName));
     }
     defaultLang = JSON.parse(localStorage.getItem("channelLangs"));
-      setCheckedName(defaultLang);
-    // i18n.changeLanguage(lng);
+    setCheckedName(defaultLang);
   }, []);
 
   const customValidation = (value) => {
@@ -111,13 +109,14 @@ const ChannelSettings = React.memo((props) => {
       setChannelName(activeChannel?.name);
       setChannelDomain(activeChannel?.domain || "");
       setChannelSubDomain(activeChannel?.subdomain || "");
-    }
-  }, [activeChannel]);
 
-  // useEffect(() => {
-  //   // onGetChannelLanguages(activeChannel.id);
-  //   onUpdateChannelLanguages(activeChannel.id);
-  // }, [])
+      if (languages === null) {
+        onGetChannelLanguages(activeChannel.id);
+      } else {
+        setLng(Object.keys(languages));
+      }
+    }
+  }, [languages, activeChannel]);
 
   const toggle = () => setModal(!modal);
 
@@ -227,7 +226,7 @@ const ChannelSettings = React.memo((props) => {
                         Enable languages so that viewers can see translated
                         content on your website
                       </FormText>
-                      {lang.map((label, index) => {
+                      {lng?.map((label, index) => {
                         return (
                           <Label
                             check
@@ -255,7 +254,6 @@ const ChannelSettings = React.memo((props) => {
                     <Button
                       className="btn-size-130 mr-3"
                       color="primary"
-                      onClick={onSubmit}
                       type="submit"
                     >
                       Save
@@ -312,14 +310,16 @@ const ChannelSettings = React.memo((props) => {
 
 const mapStatetoProps = (state) => ({
   activeChannel: selectors.channels.activeChannel(state),
-  languages: selectors.languages.languages(state)
+  languages: selectors.languages.languages(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onChannelUpdate: (data) =>
     dispatch(Actions.channels.updateChannelRequest(data)),
-  onGetChannelLanguages: (data) => dispatch(Actions.languages.getChannelLanguagesRequest(data)),
-  onUpdateChannelLanguages: (data) => dispatch(Actions.languages.updateChannelLanguagesRequest(data)),
+  onGetChannelLanguages: (data) =>
+    dispatch(Actions.languages.getChannelLanguagesRequest(data)),
+  onUpdateChannelLanguages: (data) =>
+    dispatch(Actions.languages.updateChannelLanguagesRequest(data)),
 });
 
 export default connect(mapStatetoProps, mapDispatchToProps)(ChannelSettings);

@@ -45,7 +45,6 @@ export const playlists = {
     const queryString = `action=DeletePlaylist&openKey=${authData.openKey}`;
 
     const jsonData = JSON.stringify({ id: data });
-    console.log(data)
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
     formData.append("jsonData", jsonData);
@@ -60,7 +59,6 @@ export const playlists = {
     return await axiosInstance
       .post(`?${queryString}`, formData, config)
       .then((response) => {
-        console.log("res", response.data)
         return response;
       })
       .catch((error) => ({ error }))
@@ -119,7 +117,6 @@ export const playlists = {
     return await axiosInstance
       .post(`?${queryString}`, formData, config)
       .then((response) => {
-        console.log("PLAYLIST: ", response)
         return response;
       })
       .catch((error) => ({ error }));

@@ -6,7 +6,6 @@ import selectors from "./../selectors";
 
 export function* watchGetChannelLanguages(action) {
       const response = yield API.languages.getChannelLanguages(action.payload);
-
       if(response.status === 200) {
           if(response.data.status === "error") {
               yield put(
@@ -31,7 +30,7 @@ export function* watchUpdateChannelLanguages(action) {
             )
         } else {
             yield put(
-                Actions.languages.updateChannelLanguagesSuccess(response?.data)
+                Actions.languages.updateChannelLanguagesSuccess()
             );
         } 
     } else {

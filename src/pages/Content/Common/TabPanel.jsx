@@ -8,6 +8,7 @@ import CheckItems from "./CheckItems";
 import ButtonsAPIVideo from "../ButtonsAPI/ButtonsAPIVideo";
 import PaginationVideos from "../Pagination/Pagination";
 import Loader from "../../../helpers/loader";
+import { useRef } from "react";
 
 const TabPanel = (props) => {
   const {
@@ -64,10 +65,26 @@ const TabPanel = (props) => {
     setLoader,
   } = props;
 
+  const prevCountVideosRef = useRef();
+  const prevCountPlaylistRef = useRef();
+  const prevCountVideosByPlaylistRef = useRef();
+  useEffect(() => {
+    prevCountVideosRef.current = countVideos;
+    prevCountPlaylistRef.current = countPlaylists;
+    prevCountVideosByPlaylistRef.current = countVideosByPlaylist;
+  });
+  const prevCountVideos = prevCountVideosRef.current;
+  const prevCountVideosByPlaylist = prevCountVideosByPlaylistRef.current;
+  const prevCountPlaylist = prevCountPlaylistRef.current;
+
   useEffect(() => {
     if (playlists === null) {
       onGetPlaylist({ id: defaultChannel?.id || "1", count: 0 });
     }
+    if (videos === null) {
+      onGetVideos({ id: defaultChannel?.id, count: 0 });
+    }
+
     if (
       characters === null ||
       playlists?.length !== characters?.length ||
@@ -75,7 +92,6 @@ const TabPanel = (props) => {
     ) {
       updateCharacters(playlists);
     }
-
     if (getPlaylist !== null) {
       if (
         dragVIdeo === null ||
@@ -84,13 +100,18 @@ const TabPanel = (props) => {
       ) {
         updateDragVideo(videosByPlaylist);
       }
-    }
-    if (videos === null) {
-      onGetVideos({ id: defaultChannel?.id, count: 0 });
+    } else {
+      if (dragVIdeo === null || videos?.length !== dragVIdeo?.length) {
+        updateDragVideo(videos);
+      }
     }
 
-    if(playlists?.length === 0 || videos?.length === 0 || videosByPlaylist?.length === 0) {
-      setLoader(false)
+    if (
+      playlists?.length === 0 ||
+      videos?.length === 0 ||
+      videosByPlaylist?.length === 0
+    ) {
+      setLoader(false);
     }
   }, [playlists, videosByPlaylist, videos, getPlaylist]);
 
@@ -184,15 +205,16 @@ const TabPanel = (props) => {
               getPlaylist,
               onGetVideosByPlaylist,
               defaultChannel,
-              setSelectedPage
+              setSelectedPage,
             }}
           />
           {activeTab === "1" ? (
-            characters?.length === 0 || characters === null ? (
-              loader ? 
-              <Loader />
-              :
-              <EmptyMessage {...{ setActiveTab, activeTab }} />
+            characters?.length === 0 || characters === null || prevCountPlaylist !== countPlaylists ? (
+              loader ? (
+                <Loader />
+              ) : (
+                <EmptyMessage {...{ setActiveTab, activeTab }} />
+              )
             ) : (
               <>
                 <CheckItems
@@ -229,11 +251,15 @@ const TabPanel = (props) => {
                 />
               </>
             )
-          ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
-            loader ? 
-            <Loader />
-            :
-            <EmptyMessage {...{ setActiveTab, activeTab }} />
+          ) : dragVIdeo?.length === 0 ||
+            dragVIdeo === null ||
+            prevCountVideos !== countVideos ||
+            prevCountVideosByPlaylist !== countVideosByPlaylist ? (
+            loader ? (
+              <Loader />
+            ) : (
+              <EmptyMessage {...{ setActiveTab, activeTab }} />
+            )
           ) : (
             <>
               <CheckItems
