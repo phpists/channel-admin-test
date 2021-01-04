@@ -2,6 +2,7 @@
 export const Types = {
   SET_ERROR_NOTIFY: 'SET_ERROR_NOTIFY',
   SET_SUCCESS_NOTIFY: 'SET_SUCCESS_NOTIFY',
+  SET_LOADER: 'SET_LOADER'
 }
 
 const setErrorNotify = (payload) => ({
@@ -14,8 +15,14 @@ const setSuccessNotify = (payload) => ({
   payload
 })
 
+const setLoader = (payload) => ({
+  type: Types.SET_LOADER,
+  payload
+})
+
 
 export default {
   setErrorNotify,
   setSuccessNotify,
+  setLoader
 }

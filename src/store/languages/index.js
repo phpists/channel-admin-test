@@ -1,7 +1,7 @@
 import { Types } from './actions';
 
 const initialState = {
-    languages: null
+    languages: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -13,6 +13,13 @@ const reducer = (state = initialState, action) => {
                     languages: action.payload.languages
                 }
             }
+        case Types.UPDATE_CHANNEL_LANGUAGES_SUCCESS: 
+        return {
+            ...state,
+            ...{
+                languages: action.payload.languages
+            }
+        }
         default:
             return state;
     }

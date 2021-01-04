@@ -7,6 +7,7 @@ import ButtonsAPIPlaylist from "../ButtonsAPI/ButtonsAPIPlaylist";
 import CheckItems from "./CheckItems";
 import ButtonsAPIVideo from "../ButtonsAPI/ButtonsAPIVideo";
 import PaginationVideos from "../Pagination/Pagination";
+import Loader from "../../../helpers/loader";
 
 const TabPanel = (props) => {
   const {
@@ -59,6 +60,8 @@ const TabPanel = (props) => {
     setActiveTab,
     countVideosByPlaylist,
     checkId,
+    loader,
+    setLoader,
   } = props;
 
   useEffect(() => {
@@ -85,7 +88,7 @@ const TabPanel = (props) => {
     if (videos === null) {
       onGetVideos({ id: defaultChannel?.id, count: 0 });
     }
-  }, [playlists, videosByPlaylist, videos, getPlaylist]);
+  }, [playlists, videosByPlaylist, videos, getPlaylist, loader]);
 
   return (
     <Card className="flex-column align-items-start">
@@ -182,6 +185,9 @@ const TabPanel = (props) => {
           />
           {activeTab === "1" ? (
             characters?.length === 0 || characters === null ? (
+              loader ? 
+              <Loader />
+              :
               <EmptyMessage {...{ setActiveTab, activeTab }} />
             ) : (
               <>
@@ -220,6 +226,9 @@ const TabPanel = (props) => {
               </>
             )
           ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
+            loader ? 
+            <Loader />
+            :
             <EmptyMessage {...{ setActiveTab, activeTab }} />
           ) : (
             <>

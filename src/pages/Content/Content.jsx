@@ -37,13 +37,15 @@ const Content = (props) => {
     countVideos,
     countPlaylists,
     countVideosByPlaylist,
+    loader,
+    setLoader,
   } = props;
 
   // State local
   const [changePage, setChangePage] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [checkName, setCheckName] = useState("");
-  const [checkId, setCheckId] = useState(null)
+  const [checkId, setCheckId] = useState(null);
   const [checkDesc, setCheckDesc] = useState("");
   const [activeTab, setActiveTab] = useState("1");
   const [valueButton, setValueButton] = useState("");
@@ -244,7 +246,9 @@ const Content = (props) => {
                       toEdit,
                       setActiveTab,
                       countVideosByPlaylist,
-                      checkId
+                      checkId,
+                      loader,
+                      setLoader,
                     }}
                   />
                 </TabPane>
@@ -299,7 +303,9 @@ const Content = (props) => {
                       toEdit,
                       setActiveTab,
                       countVideosByPlaylist,
-                      checkId
+                      checkId,
+                      loader,
+                      setLoader,
                     }}
                   />
                 </TabPane>
@@ -329,6 +335,8 @@ const mapStatetoProps = (state) => ({
   videosByPlaylist: selectors.videos.videosByPlaylist(state),
   countVideos: selectors.videos.countVideos(state),
   countVideosByPlaylist: selectors.videos.countVideosByPlaylist(state),
+
+  loader: selectors.common.loader(state),
 });
 
 // Get redux state function
@@ -351,6 +359,8 @@ const mapDispatchToProps = (dispatch) => ({
   onRemoveVideoFromPlaylist: (data) =>
     dispatch(Actions.videos.removeVideoFromPlaylistRequest(data)),
   onGetVideos: (data) => dispatch(Actions.videos.getVideosRequest(data)),
+
+  setLoader: (data) => dispatch(Actions.common.setLoader(data)),
 });
 
 export default connect(

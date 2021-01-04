@@ -3,6 +3,7 @@ import { Types } from './actions'
 const initialState = {
   errorMessage: '',
   successMessage: '',
+  loader: true
 }
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +20,12 @@ const reducer = (state = initialState, action) => {
         ...state, ...{
           successMessage: action.payload,
         }
+      }
+    }
+    case Types.SET_LOADER: {
+      return {
+        ...state,
+        loader: action.payload
       }
     }
     default: return state
