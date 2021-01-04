@@ -119,6 +119,7 @@ export const playlists = {
     return await axiosInstance
       .post(`?${queryString}`, formData, config)
       .then((response) => {
+        console.log("PLAYLIST: ", response)
         return response;
       })
       .catch((error) => ({ error }));

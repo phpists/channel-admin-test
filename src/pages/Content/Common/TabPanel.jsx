@@ -88,7 +88,11 @@ const TabPanel = (props) => {
     if (videos === null) {
       onGetVideos({ id: defaultChannel?.id, count: 0 });
     }
-  }, [playlists, videosByPlaylist, videos, getPlaylist, loader]);
+
+    if(playlists?.length === 0 || videos?.length === 0 || videosByPlaylist?.length === 0) {
+      setLoader(false)
+    }
+  }, [playlists, videosByPlaylist, videos, getPlaylist]);
 
   return (
     <Card className="flex-column align-items-start">

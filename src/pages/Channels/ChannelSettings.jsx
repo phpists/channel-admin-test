@@ -78,6 +78,7 @@ const ChannelSettings = React.memo((props) => {
       domain: channelDomain.replace(/\s/g, ""),
       subdomain: channelSubDomain.replace(/\s/g, ""),
     });
+    onUpdateChannelLanguages(activeChannel.id);
   };
 
   useEffect(() => {
@@ -113,10 +114,10 @@ const ChannelSettings = React.memo((props) => {
     }
   }, [activeChannel]);
 
-  useEffect(() => {
-    // onGetChannelLanguages(activeChannel.id);
-    onUpdateChannelLanguages(activeChannel.id);
-  }, [])
+  // useEffect(() => {
+  //   // onGetChannelLanguages(activeChannel.id);
+  //   onUpdateChannelLanguages(activeChannel.id);
+  // }, [])
 
   const toggle = () => setModal(!modal);
 

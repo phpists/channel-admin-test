@@ -56,8 +56,6 @@ export const channels = {
         const authData = sessionStorage.getItem('bringStreamAuth') ? JSON.parse(sessionStorage.getItem('bringStreamAuth')) : null
         if (!authData) return false
 
-        if (!authData) return false
-
         const queryString = `action=UpdateChannel&openKey=${authData.openKey}`
 
         const jsonData = JSON.stringify({ fields: data })
