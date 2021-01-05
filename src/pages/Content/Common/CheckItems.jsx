@@ -94,7 +94,7 @@ const CheckItems = (props) => {
           channel: defaultChannel?.id,
           count: 0,
         });
-      }, 100);
+      }, 1000);
       event.target.blur();
     }
   };
