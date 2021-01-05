@@ -158,7 +158,6 @@ export const videos = {
 
     //good
     getVideosByPlaylists: async (data) => {
-        debugger
         const authData = sessionStorage.getItem("bringStreamAuth")
             ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
             : null;
