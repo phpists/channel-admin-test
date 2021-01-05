@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Form, Label, Input } from "reactstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import { axiosInstance } from "../../../helpers/api/index";
 import { sha1 } from "../../../helpers/sha1";
+import Loader from "../../../helpers/loader";
 
 const CheckItems = (props) => {
   const {
@@ -18,11 +19,20 @@ const CheckItems = (props) => {
     onGetVideosByPlaylist,
     getPlaylist,
     defaultChannel,
+    loader,
+    setLoader,
   } = props;
 
   const [orderByValue, setOrderByValue] = useState(0);
   const [videoId, setVideoId] = useState(0);
   const [playlistId, setPlaylistId] = useState(0);
+
+  const prevValueRef = useRef();
+  useEffect(() => {
+    prevValueRef.current = orderByValue;
+  });
+  const prevValue = prevValueRef.current;
+
 
   let allItems = [];
   for (let str of items) {
@@ -96,10 +106,23 @@ const CheckItems = (props) => {
         });
       }, 1000);
       event.target.blur();
+      if(prevValue !== orderByValue) {
+        setLoader(true)
+      }
     }
   };
 
+  useEffect(() => {
+    if(sortedItems.length !== 0) {
+      setLoader(false)
+    }
+  }, [sortedItems])
+
   return (
+    <>
+    { loader ?
+    <Loader />
+    :
     <Form>
       <DragDropContext
         onDragEnd={(e) => handleOnDragEnd(e, sortedItems, updateItems)}
@@ -205,7 +228,8 @@ const CheckItems = (props) => {
           )}
         </Droppable>
       </DragDropContext>
-    </Form>
+    </Form>}
+    </>
   );
 };
 

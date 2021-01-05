@@ -68,6 +68,7 @@ const TabPanel = (props) => {
   const prevCountVideosRef = useRef();
   const prevCountPlaylistRef = useRef();
   const prevCountVideosByPlaylistRef = useRef();
+
   useEffect(() => {
     prevCountVideosRef.current = countVideos;
     prevCountPlaylistRef.current = countPlaylists;
@@ -107,13 +108,13 @@ const TabPanel = (props) => {
     }
 
     if (
-      playlists?.length === 0 ||
-      videos?.length === 0 ||
-      videosByPlaylist?.length === 0
+      prevCountVideos !== countVideos ||
+      prevCountPlaylist !== countPlaylists ||
+      prevCountVideosByPlaylist !== countVideosByPlaylist
     ) {
-      setLoader(false);
+      setLoader(true)
     }
-  }, [playlists, videosByPlaylist, videos, getPlaylist]);
+  }, [playlists, videosByPlaylist, videos, getPlaylist, prevCountVideosByPlaylist, countVideosByPlaylist]);
 
   return (
     <Card className="flex-column align-items-start">
@@ -185,6 +186,7 @@ const TabPanel = (props) => {
                 updateDragVideo,
                 videos,
                 defaultChannel,
+                setLoader
               }}
             />
           )}
@@ -209,9 +211,7 @@ const TabPanel = (props) => {
             }}
           />
           {activeTab === "1" ? (
-            characters?.length === 0 ||
-            characters === null ||
-            prevCountPlaylist !== countPlaylists ? (
+            characters?.length === 0 || characters === null ? (
               loader ? (
                 <Loader />
               ) : (
@@ -232,6 +232,8 @@ const TabPanel = (props) => {
                     onGetVideosByPlaylist,
                     getPlaylist,
                     defaultChannel,
+                    loader,
+                    setLoader,
                   }}
                 />
                 <PaginationVideos
@@ -252,14 +254,12 @@ const TabPanel = (props) => {
                     updateCharacters,
                     playlists,
                     videosByPlaylist,
+                    setLoader
                   }}
                 />
               </>
             )
-          ) : dragVIdeo?.length === 0 ||
-            dragVIdeo === null ||
-            prevCountVideos !== countVideos ||
-            prevCountVideosByPlaylist !== countVideosByPlaylist ? (
+          ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
             loader ? (
               <Loader />
             ) : (
@@ -280,6 +280,8 @@ const TabPanel = (props) => {
                   onGetVideosByPlaylist,
                   getPlaylist,
                   defaultChannel,
+                  loader,
+                  setLoader,
                 }}
               />
               {countVideosByPlaylist > 25 || getPlaylist === null ? (
@@ -301,6 +303,7 @@ const TabPanel = (props) => {
                     updateCharacters,
                     playlists,
                     videosByPlaylist,
+                    setLoader
                   }}
                 />
               ) : null}

@@ -16,7 +16,8 @@ const PaginationVideos = (props) => {
     getPlaylist,
     onGetVideosByPlaylist,
     countVideosByPlaylist,
-    videosByPlaylist
+    videosByPlaylist,
+    setLoader
   } = props;
 
   const handleSelected = (page) => {
@@ -32,6 +33,7 @@ const PaginationVideos = (props) => {
         setSelectedPage(page);
       }
     }
+    setLoader(true)
   };
 
   useEffect(() => {

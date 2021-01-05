@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Button,
   ButtonDropdown,
@@ -22,7 +22,8 @@ const ButtonsAPIVideo = (props) => {
     setSelectedPage,
     updateDragVideo,
     videos,
-    defaultChannel
+    defaultChannel,
+    setLoader
   } = props;
 
   const [dropdownOpen, setOpen] = useState(false);
@@ -44,7 +45,7 @@ const ButtonsAPIVideo = (props) => {
           <DropdownItem
             onClick={() => {
               setGetPlaylist(null);
-              onGetVideos( {id: defaultChannel?.id, count: 0});
+              onGetVideos({ id: defaultChannel?.id, count: 0 });
               setSelectedPage(1);
               setChekedItems([]);
               updateDragVideo(videos);
@@ -57,10 +58,15 @@ const ButtonsAPIVideo = (props) => {
               <DropdownItem
                 key={c.id}
                 onClick={() => {
-                  onGetVideosByPlaylist({id: c.id, channel: defaultChannel?.id,  count: 0});
+                  onGetVideosByPlaylist({
+                    id: c.id,
+                    channel: defaultChannel?.id,
+                    count: 0,
+                  });
                   setGetPlaylist(c);
                   setChekedItems([]);
                   setSelectedPage(1);
+                  setLoader(true)
                 }}
               >
                 {c.name}
