@@ -209,7 +209,9 @@ const TabPanel = (props) => {
             }}
           />
           {activeTab === "1" ? (
-            characters?.length === 0 || characters === null || prevCountPlaylist !== countPlaylists ? (
+            characters?.length === 0 ||
+            characters === null ||
+            prevCountPlaylist !== countPlaylists ? (
               loader ? (
                 <Loader />
               ) : (
@@ -227,6 +229,9 @@ const TabPanel = (props) => {
                     handleChange,
                     characters,
                     toEdit,
+                    onGetVideosByPlaylist,
+                    getPlaylist,
+                    defaultChannel,
                   }}
                 />
                 <PaginationVideos
@@ -272,6 +277,9 @@ const TabPanel = (props) => {
                   checkedItems,
                   setChekedItems,
                   toEdit,
+                  onGetVideosByPlaylist,
+                  getPlaylist,
+                  defaultChannel,
                 }}
               />
               {countVideosByPlaylist > 25 || getPlaylist === null ? (

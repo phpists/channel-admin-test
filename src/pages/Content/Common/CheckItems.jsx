@@ -5,7 +5,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { axiosInstance } from "../../../helpers/api/index";
 import { sha1 } from "../../../helpers/sha1";
 
-
 const CheckItems = (props) => {
   const {
     updateItems,
@@ -16,6 +15,9 @@ const CheckItems = (props) => {
     handleChange,
     characters,
     toEdit,
+    onGetVideosByPlaylist,
+    getPlaylist,
+    defaultChannel,
   } = props;
 
   const [orderByValue, setOrderByValue] = useState(0);
@@ -27,7 +29,7 @@ const CheckItems = (props) => {
     if (!allItems.includes(str)) {
       allItems.push(str);
     }
-  };
+  }
 
   // set input data when changed
   const onOrderbyClick = (orderByValue, video_id, playlist_id) => {
@@ -44,9 +46,10 @@ const CheckItems = (props) => {
       property = property.substr(1);
     }
     return function (a, b) {
-      const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      const result =
+        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;
-    }
+    };
   }
 
   const sortedItems = items.sort(dynamicSort("orderby"));
@@ -62,7 +65,7 @@ const CheckItems = (props) => {
     const formData = new FormData();
 
     formData.append("jsonData", jsonData);
-    formData.append('signature', signature)
+    formData.append("signature", signature);
 
     const config = {
       headers: {
@@ -84,10 +87,17 @@ const CheckItems = (props) => {
         playlist_id: playlistId,
         video_id: videoId,
         orderby: orderByValue,
-      })
+      });
+      setTimeout(() => {
+        onGetVideosByPlaylist({
+          id: getPlaylist?.id,
+          channel: defaultChannel?.id,
+          count: 0,
+        });
+      }, 100);
+      event.target.blur();
     }
   };
-
 
   return (
     <Form>
@@ -102,7 +112,7 @@ const CheckItems = (props) => {
               ref={provided.innerRef}
             >
               {sortedItems &&
-                sortedItems ?.map((p, index) => {
+                sortedItems?.map((p, index) => {
                   const element = (p.duration / 3600).toString().split("");
                   const minutes = element.splice(0, 1).join("");
                   const seconds = element.splice(1, 2);
@@ -129,16 +139,22 @@ const CheckItems = (props) => {
                               }
                             />
 
-                            {sortedItems !== characters &&
+                            {sortedItems !== characters && (
                               <input
                                 className="videosOrderNumber"
                                 type="text"
                                 checked={checkedItems.includes(p.id)}
                                 defaultValue={p.orderby}
-                                onChange={(event) => onOrderbyClick(event.target.value, p.id, p.playlist_id)}
+                                onChange={(event) =>
+                                  onOrderbyClick(
+                                    event.target.value,
+                                    p.id,
+                                    p.playlist_id
+                                  )
+                                }
                                 onKeyDown={(event) => onEnterPress(event)}
                               />
-                            }
+                            )}
 
                             {sortedItems === characters ? (
                               <>
@@ -151,31 +167,31 @@ const CheckItems = (props) => {
                                 </span>
                               </>
                             ) : (
-                                <>
-                                  {" "}
-                                  <img
-                                    src={JSON.parse(p.pictures)["100"]}
-                                    className="picture"
-                                    alt="img"
-                                  />
-                                  <span
-                                    id="editVideo"
-                                    onClick={(e) => toEdit(p, e.currentTarget.id)}
-                                  >
-                                    {p.vimeo_name}{" "}
-                                  </span>
-                                </>
-                              )}
+                              <>
+                                {" "}
+                                <img
+                                  src={JSON.parse(p.pictures)["100"]}
+                                  className="picture"
+                                  alt="img"
+                                />
+                                <span
+                                  id="editVideo"
+                                  onClick={(e) => toEdit(p, e.currentTarget.id)}
+                                >
+                                  {p.vimeo_name}{" "}
+                                </span>
+                              </>
+                            )}
                             <div className="col-mail col-mail-2">
                               <div className="date">
                                 {sortedItems === characters ? (
-                                  `${p ?.videos_count} items`
+                                  `${p?.videos_count} items`
                                 ) : (
-                                    <>
-                                      {minutes}:
+                                  <>
+                                    {minutes}:
                                     {seconds.length === 0 ? "00" : seconds}{" "}
-                                    </>
-                                  )}
+                                  </>
+                                )}
                               </div>
                             </div>
                           </Label>
