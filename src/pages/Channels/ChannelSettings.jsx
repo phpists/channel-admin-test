@@ -32,7 +32,6 @@ const ChannelSettings = React.memo((props) => {
   const {
     activeChannel,
     onChannelUpdate,
-    onGetChannelLanguages,
     onUpdateChannelLanguages,
     languages,
   } = props;
@@ -46,7 +45,7 @@ const ChannelSettings = React.memo((props) => {
   );
   const [modal, setModal] = useState(false);
   const [checkedName, setCheckedName] = useState([]);
-  const [lng, setLng] = useState(null);
+  const [langItems, setLangItems] = useState(["English", "Deutsch", "Espanol", "Italy", "Russian"]);
   let defaultLang = JSON.parse(localStorage.getItem("channelLangs"));
 
   const onChecked = (e) => {
@@ -71,12 +70,12 @@ const ChannelSettings = React.memo((props) => {
       subdomain: channelSubDomain.replace(/\s/g, ""),
     });
 
-    const en = checkedName.includes("en") 
-    const ru = checkedName.includes("ru") 
+    const eng = checkedName.includes("English") 
+    const rus = checkedName.includes("Russian") 
 
       onUpdateChannelLanguages({
         channelId: activeChannel.id,
-        languages: { en: en ? 1 : 0, ru: ru ? 1 : 0 },
+        languages: { en: eng ? 1 : 0, ru: rus ? 1 : 0 },
       });
   };
 
@@ -109,12 +108,6 @@ const ChannelSettings = React.memo((props) => {
       setChannelName(activeChannel?.name);
       setChannelDomain(activeChannel?.domain || "");
       setChannelSubDomain(activeChannel?.subdomain || "");
-
-      if (languages === null) {
-        onGetChannelLanguages(activeChannel.id);
-      } else {
-        setLng(Object.keys(languages));
-      }
     }
   }, [languages, activeChannel]);
 
@@ -226,7 +219,7 @@ const ChannelSettings = React.memo((props) => {
                         Enable languages so that viewers can see translated
                         content on your website
                       </FormText>
-                      {lng?.map((label, index) => {
+                      {langItems?.map((label, index) => {
                         return (
                           <Label
                             check

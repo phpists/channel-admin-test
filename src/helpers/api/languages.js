@@ -26,6 +26,7 @@ export const languages = {
     return await axiosInstance
       .post(`?${queryString}`, formData, config)
       .then((response) => {
+        console.log("response", response)
         return response;
       })
       .catch((error) => ({ error }));
