@@ -106,15 +106,20 @@ const TabPanel = (props) => {
         updateDragVideo(videos);
       }
     }
-
     if (
-      prevCountVideos !== countVideos ||
-      prevCountPlaylist !== countPlaylists ||
-      prevCountVideosByPlaylist !== countVideosByPlaylist
+      prevCountVideos !== undefined ||
+      prevCountPlaylist !== undefined ||
+      prevCountVideosByPlaylist !== undefined
     ) {
-      setLoader(true)
+      if (
+        prevCountVideos !== countVideos ||
+        prevCountPlaylist !== countPlaylists ||
+        prevCountVideosByPlaylist !== countVideosByPlaylist
+      ) {
+        setLoader(true);
+      }
     }
-  }, [playlists, videosByPlaylist, videos, getPlaylist, prevCountVideosByPlaylist, countVideosByPlaylist]);
+  }, [playlists, videosByPlaylist, videos, getPlaylist]);
 
   return (
     <Card className="flex-column align-items-start">
@@ -186,7 +191,7 @@ const TabPanel = (props) => {
                 updateDragVideo,
                 videos,
                 defaultChannel,
-                setLoader
+                setLoader,
               }}
             />
           )}
@@ -254,7 +259,7 @@ const TabPanel = (props) => {
                     updateCharacters,
                     playlists,
                     videosByPlaylist,
-                    setLoader
+                    setLoader,
                   }}
                 />
               </>
@@ -303,7 +308,7 @@ const TabPanel = (props) => {
                     updateCharacters,
                     playlists,
                     videosByPlaylist,
-                    setLoader
+                    setLoader,
                   }}
                 />
               ) : null}

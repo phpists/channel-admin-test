@@ -34,6 +34,7 @@ const ChannelSettings = React.memo((props) => {
     onChannelUpdate,
     onUpdateChannelLanguages,
     languages,
+    onGetChannelLanguages
   } = props;
   const [activeTab, setActiveTab] = useState("1");
   const [channelName, setChannelName] = useState(activeChannel?.name || "");
@@ -72,11 +73,13 @@ const ChannelSettings = React.memo((props) => {
 
     const eng = checkedName.includes("English") 
     const rus = checkedName.includes("Russian") 
+    const deu = checkedName.includes("Deutsch") 
 
       onUpdateChannelLanguages({
         channelId: activeChannel.id,
-        languages: { en: eng ? 1 : 0, ru: rus ? 1 : 0 },
+        languages: { en: eng ? 1 : 0, ru: rus ? 1 : 0, de: deu ? 1 : 0 },
       });
+      onGetChannelLanguages(activeChannel.id)
   };
 
   useEffect(() => {
