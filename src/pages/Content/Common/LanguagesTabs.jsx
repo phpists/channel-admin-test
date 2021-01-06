@@ -2,16 +2,21 @@ import React, { useState, useEffect } from "react";
 import classnames from "classnames";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 
-const LanguagesTabs = () => {
-  const [activeTab, setActiveTab] = useState("1");
-  // const [lng, setLng] = useState("eng");
+const LanguagesTabs = (props) => {
+  const { setLngEng } = props;
   const [langs, setLangs] = useState([]);
+  const [activeTab, setActiveTab] = useState(null);
   const defaultLang = JSON.parse(localStorage.getItem("channelLangs"));
 
   // On toggle languages
-  const toggleCustomJustified = (tab) => {
+  const toggleCustomJustified = (tab, title) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
+    }
+    if(title !== "English") {
+      setLngEng(false)
+    } else {
+      setLngEng(true)
     }
   };
 
@@ -36,7 +41,7 @@ const LanguagesTabs = () => {
                   })}
                   onClick={() => {
                     //setLng("rs");
-                    toggleCustomJustified(num.toString());
+                    toggleCustomJustified(num.toString(), item);
                   }}
                 >
                   <span className="d-none d-sm-block">{item}</span>

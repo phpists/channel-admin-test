@@ -50,6 +50,7 @@ const CreateEdit = (props) => {
   // State local
   const [require, setRequire] = useState(false);
   const [playlistId, setPlaylistId] = useState(characters[0]?.id);
+  const [lngEng, setLngEng] = useState(null) // state for eng languages
 
   function onSubmit() {
     if (editName === "" || editDescription === "") {
@@ -129,7 +130,7 @@ const CreateEdit = (props) => {
       <AvForm onValidSubmit={onSubmit}>
         <CardBody>
           {/* Toggle languages */}
-          <LanguagesTabs />
+          <LanguagesTabs {...{lngEng, setLngEng}} />
           {/* Form group with validation */}
           <FormaData
             {...{
@@ -141,6 +142,8 @@ const CreateEdit = (props) => {
               setEditDescription,
               characters,
               require,
+              lngEng,
+              setLngEng
             }}
           />
         </CardBody>
