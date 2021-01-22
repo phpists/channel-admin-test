@@ -42,8 +42,11 @@ const SelectLanguages = (props) => {
   //   Keep track side effects --- get all languages
   useEffect(() => {
     getLanguages();
-    onGetChannelLanguages(defaultChannel.id);
   }, []);
+  // Get channel languages
+  useEffect(() => {
+    defaultChannel && onGetChannelLanguages(defaultChannel.id);
+  }, [defaultChannel]);
   return (
     <>
       <Dropdown
