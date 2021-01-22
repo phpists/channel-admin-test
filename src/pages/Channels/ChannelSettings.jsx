@@ -33,8 +33,9 @@ const ChannelSettings = React.memo((props) => {
     activeChannel,
     onChannelUpdate,
     onUpdateChannelLanguages,
-    languages,
-    onGetChannelLanguages
+    channelLanguages,
+    onGetChannelLanguages,
+    languagesAll
   } = props;
   const [activeTab, setActiveTab] = useState("1");
   const [channelName, setChannelName] = useState(activeChannel?.name || "");
@@ -45,23 +46,7 @@ const ChannelSettings = React.memo((props) => {
     activeChannel?.subdomain || ""
   );
   const [modal, setModal] = useState(false);
-  const [checkedName, setCheckedName] = useState([]);
-  const [langItems, setLangItems] = useState(["English", "Deutsch", "Espanol", "Italy", "Russian"]);
-  let defaultLang = JSON.parse(localStorage.getItem("channelLangs"));
-
-  const onChecked = (e) => {
-    const name = e.target.name;
-    const clickedCategory = checkedName?.indexOf(name);
-    const all = [...checkedName];
-
-    if (clickedCategory === -1) {
-      all.push(name);
-    } else {
-      all.splice(clickedCategory, 1);
-    }
-    setCheckedName(all);
-    localStorage.setItem("channelLangs", JSON.stringify(all));
-  };
+  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
 
   const onSubmit = () => {
     onChannelUpdate({
@@ -70,25 +55,23 @@ const ChannelSettings = React.memo((props) => {
       domain: channelDomain.replace(/\s/g, ""),
       subdomain: channelSubDomain.replace(/\s/g, ""),
     });
-
-    const eng = checkedName.includes("English") 
-    const rus = checkedName.includes("Russian") 
-    const deu = checkedName.includes("Deutsch") 
-
-      onUpdateChannelLanguages({
-        channelId: activeChannel.id,
-        languages: { en: eng ? 1 : 0, ru: rus ? 1 : 0, de: deu ? 1 : 0 },
-      });
-      onGetChannelLanguages(activeChannel.id)
   };
+  // Select languages
+  const selectLang = (e) => {
+    const name = e.target.name;
+    const selected = channelLanguages[name] === 1;
+    const all = { ...channelLanguages };
 
-  useEffect(() => {
-    if (defaultLang === null) {
-      localStorage.setItem("channelLangs", JSON.stringify(checkedName));
+    if (selected) {
+      all[name] = 0;
+    } else {
+      all[name] = 1;
     }
-    defaultLang = JSON.parse(localStorage.getItem("channelLangs"));
-    setCheckedName(defaultLang);
-  }, []);
+    onUpdateChannelLanguages({ channelId: defaultChannel.id, languages: all });
+    setTimeout(() => {
+      onGetChannelLanguages(defaultChannel.id);
+    }, 1000);
+  };
 
   const customValidation = (value) => {
     return validate.isChannelNameValid(value)
@@ -112,7 +95,7 @@ const ChannelSettings = React.memo((props) => {
       setChannelDomain(activeChannel?.domain || "");
       setChannelSubDomain(activeChannel?.subdomain || "");
     }
-  }, [languages, activeChannel]);
+  }, [channelLanguages, activeChannel]);
 
   const toggle = () => setModal(!modal);
 
@@ -222,21 +205,28 @@ const ChannelSettings = React.memo((props) => {
                         Enable languages so that viewers can see translated
                         content on your website
                       </FormText>
-                      {langItems?.map((label, index) => {
+                      {languagesAll?.map((l, index) => {
+                        // channelLanguages && console.log(Object.values(channelLanguages).includes("1"))
                         return (
-                          <Label
+                          <div key={index}>
+                          {channelLanguages?.hasOwnProperty(l.id) ?
+                            <Label
                             check
-                            key={index}
+                            
                             className="d-block ml-4 mt-2 font-weight-bold"
                           >
                             <Input
                               type="checkbox"
-                              name={label}
-                              checked={checkedName?.includes(label)}
-                              onChange={onChecked}
+                              name={l.id}
+                              checked={channelLanguages[l.id] === 1}
+                              onChange={selectLang}
                             />
-                            {label}
+                            {channelLanguages?.hasOwnProperty(l.id) ? l.name : null}
                           </Label>
+                        :
+                        null
+                        }
+                        </div>
                         );
                       })}
                     </div>
@@ -306,7 +296,8 @@ const ChannelSettings = React.memo((props) => {
 
 const mapStatetoProps = (state) => ({
   activeChannel: selectors.channels.activeChannel(state),
-  languages: selectors.languages.languages(state),
+  channelLanguages: selectors.languages.channelLanguages(state),
+  languagesAll: selectors.languages.languagesAll(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

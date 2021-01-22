@@ -39,6 +39,9 @@ const Content = (props) => {
     countVideosByPlaylist,
     loader,
     setLoader,
+    channelLanguages,
+    onGetChannelLanguages,
+    languagesAll
   } = props;
 
   // State local
@@ -249,6 +252,9 @@ const Content = (props) => {
                       checkId,
                       loader,
                       setLoader,
+                      channelLanguages,
+                      onGetChannelLanguages,
+                      languagesAll
                     }}
                   />
                 </TabPane>
@@ -306,6 +312,9 @@ const Content = (props) => {
                       checkId,
                       loader,
                       setLoader,
+                      channelLanguages,
+                      onGetChannelLanguages,
+                      languagesAll
                     }}
                   />
                 </TabPane>
@@ -326,6 +335,9 @@ const Content = (props) => {
 // Get redux state values
 const mapStatetoProps = (state) => ({
   activeChannel: selectors.channels.activeChannel(state),
+
+  channelLanguages: selectors.languages.channelLanguages(state),
+  languagesAll: selectors.languages.languagesAll(state),
 
   playlists: selectors.playlists.playlists(state),
   onePlayist: selectors.playlists.onePlaylist(state),
@@ -359,6 +371,9 @@ const mapDispatchToProps = (dispatch) => ({
   onRemoveVideoFromPlaylist: (data) =>
     dispatch(Actions.videos.removeVideoFromPlaylistRequest(data)),
   onGetVideos: (data) => dispatch(Actions.videos.getVideosRequest(data)),
+
+  onGetChannelLanguages: (data) =>
+    dispatch(Actions.languages.getChannelLanguagesRequest(data)),
 
   setLoader: (data) => dispatch(Actions.common.setLoader(data)),
 });

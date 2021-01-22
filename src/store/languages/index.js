@@ -1,7 +1,8 @@
 import { Types } from './actions';
 
 const initialState = {
-    languages: null,
+    channelLanguages: null,
+    languagesAll: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -10,7 +11,14 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...{
-                    languages: action.payload
+                    channelLanguages: action.payload
+                }
+            }
+        case Types.GET_LANGUAGES_SUCCESS:
+            return {
+                ...state,
+                ...{
+                    languagesAll: action.payload
                 }
             }
         default:

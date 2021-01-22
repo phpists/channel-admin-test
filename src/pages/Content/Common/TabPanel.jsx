@@ -63,6 +63,9 @@ const TabPanel = (props) => {
     checkId,
     loader,
     setLoader,
+    channelLanguages,
+    onGetChannelLanguages,
+    languagesAll
   } = props;
 
   const prevCountVideosRef = useRef();
@@ -155,6 +158,9 @@ const TabPanel = (props) => {
               defaultChannel,
               countVideosByPlaylist,
               checkId,
+              channelLanguages,
+              onGetChannelLanguages,
+              languagesAll
             }}
           />
         </CardBody>
