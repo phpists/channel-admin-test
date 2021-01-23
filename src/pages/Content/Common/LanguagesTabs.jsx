@@ -8,6 +8,7 @@ const LanguagesTabs = (props) => {
     languagesAll,
     channelLanguages,
     onGetChannelLanguages,
+    getLanguages
   } = props;
   const [langs, setLangs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
@@ -27,10 +28,13 @@ const LanguagesTabs = (props) => {
 
   // Side effects
   useEffect(() => {
-    // i18n.changeLanguage(lng);
-    setLangs(languagesAll);
+    getLanguages();
     onGetChannelLanguages(defaultChannel.id);
   }, []);
+
+  useEffect(() => {
+    languagesAll && setLangs(languagesAll);
+  }, [languagesAll])
 
   return (
     <TabContent>
@@ -40,7 +44,7 @@ const LanguagesTabs = (props) => {
             const num = index + 1;
             return (
               <>
-                {channelLanguages[item.id] === 1 ? (
+                {channelLanguages && channelLanguages[item.id] === 1 ? (
                   <NavItem key={index}>
                     <NavLink
                       style={{ cursor: "pointer" }}

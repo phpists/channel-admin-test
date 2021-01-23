@@ -37,7 +37,6 @@ const CreateEdit = (props) => {
     setEditDescription,
     setChekedItems,
     setModalSave,
-    checkedItems,
     setCheckDesc,
     onUpdateVideo,
     onAddVideoToPlaylist,
@@ -48,7 +47,8 @@ const CreateEdit = (props) => {
     checkId,
     channelLanguages,
     onGetChannelLanguages,
-    languagesAll
+    languagesAll,
+    getLanguages
   } = props;
   // State local
   const [require, setRequire] = useState(false);
@@ -134,7 +134,7 @@ const CreateEdit = (props) => {
         <CardBody>
           {/* Toggle languages */}
           <LanguagesTabs
-            {...{ lngEng, setLngEng, channelLanguages, onGetChannelLanguages, languagesAll }} 
+            {...{ lngEng, setLngEng, channelLanguages, onGetChannelLanguages, languagesAll, getLanguages }} 
           />
           {/* Form group with validation */}
           <FormaData

@@ -41,7 +41,8 @@ const Content = (props) => {
     setLoader,
     channelLanguages,
     onGetChannelLanguages,
-    languagesAll
+    languagesAll,
+    getLanguages
   } = props;
 
   // State local
@@ -254,7 +255,8 @@ const Content = (props) => {
                       setLoader,
                       channelLanguages,
                       onGetChannelLanguages,
-                      languagesAll
+                      languagesAll,
+                      getLanguages
                     }}
                   />
                 </TabPane>
@@ -314,7 +316,8 @@ const Content = (props) => {
                       setLoader,
                       channelLanguages,
                       onGetChannelLanguages,
-                      languagesAll
+                      languagesAll,
+                      getLanguages
                     }}
                   />
                 </TabPane>
@@ -374,6 +377,7 @@ const mapDispatchToProps = (dispatch) => ({
 
   onGetChannelLanguages: (data) =>
     dispatch(Actions.languages.getChannelLanguagesRequest(data)),
+    getLanguages: () => dispatch(Actions.languages.getLanguagesRequest()),
 
   setLoader: (data) => dispatch(Actions.common.setLoader(data)),
 });
