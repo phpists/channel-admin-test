@@ -16,7 +16,6 @@ import Actions from "../../store/actions";
 import selectors from "../../selectors";
 import { withNamespaces } from "react-i18next";
 import "./styles.scss";
-import SelectLanguages from "../CommonForBoth/TopbarDropdown/SelectLanguages";
 
 const Header = (props) => {
   const [menu, setMenu] = useState(false);
@@ -156,7 +155,6 @@ const Header = (props) => {
             <div className="header-buttons-wrapper">{mapChannelsSelect()}</div>
           </div>
           <div className="d-flex">
-            <SelectLanguages />
             <LanguageDropdown />
 
             <div className="dropdown d-none d-lg-inline-block ml-1">

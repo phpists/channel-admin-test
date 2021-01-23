@@ -134,7 +134,7 @@ const CreateEdit = (props) => {
         <CardBody>
           {/* Toggle languages */}
           <LanguagesTabs
-            {...{ lngEng, setLngEng, channelLanguages, onGetChannelLanguages, languagesAll }}
+            {...{ lngEng, setLngEng, channelLanguages, onGetChannelLanguages, languagesAll }} 
           />
           {/* Form group with validation */}
           <FormaData

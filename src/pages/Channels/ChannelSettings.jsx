@@ -23,10 +23,10 @@ import {
   FormGroup,
   Container,
   Label,
-  Input,
   FormText,
 } from "reactstrap";
 import "./channels.scss";
+import { Multiselect } from "multiselect-react-dropdown";
 
 const ChannelSettings = React.memo((props) => {
   const {
@@ -35,7 +35,8 @@ const ChannelSettings = React.memo((props) => {
     onUpdateChannelLanguages,
     channelLanguages,
     onGetChannelLanguages,
-    languagesAll
+    languagesAll,
+    getLanguages,
   } = props;
   const [activeTab, setActiveTab] = useState("1");
   const [channelName, setChannelName] = useState(activeChannel?.name || "");
@@ -56,17 +57,29 @@ const ChannelSettings = React.memo((props) => {
       subdomain: channelSubDomain.replace(/\s/g, ""),
     });
   };
+  // Test
+  const defaultLang =
+    channelLanguages &&
+    languagesAll?.filter((l) => channelLanguages[l.id] === 1);
   // Select languages
-  const selectLang = (e) => {
-    const name = e.target.name;
-    const selected = channelLanguages[name] === 1;
+  const selectLang = (selectedList, selectedItem) => {
+    const name = selectedItem.id;
     const all = { ...channelLanguages };
 
-    if (selected) {
-      all[name] = 0;
-    } else {
-      all[name] = 1;
-    }
+    all[name] = 1;
+
+    onUpdateChannelLanguages({ channelId: defaultChannel.id, languages: all });
+    setTimeout(() => {
+      onGetChannelLanguages(defaultChannel.id);
+    }, 1000);
+  };
+  // Remove languages
+  const removeLang = (selectedList, selectedItem) => {
+    const name = selectedItem.id;
+    const all = { ...channelLanguages };
+
+    all[name] = 0;
+
     onUpdateChannelLanguages({ channelId: defaultChannel.id, languages: all });
     setTimeout(() => {
       onGetChannelLanguages(defaultChannel.id);
@@ -94,8 +107,13 @@ const ChannelSettings = React.memo((props) => {
       setChannelName(activeChannel?.name);
       setChannelDomain(activeChannel?.domain || "");
       setChannelSubDomain(activeChannel?.subdomain || "");
+      onGetChannelLanguages(activeChannel.id);
     }
-  }, [channelLanguages, activeChannel]);
+  }, [activeChannel]);
+  //   Keep track side effects --- get all languages
+  useEffect(() => {
+    getLanguages();
+  }, []);
 
   const toggle = () => setModal(!modal);
 
@@ -205,30 +223,17 @@ const ChannelSettings = React.memo((props) => {
                         Enable languages so that viewers can see translated
                         content on your website
                       </FormText>
-                      {languagesAll?.map((l, index) => {
-                        // channelLanguages && console.log(Object.values(channelLanguages).includes("1"))
-                        return (
-                          <div key={index}>
-                          {channelLanguages?.hasOwnProperty(l.id) ?
-                            <Label
-                            check
-                            
-                            className="d-block ml-4 mt-2 font-weight-bold"
-                          >
-                            <Input
-                              type="checkbox"
-                              name={l.id}
-                              checked={channelLanguages[l.id] === 1}
-                              onChange={selectLang}
-                            />
-                            {channelLanguages?.hasOwnProperty(l.id) ? l.name : null}
-                          </Label>
-                        :
-                        null
-                        }
-                        </div>
-                        );
-                      })}
+                      {defaultLang && (
+                        <Multiselect
+                          options={languagesAll}
+                          selectedValues={defaultLang}
+                          displayValue="name"
+                          onSelect={selectLang}
+                          onRemove={removeLang}
+                          closeIcon="cancel"
+                          placeholder="Select language"
+                        />
+                      )}
                     </div>
                   </CardBody>
                 </Card>
@@ -303,6 +308,7 @@ const mapStatetoProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onChannelUpdate: (data) =>
     dispatch(Actions.channels.updateChannelRequest(data)),
+  getLanguages: () => dispatch(Actions.languages.getLanguagesRequest()),
   onGetChannelLanguages: (data) =>
     dispatch(Actions.languages.getChannelLanguagesRequest(data)),
   onUpdateChannelLanguages: (data) =>
