@@ -92,25 +92,6 @@ const MetaForma = (props) => {
                 />
               </Col>
             </Row>
-      {valueButton === "editVideo" || valueButton === "newVideo" ? (
-        <AvField
-          type="select"
-          name="select"
-          label="Chose playlist"
-          onChange={(e) => getPlailistId(e)}
-        >
-          {characters?.map((c) => {
-            return (
-              <option
-                key={c.id}
-                value={c.name}
-              >
-                {c.name}
-              </option>
-            );
-          })}
-        </AvField>
-      ) : null}
     </FormGroup>
     :
     <FormGroup className="w-100 mt-4">
@@ -155,25 +136,6 @@ const MetaForma = (props) => {
                 />
               </Col>
             </Row>
-      {valueButton === "editVideo" || valueButton === "newVideo" ? (
-        <AvField
-          type="select"
-          name="select"
-          label="Chose playlist"
-          onChange={(e) => getPlailistId(e)}
-        >
-          {characters?.map((c) => {
-            return (
-              <option
-                key={c.id}
-                value={c.name}
-              >
-                {c.name}
-              </option>
-            );
-          })}
-        </AvField>
-      ) : null}
     </FormGroup>}
     </>
   );
