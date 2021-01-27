@@ -8,7 +8,7 @@ const LanguagesTabs = (props) => {
     languagesAll,
     channelLanguages,
     onGetChannelLanguages,
-    getLanguages
+    getLanguages,
   } = props;
   const [langs, setLangs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
@@ -34,7 +34,7 @@ const LanguagesTabs = (props) => {
 
   useEffect(() => {
     languagesAll && setLangs(languagesAll);
-  }, [languagesAll])
+  }, [languagesAll]);
 
   return (
     <TabContent>

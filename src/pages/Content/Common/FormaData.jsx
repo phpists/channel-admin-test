@@ -15,7 +15,6 @@ const FormaData = (props) => {
     characters,
     require,
     lngEng,
-    setLngEng
   } = props;
 
   // Create state for empty languages

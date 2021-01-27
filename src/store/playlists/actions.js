@@ -38,7 +38,7 @@ const getOnePlaylistRequest = (payload) => ({
 })
 
 const getOnePlaylistSuccess = (payload) => ({
-  type: Types.GET_ONE_PLAYLIST_REQUEST,
+  type: Types.GET_ONE_PLAYLIST_SUCCESS,
   payload
 })
 

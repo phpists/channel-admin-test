@@ -128,16 +128,25 @@ export const playlists = {
       ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
       : null;
     if (!authData) return false;
-    const queryString = `action=GetPlaylists&openKey=${authData.openKey}&where=id=${data.id}`;
+    const queryString = `action=GetPlaylists&openKey=${authData.openKey}`;
+
+    const jsonData = JSON.stringify({ where: 'id = :id', params: { id: data.id } });
+    
+    const signature = sha1(queryString + authData.privateKey + jsonData);
+    const formData = new FormData();
+
+    formData.append("jsonData", jsonData);
+    formData.append('signature', signature)
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     };
 
     return await axiosInstance
-      .get(`?${queryString}`, config)
+      .post(`?${queryString}`, formData, config)
       .then((response) => {
+        console.log("OnePlaylist: ", response)
         return response;
       })
       .catch((error) => ({ error }));

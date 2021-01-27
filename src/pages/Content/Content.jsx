@@ -42,7 +42,8 @@ const Content = (props) => {
     channelLanguages,
     onGetChannelLanguages,
     languagesAll,
-    getLanguages
+    getLanguages,
+    onGetOnePlaylist,
   } = props;
 
   // State local
@@ -61,6 +62,10 @@ const Content = (props) => {
   const [dragVIdeo, updateDragVideo] = useState(videos);
   const [getPlaylist, setGetPlaylist] = useState(null);
   const [selectedPage, setSelectedPage] = useState(1);
+  // Meta state value
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaKeyword, setMetaKeyword] = useState("");
+  const [metaDesc, setMetaDesc] = useState("");
 
   // Vallues
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
@@ -81,9 +86,32 @@ const Content = (props) => {
       setChangePage(true);
     } else {
       setEditName(p.name);
-      setEditDescription(p.description);
+      setEditDescription(
+        p.description.includes("seo_title")
+          ? JSON.parse(p.description)["en"]["description"]
+          : p.description
+      );
+      setMetaTitle(
+        p.description.includes("seo_title")
+          ? JSON.parse(p.description)["en"]["seo_title"]
+          : ""
+      );
+      setMetaKeyword(
+        p.description.includes("seo_title")
+          ? JSON.parse(p.description)["en"]["seo_keyword"]
+          : ""
+      );
+      setMetaDesc(
+        p.description.includes("seo_title")
+          ? JSON.parse(p.description)["en"]["seo_description"]
+          : ""
+      );
       setCheckName(p.name);
-      setCheckDesc(p.description);
+      setCheckDesc(
+        p.description.includes("seo_title")
+          ? JSON.parse(p.description)["en"]["description"]
+          : p.description
+      );
       setCheckId(p.id);
       setChangePage(true);
     }
@@ -95,14 +123,33 @@ const Content = (props) => {
     switch (nameButton) {
       case "editPlaylist":
         setEditName(item[0].name);
-        setEditDescription(item[0].description);
+        setEditDescription(
+          item[0].description.includes("seo_title")
+            ? JSON.parse(item[0].description)["en"]["description"]
+            : item[0].description
+        );
+        setMetaTitle(
+          item[0].description.includes("seo_title")
+            ? JSON.parse(item[0].description)["en"]["seo_title"]
+            : ""
+        );
+        setMetaKeyword(
+          item[0].description.includes("seo_title")
+            ? JSON.parse(item[0].description)["en"]["seo_keyword"]
+            : ""
+        );
+        setMetaDesc(
+          item[0].description.includes("seo_title")
+            ? JSON.parse(item[0].description)["en"]["seo_description"]
+            : ""
+        );
         setCheckName(item[0].name);
-        setCheckDesc(item[0].description);
+        setEditDescription(
+          item[0].description.includes("seo_title")
+            ? JSON.parse(item[0].description)["en"]["description"]
+            : item[0].description
+        );
         setCheckId(item[0].id);
-        setChangePage(true);
-        break;
-      case "newPlaylist":
-        setChangePage(true);
         break;
       case "editVideo":
       case "newVideo":
@@ -111,12 +158,12 @@ const Content = (props) => {
         setCheckName(itemVideos[0].vimeo_name);
         setCheckDesc(JSON.parse(itemVideos[0].description)["EN"] || "");
         setCheckId(itemVideos[0].id);
-        setChangePage(true);
         break;
       default:
-        return;
+        break;
     }
     setValueButton(nameButton);
+    setChangePage(true);
   };
 
   // Toggle modal window (DELETE)
@@ -172,6 +219,10 @@ const Content = (props) => {
       setChekedItems([]);
     }
   }, [activeChannel]);
+
+  useEffect(() => {
+    onGetOnePlaylist({ id: 1227 });
+  }, []);
 
   return (
     <>
@@ -256,7 +307,13 @@ const Content = (props) => {
                       channelLanguages,
                       onGetChannelLanguages,
                       languagesAll,
-                      getLanguages
+                      getLanguages,
+                      metaTitle,
+                      setMetaTitle,
+                      metaKeyword,
+                      setMetaKeyword,
+                      metaDesc,
+                      setMetaDesc,
                     }}
                   />
                 </TabPane>
@@ -317,7 +374,13 @@ const Content = (props) => {
                       channelLanguages,
                       onGetChannelLanguages,
                       languagesAll,
-                      getLanguages
+                      getLanguages,
+                      metaTitle,
+                      setMetaTitle,
+                      metaKeyword,
+                      setMetaKeyword,
+                      metaDesc,
+                      setMetaDesc,
                     }}
                   />
                 </TabPane>
@@ -377,7 +440,7 @@ const mapDispatchToProps = (dispatch) => ({
 
   onGetChannelLanguages: (data) =>
     dispatch(Actions.languages.getChannelLanguagesRequest(data)),
-    getLanguages: () => dispatch(Actions.languages.getLanguagesRequest()),
+  getLanguages: () => dispatch(Actions.languages.getLanguagesRequest()),
 
   setLoader: (data) => dispatch(Actions.common.setLoader(data)),
 });

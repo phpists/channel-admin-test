@@ -3,10 +3,6 @@ import "../content.scss";
 import {
   Card,
   CardBody,
-  Row,
-  Col,
-  CardTitle,
-  CardSubtitle,
   FormGroup,
   Button,
   Modal,
@@ -18,6 +14,7 @@ import { AvField, AvForm } from "availity-reactstrap-validation";
 import LanguagesTabs from "./LanguagesTabs";
 import FormaData from "./FormaData";
 import { Prompt } from "react-router";
+import MetaForma from "./MetaForma";
 
 const CreateEdit = (props) => {
   // Get props
@@ -48,7 +45,13 @@ const CreateEdit = (props) => {
     channelLanguages,
     onGetChannelLanguages,
     languagesAll,
-    getLanguages
+    getLanguages,
+    metaTitle,
+    setMetaTitle,
+    metaKeyword,
+    setMetaKeyword,
+    metaDesc,
+    setMetaDesc,
   } = props;
   // State local
   const [require, setRequire] = useState(false);
@@ -61,7 +64,19 @@ const CreateEdit = (props) => {
     } else {
       switch (valueButton) {
         case "editPlaylist":
-          onUpdatePlaylist({ id: checkId, name: editName });
+          onUpdatePlaylist({
+            id: checkId,
+            name: editName,
+            description: JSON.stringify({
+              en: {
+                name: editName,
+                description: editDescription,
+                seo_title: metaTitle,
+                seo_keyword: metaKeyword,
+                seo_description: metaDesc,
+              },
+            }),
+          });
           setTimeout(() => {
             onGetPlaylist({ id: defaultChannel.id, count: 0 });
           }, 1000);
@@ -69,7 +84,15 @@ const CreateEdit = (props) => {
         case "newPlaylist":
           onAddPlaylist({
             name: editName,
-            description: editDescription,
+            description: JSON.stringify({
+              en: {
+                name: editName,
+                description: editDescription,
+                seo_title: metaTitle,
+                seo_keyword: metaKeyword,
+                seo_description: metaDesc,
+              },
+            }),
             channel_id: defaultChannel.id,
           });
           setTimeout(() => {
@@ -134,7 +157,13 @@ const CreateEdit = (props) => {
         <CardBody>
           {/* Toggle languages */}
           <LanguagesTabs
-            {...{ lngEng, setLngEng, channelLanguages, onGetChannelLanguages, languagesAll, getLanguages }} 
+            {...{
+              setLngEng,
+              languagesAll,
+              channelLanguages,
+              onGetChannelLanguages,
+              getLanguages,
+            }}
           />
           {/* Form group with validation */}
           <FormaData
@@ -148,86 +177,62 @@ const CreateEdit = (props) => {
               characters,
               require,
               lngEng,
-              setLngEng,
             }}
           />
         </CardBody>
         <CardBody>
-          <CardTitle>Meta Data</CardTitle>
-          <CardSubtitle className="mb-3">
-            Fill all information below
-          </CardSubtitle>
-          {/* Form group without validation */}
-          <FormGroup>
-            <Row>
-              <Col sm={6}>
-                <AvField
-                  id="metatitle"
-                  label="Meta title"
-                  name="productname"
-                  type="text"
-                  className="form-control"
-                />
-                <AvField
-                  label="Meta Keyword"
-                  id="metakeywords"
-                  name="manufacturername"
-                  type="text"
-                  className="form-control"
-                />
-              </Col>
-
-              <Col sm={6}>
-                <AvField
-                  label="Meta Description"
-                  type="textarea"
-                  className="form-control"
-                  id="metadescription"
-                  name="Meta Description"
-                  rows="5"
-                />
-              </Col>
-            </Row>
-          </FormGroup>
-          <FormGroup>
-            <Button
-              type="submit"
-              color="primary"
-              className="mr-1 waves-effect waves-light"
-            >
-              Save Changes
-            </Button>
-            <Button
-              onClick={() => {
-                setChekedItems([]);
-                setChangePage(false);
-                setCheckName("");
-                setCheckDesc("");
-                setEditName("");
-                setEditDescription("");
-              }}
-              type="button"
-              color="secondary"
-              className="waves-effect"
-            >
+          <MetaForma
+            {...{
+              valueButton,
+              metaTitle,
+              setMetaTitle,
+              metaKeyword,
+              setMetaKeyword,
+              metaDesc,
+              setMetaDesc,
+              require,
+              lngEng,
+            }}
+          />
+        </CardBody>
+        <FormGroup className="text-right mr-3">
+          <Button
+            type="submit"
+            color="primary"
+            className="mr-1 waves-effect waves-light"
+          >
+            Save Changes
+          </Button>
+          <Button
+            onClick={() => {
+              setChekedItems([]);
+              setChangePage(false);
+              setCheckName("");
+              setCheckDesc("");
+              setEditName("");
+              setEditDescription("");
+            }}
+            type="button"
+            color="secondary"
+            className="waves-effect"
+          >
+            Cancel
+          </Button>
+        </FormGroup>
+        <Modal isOpen={modalSave} toggle={toggleSave}>
+          <ModalHeader toggle={toggleSave}>Are you sure?</ModalHeader>
+          <ModalBody>
+            You have unsaved data. You want to leave the page?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" className="w-sm" onClick={toggleSave}>
               Cancel
             </Button>
-          </FormGroup>
-          <Modal isOpen={modalSave} toggle={toggleSave}>
-            <ModalHeader toggle={toggleSave}>Are you sure?</ModalHeader>
-            <ModalBody>
-              You have unsaved data. You want to leave the page?
-            </ModalBody>
-            <ModalFooter>
-              <Button color="secondary" className="w-sm" onClick={toggleSave}>
-                Cancel
-              </Button>
-              <Button color="danger" className="w-sm" onClick={onSubmit}>
-                Save Changes
-              </Button>
-            </ModalFooter>
-          </Modal>
-        </CardBody>
+            <Button color="danger" className="w-sm" onClick={onSubmit}>
+              Save Changes
+            </Button>
+          </ModalFooter>
+        </Modal>
       </AvForm>
     </Card>
   );

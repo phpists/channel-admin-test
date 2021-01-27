@@ -66,7 +66,13 @@ const TabPanel = (props) => {
     channelLanguages,
     onGetChannelLanguages,
     languagesAll,
-    getLanguages
+    getLanguages,
+    metaTitle,
+    setMetaTitle,
+    metaKeyword,
+    setMetaKeyword,
+    metaDesc,
+    setMetaDesc,
   } = props;
 
   const prevCountVideosRef = useRef();
@@ -162,7 +168,13 @@ const TabPanel = (props) => {
               channelLanguages,
               onGetChannelLanguages,
               languagesAll,
-              getLanguages
+              getLanguages,
+              metaTitle,
+              setMetaTitle,
+              metaKeyword,
+              setMetaKeyword,
+              metaDesc,
+              setMetaDesc,
             }}
           />
         </CardBody>
