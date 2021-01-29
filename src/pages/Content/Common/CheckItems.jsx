@@ -21,6 +21,8 @@ const CheckItems = (props) => {
     defaultChannel,
     loader,
     setLoader,
+    onGetOnePlaylist,
+    onGetOneVideo
   } = props;
 
   const [orderByValue, setOrderByValue] = useState(0);
@@ -184,7 +186,9 @@ const CheckItems = (props) => {
                                 {" "}
                                 <span
                                   id="editPlaylist"
-                                  onClick={(e) => toEdit(p, e.currentTarget.id)}
+                                  onClick={(e) => {
+                                    onGetOnePlaylist({id: p.id})
+                                    toEdit(p, e.currentTarget.id, "en")}}
                                 >
                                   {p.name}{" "}
                                 </span>
@@ -199,7 +203,9 @@ const CheckItems = (props) => {
                                 />
                                 <span
                                   id="editVideo"
-                                  onClick={(e) => toEdit(p, e.currentTarget.id)}
+                                  onClick={(e) => {
+                                    onGetOneVideo({id: p.id})
+                                    toEdit(p, e.currentTarget.id, "en")}}
                                 >
                                   {p.vimeo_name}{" "}
                                 </span>

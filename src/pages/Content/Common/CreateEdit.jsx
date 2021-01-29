@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import { AvField, AvForm } from "availity-reactstrap-validation";
+import { AvForm } from "availity-reactstrap-validation";
 import LanguagesTabs from "./LanguagesTabs";
 import FormaData from "./FormaData";
 import { Prompt } from "react-router";
@@ -52,30 +52,35 @@ const CreateEdit = (props) => {
     setMetaKeyword,
     metaDesc,
     setMetaDesc,
+    onePlayist,
+    oneVideo,
+    onGetOneVideo,
   } = props;
   // State local
   const [require, setRequire] = useState(false);
   const [playlistId, setPlaylistId] = useState(characters[0]?.id);
-  const [lngEng, setLngEng] = useState(null); // state for eng languages
+  const [descLang, setDescLang] = useState({});
+  // Set values on current language
+  const onChangeForma = (forma) => {
+    setEditName(forma.name);
+    setEditDescription(forma.description);
+    setMetaTitle(forma.seo_title);
+    setMetaKeyword(forma.seo_keyword);
+    setMetaDesc(forma.seo_description);
+  };
 
   function onSubmit() {
+    console.log(descLang);
     if (editName === "" || editDescription === "") {
       setRequire(true);
     } else {
+      console.log(descLang);
       switch (valueButton) {
         case "editPlaylist":
           onUpdatePlaylist({
             id: checkId,
-            name: editName,
-            description: JSON.stringify({
-              en: {
-                name: editName,
-                description: editDescription,
-                seo_title: metaTitle,
-                seo_keyword: metaKeyword,
-                seo_description: metaDesc,
-              },
-            }),
+            name: descLang["en"].name,
+            description: JSON.stringify(descLang),
           });
           setTimeout(() => {
             onGetPlaylist({ id: defaultChannel.id, count: 0 });
@@ -83,16 +88,8 @@ const CreateEdit = (props) => {
           break;
         case "newPlaylist":
           onAddPlaylist({
-            name: editName,
-            description: JSON.stringify({
-              en: {
-                name: editName,
-                description: editDescription,
-                seo_title: metaTitle,
-                seo_keyword: metaKeyword,
-                seo_description: metaDesc,
-              },
-            }),
+            name: descLang["en"].name,
+            description: JSON.stringify(descLang),
             channel_id: defaultChannel.id,
           });
           setTimeout(() => {
@@ -100,7 +97,7 @@ const CreateEdit = (props) => {
           }, 1000);
           break;
         case "editVideo":
-          onUpdateVideo({ id: checkId, name: editName });
+          onUpdateVideo({ id: checkId, name: descLang["en"].name, description: JSON.stringify(descLang)});
           setTimeout(() => {
             onGetVideosByPlaylist({
               id: getPlaylist,
@@ -129,9 +126,13 @@ const CreateEdit = (props) => {
       setCheckDesc("");
       setEditName("");
       setEditDescription("");
+      setMetaTitle("");
+      setMetaKeyword("");
+      setMetaDesc("");
       setChangePage(false);
       setChekedItems([]);
       setSelectedPage(1);
+      setDescLang({});
     }
   }
 
@@ -158,11 +159,22 @@ const CreateEdit = (props) => {
           {/* Toggle languages */}
           <LanguagesTabs
             {...{
-              setLngEng,
               languagesAll,
               channelLanguages,
               onGetChannelLanguages,
               getLanguages,
+              onePlayist,
+              setDescLang,
+              descLang,
+              editName,
+              editDescription,
+              metaTitle,
+              metaKeyword,
+              metaDesc,
+              onChangeForma,
+              valueButton,
+              oneVideo,
+              onGetOneVideo,
             }}
           />
           {/* Form group with validation */}
@@ -176,22 +188,19 @@ const CreateEdit = (props) => {
               setEditDescription,
               characters,
               require,
-              lngEng,
             }}
           />
         </CardBody>
         <CardBody>
           <MetaForma
             {...{
-              valueButton,
+              require,
               metaTitle,
               setMetaTitle,
               metaKeyword,
               setMetaKeyword,
               metaDesc,
               setMetaDesc,
-              require,
-              lngEng,
             }}
           />
         </CardBody>
@@ -211,6 +220,10 @@ const CreateEdit = (props) => {
               setCheckDesc("");
               setEditName("");
               setEditDescription("");
+              setMetaTitle("");
+              setMetaKeyword("");
+              setMetaDesc("");
+              setDescLang({});
             }}
             type="button"
             color="secondary"

@@ -30,6 +30,14 @@ const reducer = (state = initialState, action) => {
         },
       };
     }
+    case Types.GET_ONE_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        ...{
+          oneVideo: action.payload,
+        },
+      };
+    }
     default:
       return state;
   }

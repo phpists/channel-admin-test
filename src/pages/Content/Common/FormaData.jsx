@@ -14,12 +14,7 @@ const FormaData = (props) => {
     setEditDescription,
     characters,
     require,
-    lngEng,
   } = props;
-
-  // Create state for empty languages
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
 
   // On submit
   const getPlailistId = (e) => {
@@ -38,7 +33,6 @@ const FormaData = (props) => {
 
   return (
     <>
-   { lngEng ?
     <FormGroup className="w-50 mt-4">
       <AvField
         name="title"
@@ -81,49 +75,6 @@ const FormaData = (props) => {
         </AvField>
       ) : null}
     </FormGroup>
-    :
-    <FormGroup className="w-50 mt-4">
-      <AvField
-        name="title"
-        className="form-control"
-        placeholder="title"
-        type="text"
-        required={require}
-        label="Title"
-        value={title}
-        onChange={onChanged(setTitle)}
-      />
-      <AvField
-        className="form-control"
-        type="textarea"
-        rows="5"
-        label="Description"
-        name="description"
-        required={require}
-        placeholder="description"
-        value={desc}
-        onChange={onChanged(setDesc)}
-      />
-      {valueButton === "editVideo" || valueButton === "newVideo" ? (
-        <AvField
-          type="select"
-          name="select"
-          label="Chose playlist"
-          onChange={(e) => getPlailistId(e)}
-        >
-          {characters?.map((c) => {
-            return (
-              <option
-                key={c.id}
-                value={c.name}
-              >
-                {c.name}
-              </option>
-            );
-          })}
-        </AvField>
-      ) : null}
-    </FormGroup>}
     </>
   );
 };

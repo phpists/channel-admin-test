@@ -37,6 +37,7 @@ import {
   watchUpdateVideo,
   watchGetVideos,
   watchGetVideoByPlaylists,
+  watchGetOneVideo
 } from "./videos";
 
 import {
@@ -80,6 +81,8 @@ export function* rootSaga() {
       VideosTypes.GET_VIDEO_BY_PLAYLIST_REQUEST,
       watchGetVideoByPlaylists
     ),
+    takeLatest(VideosTypes.GET_ONE_VIDEO_REQUEST, watchGetOneVideo),
+
     takeLatest(LanguagesTypes.GET_LANGUAGES_REQUEST, watchGetLanguages),
     takeLatest(LanguagesTypes.GET_CHANNEL_LANGUAGES_REQUEST, watchGetChannelLanguages),
     takeLatest(LanguagesTypes.UPDATE_CHANNEL_LANGUAGES_REQUEST, watchUpdateChannelLanguages),

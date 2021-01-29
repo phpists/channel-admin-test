@@ -73,6 +73,10 @@ const TabPanel = (props) => {
     setMetaKeyword,
     metaDesc,
     setMetaDesc,
+    onGetOnePlaylist,
+    onePlayist,
+    oneVideo,
+    onGetOneVideo,
   } = props;
 
   const prevCountVideosRef = useRef();
@@ -139,31 +143,27 @@ const TabPanel = (props) => {
           <CreateEdit
             {...{
               onAddPlaylist,
+              onUpdatePlaylist,
+              defaultChannel,
               setChangePage,
               onGetPlaylist,
               valueButton,
-              onUpdatePlaylist,
-              setCheckName,
-              setCheckDesc,
               checkName,
+              setCheckName,
               modalSave,
-              setModalSave,
               editName,
               setEditName,
               editDescription,
               setEditDescription,
               setChekedItems,
-              checkedItems,
+              setModalSave,
+              setCheckDesc,
               onUpdateVideo,
               onAddVideoToPlaylist,
               onGetVideosByPlaylist,
               getPlaylist,
               characters,
-              checkName,
-              selectedPage,
               setSelectedPage,
-              defaultChannel,
-              countVideosByPlaylist,
               checkId,
               channelLanguages,
               onGetChannelLanguages,
@@ -175,6 +175,9 @@ const TabPanel = (props) => {
               setMetaKeyword,
               metaDesc,
               setMetaDesc,
+              onePlayist,
+              oneVideo,
+              onGetOneVideo,
             }}
           />
         </CardBody>
@@ -259,6 +262,8 @@ const TabPanel = (props) => {
                     defaultChannel,
                     loader,
                     setLoader,
+                    onGetOnePlaylist,
+                    onGetOneVideo
                   }}
                 />
                 <PaginationVideos
@@ -307,6 +312,8 @@ const TabPanel = (props) => {
                   defaultChannel,
                   loader,
                   setLoader,
+                  onGetOnePlaylist,
+                  onGetOneVideo
                 }}
               />
               {countVideosByPlaylist > 25 || getPlaylist === null ? (

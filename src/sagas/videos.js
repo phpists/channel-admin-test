@@ -87,3 +87,20 @@ export function* watchGetVideoByPlaylists(action) {
     yield put(Actions.common.setErrorNotify(response.status + " Server error"));
   }
 }
+
+export function* watchGetOneVideo(action) {
+  const response = yield API.videos.getOneVideo(action.payload);
+  if (response.status === 200) {
+    if (response.data.status === "error") {
+      yield put(
+        Actions.common.setErrorNotify(response?.data?.message || "Server error")
+      );
+    } else {
+      yield put(
+        Actions.videos.getOneVideoSuccess(response?.data?.playlists[0])
+      );
+    }
+  } else {
+    yield put(Actions.common.setErrorNotify(response.status + " Server error"));
+  }
+}

@@ -5,6 +5,9 @@ export const Types = {
   GET_VIDEOS_REQUEST: "GET_VIDEOS_REQUEST",
   GET_VIDEOS_SUCCESS: "GET_VIDEOS_SUCCESS",
 
+  GET_ONE_VIDEO_REQUEST: "GET_ONE_VIDEO_REQUEST",
+  GET_ONE_VIDEO_SUCCESS: "GET_ONE_VIDEO_SUCCESS",
+
   GET_VIDEO_BY_PLAYLIST_REQUEST: "GET_VIDEO_BY_PLAYLIST_REQUEST",
   GET_VIDEO_BY_PLAYLIST_SUCCESS: "GET_VIDEO_BY_PLAYLIST_SUCCESS",
 
@@ -24,7 +27,7 @@ const addVideoToPlaylistSuccess = () => ({
 
 const getVideosRequest = (payload) => ({
   type: Types.GET_VIDEOS_REQUEST,
-  payload
+  payload,
 });
 
 const getVideosSuccess = (payload) => ({
@@ -32,9 +35,19 @@ const getVideosSuccess = (payload) => ({
   payload,
 });
 
+const getOneVideoRequest = (payload) => ({
+  type: Types.GET_ONE_VIDEO_REQUEST,
+  payload,
+});
+
+const getOneVideoSuccess = (payload) => ({
+  type: Types.GET_ONE_VIDEO_SUCCESS,
+  payload,
+});
+
 const getVideoByPlaylistRequest = (payload) => ({
   type: Types.GET_VIDEO_BY_PLAYLIST_REQUEST,
-  payload
+  payload,
 });
 
 const getVideoByPlaylistSuccess = (payload) => ({
@@ -57,6 +70,8 @@ export default {
   addVideoToPlaylistSuccess,
   getVideosRequest,
   getVideosSuccess,
+  getOneVideoRequest,
+  getOneVideoSuccess,
   getVideoByPlaylistRequest,
   getVideoByPlaylistSuccess,
   removeVideoFromPlaylistRequest,

@@ -4,37 +4,135 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 
 const LanguagesTabs = (props) => {
   const {
-    setLngEng,
     languagesAll,
     channelLanguages,
     onGetChannelLanguages,
     getLanguages,
+    onePlayist,
+    setDescLang,
+    descLang,
+    editName,
+    editDescription,
+    metaTitle,
+    metaKeyword,
+    metaDesc,
+    onChangeForma,
+    valueButton,
+    oneVideo,
+    onGetOneVideo,
   } = props;
   const [langs, setLangs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
+  const [currLang, setCurrLang] = useState("en");
 
   // On toggle languages
   const toggleCustomJustified = (tab, title) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
-    }
-    if (title !== "English") {
-      setLngEng(false);
-    } else {
-      setLngEng(true);
+      onChangeForma(descLang[title]);
+      setCurrLang(title);
     }
   };
-
-  // Side effects
+  // Keep track change on forma
   useEffect(() => {
-    getLanguages();
-    onGetChannelLanguages(defaultChannel.id);
-  }, []);
+    if (Object.keys(descLang).length !== 0) {
+      if (metaDesc || editName || editDescription || metaTitle || metaKeyword) {
+        debugger;
+        const arr = descLang;
+        arr[currLang] = {
+          description: editDescription,
+          name: editName,
+          seo_description: metaDesc,
+          seo_keyword: metaKeyword,
+          seo_title: metaTitle,
+        };
+        setDescLang(arr);
+      }
+    }
+  }, [metaDesc, editName, editDescription, metaTitle, metaKeyword, descLang]);
 
+  // Side effects --------- get all and channel languages
+  useEffect(() => {
+    if (languagesAll === null) {
+      getLanguages();
+    }
+    if (channelLanguages === null) {
+      onGetChannelLanguages(defaultChannel.id);
+    }
+  }, [languagesAll, channelLanguages]);
+  // Set selected languages
   useEffect(() => {
     languagesAll && setLangs(languagesAll);
-  }, [languagesAll]);
+  }, [languagesAll, channelLanguages]);
+  // Set initial values for all languages on form
+  useEffect(() => {
+    debugger;
+    if (Object.keys(descLang).length === 0) {
+      debugger;
+      const arr = descLang;
+      if (
+        channelLanguages !== null &&
+        onePlayist !== null ||
+        oneVideo !== null
+      ) {
+        for (let key in channelLanguages) {
+          if (channelLanguages[key] === 1) {
+            if (
+              onePlayist?.name === editName &&
+              valueButton === "editPlaylist"
+            ) {
+              if (
+                onePlayist?.description.includes(`${key}":`) &&
+                onePlayist?.description.includes("seo_title")
+              ) {
+                arr[key] = JSON.parse(onePlayist.description)[key];
+              } else {
+                arr[key] = {
+                  description: "",
+                  name: "",
+                  seo_description: "",
+                  seo_keyword: "",
+                  seo_title: "",
+                };
+              }
+            } else if (valueButton === "newPlaylist") {
+              arr[key] = {
+                description: "",
+                name: "",
+                seo_description: "",
+                seo_keyword: "",
+                seo_title: "",
+              };
+            } else if (
+              (oneVideo?.vimeo_name === editName &&
+                valueButton === "editVideo") ||
+              valueButton === "newVideo"
+            ) {
+              if (
+                oneVideo?.description.includes(key) &&
+                oneVideo?.description.includes("seo_title")
+              ) {
+                arr[key] = JSON.parse(oneVideo.description)[key];
+              } else {
+                arr[key] = {
+                  description:
+                    key === "en"
+                      ? JSON.parse(oneVideo.description)["EN"] || ""
+                      : "",
+                  name: key === "en" ? oneVideo.vimeo_name || "" : "",
+                  seo_description: "",
+                  seo_keyword: "",
+                  seo_title: "",
+                };
+              }
+            }
+          }
+        }
+        setDescLang(arr);
+      }
+    }
+  }, [channelLanguages, onePlayist, descLang, oneVideo, editName]);
 
   return (
     <TabContent>
@@ -52,8 +150,7 @@ const LanguagesTabs = (props) => {
                         active: activeTab === num.toString(),
                       })}
                       onClick={() => {
-                        //setLng("rs");
-                        toggleCustomJustified(num.toString(), item.name);
+                        toggleCustomJustified(num.toString(), item.id);
                       }}
                     >
                       <span className="d-none d-sm-block">{item.name}</span>

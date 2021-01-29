@@ -44,6 +44,9 @@ const Content = (props) => {
     languagesAll,
     getLanguages,
     onGetOnePlaylist,
+    onePlayist,
+    oneVideo,
+    onGetOneVideo,
   } = props;
 
   // State local
@@ -73,10 +76,8 @@ const Content = (props) => {
   const itemVideos = dragVIdeo?.filter((v) => v.id === checkedItems[0]);
 
   // Handle event
-
   // Change page on click Create Playlist || Edit Playlist
-
-  const toEdit = (p, name) => {
+  const toEdit = (p, name, lang) => {
     if (name === "editVideo") {
       setEditName(p.vimeo_name);
       setEditDescription(JSON.parse(p.description)["EN"]);
@@ -85,31 +86,35 @@ const Content = (props) => {
       setCheckId(p.id);
       setChangePage(true);
     } else {
-      setEditName(p.name);
+      setEditName(
+        p.description.includes(lang) && p.description.includes("seo_title")
+          ? JSON.parse(p.description)[lang]["name"]
+          : ""
+      );
       setEditDescription(
-        p.description.includes("seo_title")
-          ? JSON.parse(p.description)["en"]["description"]
-          : p.description
+        p.description.includes(lang) && p.description.includes("seo_title")
+          ? JSON.parse(p.description)[lang]["description"]
+          : ""
       );
       setMetaTitle(
-        p.description.includes("seo_title")
-          ? JSON.parse(p.description)["en"]["seo_title"]
+        p.description.includes(lang) && p.description.includes("seo_title")
+          ? JSON.parse(p.description)[lang]["seo_title"]
           : ""
       );
       setMetaKeyword(
-        p.description.includes("seo_title")
-          ? JSON.parse(p.description)["en"]["seo_keyword"]
+        p.description.includes(lang) && p.description.includes("seo_title")
+          ? JSON.parse(p.description)[lang]["seo_keyword"]
           : ""
       );
       setMetaDesc(
-        p.description.includes("seo_title")
-          ? JSON.parse(p.description)["en"]["seo_description"]
+        p.description.includes(lang) && p.description.includes("seo_title")
+          ? JSON.parse(p.description)[lang]["seo_description"]
           : ""
       );
       setCheckName(p.name);
       setCheckDesc(
-        p.description.includes("seo_title")
-          ? JSON.parse(p.description)["en"]["description"]
+        p.description.includes(lang) && p.description.includes("seo_title")
+          ? JSON.parse(p.description)[lang]["description"]
           : p.description
       );
       setCheckId(p.id);
@@ -124,32 +129,38 @@ const Content = (props) => {
       case "editPlaylist":
         setEditName(item[0].name);
         setEditDescription(
-          item[0].description.includes("seo_title")
+          item[0].description.includes("en") &&
+            item[0].description.includes("seo_title")
             ? JSON.parse(item[0].description)["en"]["description"]
             : item[0].description
         );
         setMetaTitle(
-          item[0].description.includes("seo_title")
+          item[0].description.includes("en") &&
+            item[0].description.includes("seo_title")
             ? JSON.parse(item[0].description)["en"]["seo_title"]
-            : ""
+            : "keks"
         );
         setMetaKeyword(
-          item[0].description.includes("seo_title")
+          item[0].description.includes("en") &&
+            item[0].description.includes("seo_title")
             ? JSON.parse(item[0].description)["en"]["seo_keyword"]
             : ""
         );
         setMetaDesc(
-          item[0].description.includes("seo_title")
+          item[0].description.includes("en") &&
+            item[0].description.includes("seo_title")
             ? JSON.parse(item[0].description)["en"]["seo_description"]
             : ""
         );
         setCheckName(item[0].name);
         setEditDescription(
-          item[0].description.includes("seo_title")
+          item[0].description.includes("en") &&
+            item[0].description.includes("seo_title")
             ? JSON.parse(item[0].description)["en"]["description"]
             : item[0].description
         );
         setCheckId(item[0].id);
+        onGetOnePlaylist({ id: item[0].id });
         break;
       case "editVideo":
       case "newVideo":
@@ -158,6 +169,7 @@ const Content = (props) => {
         setCheckName(itemVideos[0].vimeo_name);
         setCheckDesc(JSON.parse(itemVideos[0].description)["EN"] || "");
         setCheckId(itemVideos[0].id);
+        onGetOneVideo({id: itemVideos[0].id})
         break;
       default:
         break;
@@ -314,6 +326,10 @@ const Content = (props) => {
                       setMetaKeyword,
                       metaDesc,
                       setMetaDesc,
+                      onGetOnePlaylist,
+                      onePlayist,
+                      oneVideo,
+                      onGetOneVideo,
                     }}
                   />
                 </TabPane>
@@ -381,6 +397,10 @@ const Content = (props) => {
                       setMetaKeyword,
                       metaDesc,
                       setMetaDesc,
+                      onGetOnePlaylist,
+                      onePlayist,
+                      oneVideo,
+                      onGetOneVideo,
                     }}
                   />
                 </TabPane>
@@ -413,6 +433,7 @@ const mapStatetoProps = (state) => ({
   videosByPlaylist: selectors.videos.videosByPlaylist(state),
   countVideos: selectors.videos.countVideos(state),
   countVideosByPlaylist: selectors.videos.countVideosByPlaylist(state),
+  oneVideo: selectors.videos.oneVideo(state),
 
   loader: selectors.common.loader(state),
 });
@@ -437,6 +458,7 @@ const mapDispatchToProps = (dispatch) => ({
   onRemoveVideoFromPlaylist: (data) =>
     dispatch(Actions.videos.removeVideoFromPlaylistRequest(data)),
   onGetVideos: (data) => dispatch(Actions.videos.getVideosRequest(data)),
+  onGetOneVideo: (data) => dispatch(Actions.videos.getOneVideoRequest(data)),
 
   onGetChannelLanguages: (data) =>
     dispatch(Actions.languages.getChannelLanguagesRequest(data)),
