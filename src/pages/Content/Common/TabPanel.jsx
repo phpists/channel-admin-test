@@ -120,19 +120,6 @@ const TabPanel = (props) => {
         updateDragVideo(videos);
       }
     }
-    if (
-      prevCountVideos !== undefined ||
-      prevCountPlaylist !== undefined ||
-      prevCountVideosByPlaylist !== undefined
-    ) {
-      if (
-        prevCountVideos !== countVideos ||
-        prevCountPlaylist !== countPlaylists ||
-        prevCountVideosByPlaylist !== countVideosByPlaylist
-      ) {
-        setLoader(true);
-      }
-    }
   }, [playlists, videosByPlaylist, videos, getPlaylist]);
 
   return (
@@ -239,12 +226,10 @@ const TabPanel = (props) => {
             }}
           />
           {activeTab === "1" ? (
-            characters?.length === 0 || characters === null ? (
-              loader ? (
-                <Loader />
-              ) : (
-                <EmptyMessage {...{ setActiveTab, activeTab }} />
-              )
+            characters === null ? (
+              <Loader />
+            ) : characters?.length === 0 ? (
+              <EmptyMessage {...{ setActiveTab, activeTab }} />
             ) : (
               <>
                 <CheckItems
@@ -263,7 +248,7 @@ const TabPanel = (props) => {
                     loader,
                     setLoader,
                     onGetOnePlaylist,
-                    onGetOneVideo
+                    onGetOneVideo,
                   }}
                 />
                 <PaginationVideos
@@ -289,12 +274,10 @@ const TabPanel = (props) => {
                 />
               </>
             )
-          ) : dragVIdeo?.length === 0 || dragVIdeo === null ? (
-            loader ? (
-              <Loader />
-            ) : (
-              <EmptyMessage {...{ setActiveTab, activeTab }} />
-            )
+          ) : dragVIdeo === null ? (
+            <Loader />
+          ) : dragVIdeo?.length === 0 ? (
+            <EmptyMessage {...{ setActiveTab, activeTab }} />
           ) : (
             <>
               <CheckItems
@@ -313,7 +296,7 @@ const TabPanel = (props) => {
                   loader,
                   setLoader,
                   onGetOnePlaylist,
-                  onGetOneVideo
+                  onGetOneVideo,
                 }}
               />
               {countVideosByPlaylist > 25 || getPlaylist === null ? (

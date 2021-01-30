@@ -88,7 +88,7 @@ const CreateEdit = (props) => {
           break;
         case "newPlaylist":
           onAddPlaylist({
-            name: descLang["en"].name,
+            name: descLang["en"]?.name || editName,
             description: JSON.stringify(descLang),
             channel_id: defaultChannel.id,
           });
@@ -97,7 +97,7 @@ const CreateEdit = (props) => {
           }, 1000);
           break;
         case "editVideo":
-          onUpdateVideo({ id: checkId, name: descLang["en"].name, description: JSON.stringify(descLang)});
+          onUpdateVideo({ id: checkId, name: descLang["en"]?.name || editName, description: JSON.stringify(descLang)});
           setTimeout(() => {
             onGetVideosByPlaylist({
               id: getPlaylist,
@@ -138,6 +138,16 @@ const CreateEdit = (props) => {
 
   const toggleSave = () => {
     setModalSave(!modalSave);
+    setChekedItems([]);
+    setChangePage(false);
+    setCheckName("");
+    setCheckDesc("");
+    setEditName("");
+    setEditDescription("");
+    setMetaTitle("");
+    setMetaKeyword("");
+    setMetaDesc("");
+    setDescLang({});
   };
 
   useEffect(() => {
@@ -239,7 +249,7 @@ const CreateEdit = (props) => {
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" className="w-sm" onClick={toggleSave}>
-              Cancel
+              Leave
             </Button>
             <Button color="danger" className="w-sm" onClick={onSubmit}>
               Save Changes

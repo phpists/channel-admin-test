@@ -24,7 +24,7 @@ const LanguagesTabs = (props) => {
   const [langs, setLangs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
-  const [currLang, setCurrLang] = useState("en");
+  const [currLang, setCurrLang] = useState(null);
 
   // On toggle languages
   const toggleCustomJustified = (tab, title) => {
