@@ -79,7 +79,7 @@ const CreateEdit = (props) => {
         case "editPlaylist":
           onUpdatePlaylist({
             id: checkId,
-            name: descLang["en"].name,
+            name: descLang["en"]?.name || editName,
             description: JSON.stringify(descLang),
           });
           setTimeout(() => {

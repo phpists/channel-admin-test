@@ -38,7 +38,6 @@ const LanguagesTabs = (props) => {
   useEffect(() => {
     if (Object.keys(descLang).length !== 0) {
       if (metaDesc || editName || editDescription || metaTitle || metaKeyword) {
-        debugger;
         const arr = descLang;
         arr[currLang] = {
           description: editDescription,
@@ -54,22 +53,22 @@ const LanguagesTabs = (props) => {
 
   // Side effects --------- get all and channel languages
   useEffect(() => {
-    if (languagesAll === null) {
       getLanguages();
-    }
-    if (channelLanguages === null) {
       onGetChannelLanguages(defaultChannel.id);
-    }
-  }, [languagesAll, channelLanguages]);
+  }, []);
   // Set selected languages
   useEffect(() => {
     languagesAll && setLangs(languagesAll);
-  }, [languagesAll, channelLanguages]);
+  }, [languagesAll]);
+  // Set active lang
+  useEffect(() => {
+    if(languagesAll !== null && channelLanguages !== null) {
+      setActiveTab("17");
+    }
+  }, [languagesAll, channelLanguages])
   // Set initial values for all languages on form
   useEffect(() => {
-    debugger;
     if (Object.keys(descLang).length === 0) {
-      debugger;
       const arr = descLang;
       if (
         channelLanguages !== null &&
@@ -79,7 +78,7 @@ const LanguagesTabs = (props) => {
         for (let key in channelLanguages) {
           if (channelLanguages[key] === 1) {
             if (
-              onePlayist?.name === editName &&
+              onePlayist?.name === editName || "" === editName &&
               valueButton === "editPlaylist"
             ) {
               if (

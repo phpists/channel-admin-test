@@ -96,6 +96,9 @@ const Header = (props) => {
                     onClick={() => {
                       setActiveChannel(item);
                       localStorage.setItem("channel", JSON.stringify(item));
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 500) 
                     }}
                   >
                     {item.name}
