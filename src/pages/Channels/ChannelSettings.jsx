@@ -107,14 +107,8 @@ const ChannelSettings = React.memo((props) => {
       setChannelName(activeChannel?.name);
       setChannelDomain(activeChannel?.domain || "");
       setChannelSubDomain(activeChannel?.subdomain || "");
-      onGetChannelLanguages(activeChannel.id);
     }
   }, [activeChannel]);
-  //   Keep track side effects --- get all languages
-  useEffect(() => {
-    getLanguages();
-  }, []);
-
   const toggle = () => setModal(!modal);
 
   const toggleTab = (tab) => {
@@ -226,7 +220,7 @@ const ChannelSettings = React.memo((props) => {
                       {defaultLang && (
                         <Multiselect
                           options={languagesAll}
-                          selectedValues={defaultLang}
+                          selectedValues={defaultLang || languagesAll[17]}
                           displayValue="name"
                           onSelect={selectLang}
                           onRemove={removeLang}

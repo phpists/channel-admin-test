@@ -24,7 +24,7 @@ const LanguagesTabs = (props) => {
   const [langs, setLangs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
-  const [currLang, setCurrLang] = useState(null);
+  const [currLang, setCurrLang] = useState("en");
 
   // On toggle languages
   const toggleCustomJustified = (tab, title) => {
@@ -51,11 +51,6 @@ const LanguagesTabs = (props) => {
     }
   }, [metaDesc, editName, editDescription, metaTitle, metaKeyword, descLang]);
 
-  // Side effects --------- get all and channel languages
-  useEffect(() => {
-      getLanguages();
-      onGetChannelLanguages(defaultChannel.id);
-  }, []);
   // Set selected languages
   useEffect(() => {
     languagesAll && setLangs(languagesAll);

@@ -25,9 +25,14 @@ const Header = (props) => {
     setActiveChannel,
     onGetChannels,
     onGetPlaylist,
+    onUpdateChannelLanguages,
+    channelLanguages,
+    onGetChannelLanguages,
+    languagesAll,
+    getLanguages,
   } = props;
   const defaultChannel = JSON.parse(localStorage.getItem("channel"));
-
+  // set default channel
   useEffect(() => {
     if (channels === null) {
       onGetChannels();
@@ -41,8 +46,28 @@ const Header = (props) => {
     }
     if (defaultChannel) {
       setActiveChannel(defaultChannel);
+      onGetChannelLanguages(defaultChannel.id);
+      getLanguages();
     }
   }, [channels, activeChannel, defaultChannel]);
+
+  // Set default eng lang
+  useEffect(() => {
+    if(defaultChannel && channelLanguages !== null) {
+      if(channelLanguages.length === 0 || channelLanguages["en"] === 0 || !("en" in channelLanguages)) {
+        const all = { ...channelLanguages };
+
+        all["en"] = 1;
+        
+        onUpdateChannelLanguages({ channelId: defaultChannel.id, languages: all });
+        setTimeout(() => {
+          onGetChannelLanguages(defaultChannel.id);
+        }, 1000);
+        console.log(channelLanguages)
+      }
+    }
+  }, [channelLanguages, defaultChannel])
+
 
   function toggleFullscreen() {
     if (
@@ -98,7 +123,7 @@ const Header = (props) => {
                       localStorage.setItem("channel", JSON.stringify(item));
                       setTimeout(() => {
                         window.location.reload();
-                      }, 500) 
+                      }, 500);
                     }}
                   >
                     {item.name}
@@ -198,6 +223,8 @@ const mapStatetoProps = (state) => {
     leftMenu,
     channels: selectors.channels.channels(state),
     activeChannel: selectors.channels.activeChannel(state),
+    channelLanguages: selectors.languages.channelLanguages(state),
+    languagesAll: selectors.languages.languagesAll(state),
   };
 };
 
@@ -208,6 +235,12 @@ const mapDispatchToProps = (dispatch) => ({
   setActiveChannel: (data) => dispatch(Actions.channels.setActiveChannel(data)),
   onGetPlaylist: (data) =>
     dispatch(Actions.playlists.getPlaylistsRequest(data)),
+
+  getLanguages: () => dispatch(Actions.languages.getLanguagesRequest()),
+  onGetChannelLanguages: (data) =>
+    dispatch(Actions.languages.getChannelLanguagesRequest(data)),
+  onUpdateChannelLanguages: (data) =>
+    dispatch(Actions.languages.updateChannelLanguagesRequest(data)),
 });
 
 export default connect(
