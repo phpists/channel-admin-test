@@ -87,35 +87,23 @@ const Content = (props) => {
       setChangePage(true);
     } else {
       setEditName(
-        p.description.includes(lang) && p.description.includes("seo_title")
-          ? JSON.parse(p.description)[lang]["name"]
-          : ""
+          JSON.parse(p.description)["en"]["name"] || ""
       );
       setEditDescription(
-        p.description.includes(lang) && p.description.includes("seo_title")
-          ? JSON.parse(p.description)[lang]["description"]
-          : ""
+          JSON.parse(p.description)["en"]["description"] || ""
       );
       setMetaTitle(
-        p.description.includes(lang) && p.description.includes("seo_title")
-          ? JSON.parse(p.description)[lang]["seo_title"]
-          : ""
+          JSON.parse(p.description)["en"]["seo_title"] || ""
       );
       setMetaKeyword(
-        p.description.includes(lang) && p.description.includes("seo_title")
-          ? JSON.parse(p.description)[lang]["seo_keyword"]
-          : ""
+          JSON.parse(p.description)["en"]["seo_keyword"] || ""
       );
       setMetaDesc(
-        p.description.includes(lang) && p.description.includes("seo_title")
-          ? JSON.parse(p.description)[lang]["seo_description"]
-          : ""
+          JSON.parse(p.description)["en"]["seo_description"] || ""
       );
       setCheckName(p.name);
       setCheckDesc(
-        p.description.includes(lang) && p.description.includes("seo_title")
-          ? JSON.parse(p.description)[lang]["description"]
-          : p.description
+          JSON.parse(p.description)["en"]["description"] || p.description
       );
       setCheckId(p.id);
       setChangePage(true);

@@ -64,6 +64,7 @@ const LanguagesTabs = (props) => {
   // Set initial values for all languages on form
   useEffect(() => {
     if (Object.keys(descLang).length === 0) {
+      debugger;
       const arr = descLang;
       if (
         channelLanguages !== null &&
@@ -77,9 +78,7 @@ const LanguagesTabs = (props) => {
               valueButton === "editPlaylist"
             ) {
               if (
-                onePlayist?.description.includes(`${key}":`) &&
-                onePlayist?.description.includes("seo_title")
-              ) {
+                onePlayist?.description.includes(`${key}":`)) {
                 arr[key] = JSON.parse(onePlayist.description)[key];
               } else {
                 arr[key] = {

@@ -133,6 +133,7 @@ const CreateEdit = (props) => {
       setChekedItems([]);
       setSelectedPage(1);
       setDescLang({});
+      window.location.reload();
     }
   }
 
@@ -148,6 +149,7 @@ const CreateEdit = (props) => {
     setMetaKeyword("");
     setMetaDesc("");
     setDescLang({});
+    window.location.reload();
   };
 
   useEffect(() => {
