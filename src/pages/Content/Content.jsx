@@ -126,7 +126,7 @@ const Content = (props) => {
           item[0].description.includes("en") &&
             item[0].description.includes("seo_title")
             ? JSON.parse(item[0].description)["en"]["seo_title"]
-            : "keks"
+            : ""
         );
         setMetaKeyword(
           item[0].description.includes("en") &&
@@ -149,6 +149,16 @@ const Content = (props) => {
         );
         setCheckId(item[0].id);
         onGetOnePlaylist({ id: item[0].id });
+        break;
+      case "newPlaylist":
+        setEditName("");
+        setEditDescription("");
+        setMetaTitle("");
+        setMetaKeyword("");
+        setMetaDesc("");
+        setCheckName("");
+        setEditDescription("");
+        setCheckId("");
         break;
       case "editVideo":
       case "newVideo":
