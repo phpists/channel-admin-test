@@ -9,6 +9,7 @@ export const DeleteChannelDialog = (props) => {
   const onDelete = () => {
     onChannelDelete({id: channelId})
     toggle()
+    localStorage.removeItem("channel");
   }
 
   return (

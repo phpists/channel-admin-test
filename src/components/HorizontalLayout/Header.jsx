@@ -31,23 +31,25 @@ const Header = (props) => {
     languagesAll,
     getLanguages,
   } = props;
-  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
+  let defaultChannel = JSON.parse(localStorage.getItem("channel"));
   // set default channel
   useEffect(() => {
     if (channels === null) {
       onGetChannels();
     }
-    if (defaultChannel !== activeChannel) {
-      onGetPlaylist({ id: defaultChannel?.id || "1", count: 0 });
+    if (activeChannel && defaultChannel && defaultChannel?.name !== activeChannel?.name) {
+      localStorage.setItem("channel", JSON.stringify(activeChannel));
+      onGetPlaylist({ id: activeChannel?.id || "1", count: 0 });
     }
-    if (activeChannel === null && channels) {
-      setActiveChannel(channels[0]);
-      localStorage.setItem("channel", JSON.stringify(channels[0]));
-    }
-    if (defaultChannel) {
+    if (channels && defaultChannel !== null) {
+      defaultChannel = JSON.parse(localStorage.getItem("channel"));
       setActiveChannel(defaultChannel);
       onGetChannelLanguages(defaultChannel.id);
       getLanguages();
+    }
+    if(channels && defaultChannel === null) {
+      localStorage.setItem("channel", JSON.stringify(channels[0]));
+      setActiveChannel(channels[0]);
     }
   }, [channels, activeChannel, defaultChannel]);
 
@@ -123,7 +125,7 @@ const Header = (props) => {
                       localStorage.setItem("channel", JSON.stringify(item));
                       setTimeout(() => {
                         window.location.reload();
-                      }, 500);
+                      }, 100);
                     }}
                   >
                     {item.name}

@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Form, Label, Input } from "reactstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-import { axiosInstance } from "../../../helpers/api/index";
-import { sha1 } from "../../../helpers/sha1";
-import Loader from "../../../helpers/loader";
+import { axiosInstance } from "../../../../helpers/api/index";
+import { sha1 } from "../../../../helpers/sha1";
+import Loader from "../../../../helpers/loader";
 
 const CheckItems = (props) => {
   const {
@@ -138,7 +138,7 @@ const CheckItems = (props) => {
             >
               {sortedItems &&
                 sortedItems?.map((p, index) => {
-                  const element = new Date(p.duration * 1000).toISOString().substr(11, 8)
+                  const element = new Date(p?.duration || 0 * 1000).toISOString().substr(11, 8) || null;
                   return (
                     <Draggable
                       key={p.id}

@@ -14,8 +14,8 @@ import {
   Container,
 } from "reactstrap";
 import "./content.scss";
-import Upload from "./Upload/Upload";
-import TabPanel from "./Common/TabPanel";
+import Upload from "./TabPanel/Upload/Upload";
+import TabPanel from "./TabPanel/TabPanel";
 import TabButton from "./TabButton/TabButton";
 
 const Content = (props) => {
@@ -242,6 +242,37 @@ const Content = (props) => {
   useEffect(() => {
     onGetOnePlaylist({ id: 1227 });
   }, []);
+
+  useEffect(() => {
+    if (playlists === null) {
+      onGetPlaylist({ id: defaultChannel?.id || "1", count: 0 });
+    }
+    if (videos === null) {
+      onGetVideos({ id: defaultChannel?.id, count: 0 });
+    }
+
+    if (
+      characters === null ||
+      playlists?.length !== characters?.length ||
+      checkName == editName
+    ) {
+      updateCharacters(playlists);
+    }
+    if (getPlaylist !== null) {
+      if (
+        dragVIdeo === null ||
+        videosByPlaylist?.length !== dragVIdeo?.length ||
+        checkName == editName
+      ) {
+        updateDragVideo(videosByPlaylist);
+      }
+    } else {
+      if (dragVIdeo === null || videos?.length !== dragVIdeo?.length) {
+        updateDragVideo(videos);
+      }
+    }
+  }, [playlists, videosByPlaylist, videos, getPlaylist]);
+
 
   return (
     <>
