@@ -79,10 +79,19 @@ const Content = (props) => {
   // Change page on click Create Playlist || Edit Playlist
   const toEdit = (p, name, lang) => {
     if (name === "editVideo") {
-      setEditName(p.vimeo_name);
-      setEditDescription(JSON.parse(p.description)["EN"]);
-      setCheckName(p.vimeo_name);
-      setCheckDesc(JSON.parse(p.description)["EN"]);
+      setEditName( JSON.parse(p.description)["en"]["name"] || "");
+      setEditDescription(JSON.parse(p.description)["en"]["description"] || "");
+      setMetaTitle(
+        JSON.parse(p.description)["en"]["seo_title"] || ""
+    );
+    setMetaKeyword(
+        JSON.parse(p.description)["en"]["seo_keyword"] || ""
+    );
+    setMetaDesc(
+        JSON.parse(p.description)["en"]["seo_description"] || ""
+    );
+      setCheckName(JSON.parse(p.description)["en"]["name"] || "");
+      setCheckDesc(JSON.parse(p.description)["en"]["description"] || "");
       setCheckId(p.id);
       setChangePage(true);
     } else {
@@ -103,7 +112,7 @@ const Content = (props) => {
       );
       setCheckName(p.name);
       setCheckDesc(
-          JSON.parse(p.description)["en"]["description"] || p.description
+          JSON.parse(p.description)["en"]["description"] || ""
       );
       setCheckId(p.id);
       setChangePage(true);

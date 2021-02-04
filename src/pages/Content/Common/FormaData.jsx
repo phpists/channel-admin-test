@@ -62,6 +62,7 @@ const FormaData = (props) => {
           label="Chose playlist"
           onChange={(e) => getPlailistId(e)}
         >
+          <option>Choose playlist...</option>
           {characters?.map((c) => {
             return (
               <option

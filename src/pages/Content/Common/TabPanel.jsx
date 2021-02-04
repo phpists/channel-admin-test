@@ -165,6 +165,7 @@ const TabPanel = (props) => {
               onePlayist,
               oneVideo,
               onGetOneVideo,
+              onGetVideos,
             }}
           />
         </CardBody>

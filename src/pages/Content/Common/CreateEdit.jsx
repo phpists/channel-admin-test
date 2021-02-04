@@ -38,6 +38,7 @@ const CreateEdit = (props) => {
     onUpdateVideo,
     onAddVideoToPlaylist,
     onGetVideosByPlaylist,
+    onGetVideos,
     getPlaylist,
     characters,
     setSelectedPage,
@@ -58,7 +59,7 @@ const CreateEdit = (props) => {
   } = props;
   // State local
   const [require, setRequire] = useState(false);
-  const [playlistId, setPlaylistId] = useState(characters[0]?.id);
+  const [playlistId, setPlaylistId] = useState("");
   const [descLang, setDescLang] = useState({});
   // Set values on current language
   const onChangeForma = (forma) => {
@@ -97,13 +98,19 @@ const CreateEdit = (props) => {
           }, 1000);
           break;
         case "editVideo":
-          onUpdateVideo({ id: checkId, name: descLang["en"]?.name || editName, description: JSON.stringify(descLang)});
+          onUpdateVideo({
+            id: checkId,
+            name: descLang["en"]?.name || editName,
+            description: JSON.stringify(descLang),
+            channel_id: defaultChannel?.id,
+          });
           setTimeout(() => {
             onGetVideosByPlaylist({
               id: getPlaylist,
               channel: defaultChannel?.id,
               count: 0,
             });
+            onGetVideos({ id: defaultChannel?.id, count: 0 });
           }, 1000);
           break;
         case "newVideo":

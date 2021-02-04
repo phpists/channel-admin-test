@@ -64,7 +64,6 @@ const LanguagesTabs = (props) => {
   // Set initial values for all languages on form
   useEffect(() => {
     if (Object.keys(descLang).length === 0) {
-      debugger;
       const arr = descLang;
       if (
         channelLanguages !== null &&
@@ -103,17 +102,13 @@ const LanguagesTabs = (props) => {
               valueButton === "newVideo"
             ) {
               if (
-                oneVideo?.description.includes(key) &&
-                oneVideo?.description.includes("seo_title")
+                oneVideo?.description.includes(`${key}":`)
               ) {
                 arr[key] = JSON.parse(oneVideo.description)[key];
               } else {
                 arr[key] = {
-                  description:
-                    key === "en"
-                      ? JSON.parse(oneVideo.description)["EN"] || ""
-                      : "",
-                  name: key === "en" ? oneVideo.vimeo_name || "" : "",
+                  description: "",
+                  name: "",
                   seo_description: "",
                   seo_keyword: "",
                   seo_title: "",

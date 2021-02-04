@@ -74,12 +74,7 @@ export const videos = {
 
     const queryString = `action=UpdateVideo&openKey=${authData.openKey}`;
 
-    const jsonData = JSON.stringify({
-      fields: {
-        id: data.id,
-        name: data.name,
-      },
-    });
+    const jsonData = JSON.stringify({ fields: data });
 
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();

@@ -138,10 +138,7 @@ const CheckItems = (props) => {
             >
               {sortedItems &&
                 sortedItems?.map((p, index) => {
-                  const element = (p.duration / 3600).toString().split("");
-                  const minutes = element.splice(0, 1).join("");
-                  const seconds = element.splice(1, 2);
-
+                  const element = new Date(p.duration * 1000).toISOString().substr(11, 8)
                   return (
                     <Draggable
                       key={p.id}
@@ -217,8 +214,7 @@ const CheckItems = (props) => {
                                   `${p?.videos_count} items`
                                 ) : (
                                   <>
-                                    {minutes}:
-                                    {seconds.length === 0 ? "00" : seconds}{" "}
+                                    {element}
                                   </>
                                 )}
                               </div>
