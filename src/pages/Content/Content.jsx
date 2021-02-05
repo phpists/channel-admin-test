@@ -124,38 +124,25 @@ const Content = (props) => {
     const nameButton = e.target.value;
     switch (nameButton) {
       case "editPlaylist":
-        setEditName(item[0].name);
-        setEditDescription(
-          item[0].description.includes("en") &&
-            item[0].description.includes("seo_title")
-            ? JSON.parse(item[0].description)["en"]["description"]
-            : item[0].description
-        );
-        setMetaTitle(
-          item[0].description.includes("en") &&
-            item[0].description.includes("seo_title")
-            ? JSON.parse(item[0].description)["en"]["seo_title"]
-            : ""
-        );
-        setMetaKeyword(
-          item[0].description.includes("en") &&
-            item[0].description.includes("seo_title")
-            ? JSON.parse(item[0].description)["en"]["seo_keyword"]
-            : ""
-        );
-        setMetaDesc(
-          item[0].description.includes("en") &&
-            item[0].description.includes("seo_title")
-            ? JSON.parse(item[0].description)["en"]["seo_description"]
-            : ""
-        );
-        setCheckName(item[0].name);
-        setEditDescription(
-          item[0].description.includes("en") &&
-            item[0].description.includes("seo_title")
-            ? JSON.parse(item[0].description)["en"]["description"]
-            : item[0].description
-        );
+        setEditName(
+          JSON.parse(item[0].description)["en"]["name"] || ""
+      );
+      setEditDescription(
+          JSON.parse(item[0].description)["en"]["description"] || ""
+      );
+      setMetaTitle(
+          JSON.parse(item[0].description)["en"]["seo_title"] || ""
+      );
+      setMetaKeyword(
+          JSON.parse(item[0].description)["en"]["seo_keyword"] || ""
+      );
+      setMetaDesc(
+          JSON.parse(item[0].description)["en"]["seo_description"] || ""
+      );
+      setCheckName(item[0].name);
+      setCheckDesc(
+          JSON.parse(item[0].description)["en"]["description"] || ""
+      );
         setCheckId(item[0].id);
         onGetOnePlaylist({ id: item[0].id });
         break;
@@ -171,10 +158,19 @@ const Content = (props) => {
         break;
       case "editVideo":
       case "newVideo":
-        setEditName(itemVideos[0]?.vimeo_name);
-        setEditDescription(JSON.parse(itemVideos[0].description)["EN"] || "");
-        setCheckName(itemVideos[0].vimeo_name);
-        setCheckDesc(JSON.parse(itemVideos[0].description)["EN"] || "");
+        setEditName( JSON.parse(itemVideos[0].description)["en"]["name"] || "");
+        setEditDescription(JSON.parse(itemVideos[0].description)["en"]["description"] || "");
+        setMetaTitle(
+          JSON.parse(itemVideos[0].description)["en"]["seo_title"] || ""
+      );
+      setMetaKeyword(
+          JSON.parse(itemVideos[0].description)["en"]["seo_keyword"] || ""
+      );
+      setMetaDesc(
+          JSON.parse(itemVideos[0].description)["en"]["seo_description"] || ""
+      );
+        setCheckName(JSON.parse(itemVideos[0].description)["en"]["name"] || "");
+        setCheckDesc(JSON.parse(itemVideos[0].description)["en"]["description"] || "");
         setCheckId(itemVideos[0].id);
         onGetOneVideo({id: itemVideos[0].id})
         break;

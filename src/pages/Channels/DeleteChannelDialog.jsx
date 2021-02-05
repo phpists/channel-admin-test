@@ -2,14 +2,15 @@ import React from 'react';
 import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import { connect } from "react-redux";
 import Actions from './../../store/actions';
+import { Link } from 'react-router-dom';
 
 export const DeleteChannelDialog = (props) => {
-  const { modal, className, toggle, onChannelDelete, channelId, channelName } = props
+  const { modal, className, toggle, onChannelDelete, channelId, channelName, history } = props;
 
   const onDelete = () => {
-    onChannelDelete({id: channelId})
-    toggle()
     localStorage.removeItem("channel");
+    onChannelDelete({id: channelId});
+    toggle()
   }
 
   return (
@@ -23,7 +24,7 @@ export const DeleteChannelDialog = (props) => {
         </ModalHeader>
         <ModalFooter>
           <Button color="secondary" className="w-sm" onClick={toggle}>Cancel</Button>
-          <Button color="danger" className="w-sm" onClick={onDelete}>Delete</Button>
+          <Link to="/dashboard"><Button color="danger" className="w-sm" onClick={onDelete}>Delete</Button></Link>
         </ModalFooter>
       </Modal>
     </div>
