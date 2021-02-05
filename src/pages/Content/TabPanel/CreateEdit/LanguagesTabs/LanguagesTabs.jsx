@@ -97,7 +97,7 @@ const LanguagesTabs = (props) => {
                 seo_title: "",
               };
             } else if (
-              (oneVideo?.vimeo_name === editName &&
+              (oneVideo?.name === editName &&
                 valueButton === "editVideo") ||
               valueButton === "newVideo"
             ) {

@@ -138,7 +138,17 @@ const CheckItems = (props) => {
             >
               {sortedItems &&
                 sortedItems?.map((p, index) => {
-                  const element = new Date(p?.duration || 0 * 1000).toISOString().substr(11, 8) || null;
+                  const element = Number(p.duration || 0);
+                  let hours = Math.floor(element / 3600);
+                  let minutes = Math.floor(element % 3600 / 60);
+
+                  if(hours < 10) {
+                    hours = `0${hours}`
+                  }
+
+                  if(minutes < 10) {
+                    minutes = `0${minutes}`
+                  }
                   return (
                     <Draggable
                       key={p.id}
@@ -204,7 +214,7 @@ const CheckItems = (props) => {
                                     onGetOneVideo({id: p.id})
                                     toEdit(p, e.currentTarget.id, "en")}}
                                 >
-                                  {p.vimeo_name}{" "}
+                                  {p.name}{" "}
                                 </span>
                               </>
                             )}
@@ -214,7 +224,7 @@ const CheckItems = (props) => {
                                   `${p?.videos_count} items`
                                 ) : (
                                   <>
-                                    {element}
+                                    {`${hours}:${minutes}`}
                                   </>
                                 )}
                               </div>
