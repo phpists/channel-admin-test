@@ -121,6 +121,7 @@ const TabPanel = (props) => {
               setMetaDesc,
               onePlayist,
               oneVideo,
+              onGetOnePlaylist,
               onGetOneVideo,
               onGetVideos,
             }}

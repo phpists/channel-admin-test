@@ -74,7 +74,16 @@ export const videos = {
 
     const queryString = `action=UpdateVideo&openKey=${authData.openKey}`;
 
-    const jsonData = JSON.stringify({ fields: data });
+    const jsonData = JSON.stringify({
+      fields: {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        channel_id: data.channel_id,
+      },
+      where: "playlist_id = :pid",
+      params: { pid: data.playlist_id },
+    });
 
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
@@ -155,7 +164,6 @@ export const videos = {
     return await axiosInstance
       .post(`?${queryString}`, formData, config)
       .then((response) => {
-        console.log("OneVideo: ", response);
         return response;
       })
       .catch((error) => ({ error }));

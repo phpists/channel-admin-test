@@ -14,6 +14,7 @@ const FormaData = (props) => {
     setEditDescription,
     characters,
     require,
+    getPlaylist
   } = props;
 
   // On submit
@@ -61,6 +62,7 @@ const FormaData = (props) => {
           name="select"
           label="Chose playlist"
           onChange={(e) => getPlailistId(e)}
+          value={getPlaylist?.name || "Choose playlist..."}
         >
           <option>Choose playlist...</option>
           {characters?.map((c) => {

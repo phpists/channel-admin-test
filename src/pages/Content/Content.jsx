@@ -118,6 +118,7 @@ const Content = (props) => {
       setChangePage(true);
     }
     setValueButton(name);
+    
   };
 
   const toForm = (e) => {

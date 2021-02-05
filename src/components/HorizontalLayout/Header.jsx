@@ -50,6 +50,7 @@ const Header = (props) => {
     if(channels && defaultChannel === null) {
       localStorage.setItem("channel", JSON.stringify(channels[0]));
       setActiveChannel(channels[0]);
+      onGetPlaylist({ id: activeChannel?.id || "1", count: 0 });
     }
   }, [channels, activeChannel, defaultChannel]);
 
@@ -65,7 +66,6 @@ const Header = (props) => {
         setTimeout(() => {
           onGetChannelLanguages(defaultChannel.id);
         }, 1000);
-        console.log(channelLanguages)
       }
     }
   }, [channelLanguages, defaultChannel])

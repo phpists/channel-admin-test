@@ -55,6 +55,7 @@ const CreateEdit = (props) => {
     setMetaDesc,
     onePlayist,
     oneVideo,
+    onGetOnePlaylist,
     onGetOneVideo,
   } = props;
   // State local
@@ -71,11 +72,9 @@ const CreateEdit = (props) => {
   };
 
   function onSubmit() {
-    console.log(descLang);
     if (editName === "" || editDescription === "") {
       setRequire(true);
     } else {
-      console.log(descLang);
       switch (valueButton) {
         case "editPlaylist":
           onUpdatePlaylist({
@@ -98,15 +97,25 @@ const CreateEdit = (props) => {
           }, 1000);
           break;
         case "editVideo":
-          onUpdateVideo({
+          onUpdateVideo(
+            getPlaylist ? 
+            {
             id: checkId,
             name: descLang["en"]?.name || editName,
             description: JSON.stringify(descLang),
             channel_id: defaultChannel?.id,
-          });
+            playlist_id: playlistId || getPlaylist?.id
+          } :
+          {
+            id: checkId,
+            name: descLang["en"]?.name || editName,
+            description: JSON.stringify(descLang),
+            channel_id: defaultChannel?.id,
+          }
+          );
           setTimeout(() => {
             onGetVideosByPlaylist({
-              id: getPlaylist,
+              id: getPlaylist?.id || playlistId,
               channel: defaultChannel?.id,
               count: 0,
             });
@@ -120,7 +129,7 @@ const CreateEdit = (props) => {
           });
           setTimeout(() => {
             onGetVideosByPlaylist({
-              id: getPlaylist,
+              id: getPlaylist || getPlaylist?.id,
               channel: defaultChannel?.id,
               count: 0,
             });
@@ -140,6 +149,8 @@ const CreateEdit = (props) => {
       setChekedItems([]);
       setSelectedPage(1);
       setDescLang({});
+      onGetOnePlaylist({id: null});
+      onGetOneVideo({id: null});
     }
   }
 
@@ -155,6 +166,8 @@ const CreateEdit = (props) => {
     setMetaKeyword("");
     setMetaDesc("");
     setDescLang({});
+    onGetOnePlaylist({id: null});
+    onGetOneVideo({id: null});
   };
 
   useEffect(() => {
@@ -191,6 +204,7 @@ const CreateEdit = (props) => {
               onChangeForma,
               valueButton,
               oneVideo,
+              onGetOnePlaylist,
               onGetOneVideo,
             }}
           />
@@ -205,6 +219,7 @@ const CreateEdit = (props) => {
               setEditDescription,
               characters,
               require,
+              getPlaylist
             }}
           />
         </CardBody>

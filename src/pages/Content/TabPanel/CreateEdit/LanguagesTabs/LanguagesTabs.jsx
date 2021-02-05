@@ -19,6 +19,7 @@ const LanguagesTabs = (props) => {
     onChangeForma,
     valueButton,
     oneVideo,
+    onGetOnePlaylist,
     onGetOneVideo,
   } = props;
   const [langs, setLangs] = useState([]);
@@ -97,7 +98,7 @@ const LanguagesTabs = (props) => {
                 seo_title: "",
               };
             } else if (
-              (oneVideo?.name === editName &&
+              (oneVideo?.name === editName || "" === editName &&
                 valueButton === "editVideo") ||
               valueButton === "newVideo"
             ) {
