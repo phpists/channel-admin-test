@@ -77,7 +77,7 @@ const Content = (props) => {
 
   // Handle event
   // Change page on click Create Playlist || Edit Playlist
-  const toEdit = (p, name, lang) => {
+  const toEdit = (p, name) => {
     if (name === "editVideo") {
       setEditName( JSON.parse(p.description)["en"]["name"] || "");
       setEditDescription(JSON.parse(p.description)["en"]["description"] || "");

@@ -64,7 +64,7 @@ const CheckItems = (props) => {
     };
   }
 
-  const sortedItems = items.sort(dynamicSort("orderby"));
+  const sortedItems = items === characters ? items : items.sort(dynamicSort("orderby"));
 
   const ChangeVideoOrder = async (data) => {
     const authData = sessionStorage.getItem("bringStreamAuth")
@@ -129,6 +129,7 @@ const CheckItems = (props) => {
       <DragDropContext
         onDragEnd={(e) => handleOnDragEnd(e, sortedItems, updateItems)}
       >
+        {console.log(sortedItems)}
         <Droppable droppableId="characters">
           {(provided) => (
             <ul
@@ -173,6 +174,7 @@ const CheckItems = (props) => {
 
                             {sortedItems !== characters && (
                               <input
+                              style={{fontSize: "10px", width: "38px"}}
                                 className="videosOrderNumber"
                                 type="text"
                                 checked={checkedItems.includes(p.id)}
