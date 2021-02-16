@@ -187,6 +187,7 @@ export const videos = {
       },
       offset: data.count,
       count: 25,
+      order: "orderby"
     });
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();

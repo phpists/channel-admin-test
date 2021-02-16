@@ -101,7 +101,7 @@ export const playlists = {
     if (!authData) return false;
     const queryString = `action=GetPlaylists&openKey=${authData.openKey}`;
 
-    const jsonData = JSON.stringify({ where: 'channel_id = :cid', params: { cid: data.id }, offset: data.count, count: 25 });
+    const jsonData = JSON.stringify({ where: 'channel_id = :cid', params: { cid: data.id }, offset: data.count, count: 25, order: "orderby" });
 
     const signature = sha1(queryString + authData.privateKey + jsonData);
     const formData = new FormData();
