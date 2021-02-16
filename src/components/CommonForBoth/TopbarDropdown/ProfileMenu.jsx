@@ -16,6 +16,7 @@ const ProfileMenu = React.memo((props) => {
 
 	const onLogOut = () => {
 		sessionStorage.clear()
+		localStorage.clear();
 		props.logOut()
 		window.location.reload()
 		props.history.push('/')

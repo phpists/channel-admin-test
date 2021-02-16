@@ -24,11 +24,9 @@ const Header = (props) => {
     activeChannel,
     setActiveChannel,
     onGetChannels,
-    onGetPlaylist,
     onUpdateChannelLanguages,
     channelLanguages,
     onGetChannelLanguages,
-    languagesAll,
     getLanguages,
   } = props;
   let defaultChannel = JSON.parse(localStorage.getItem("channel"));
@@ -37,39 +35,53 @@ const Header = (props) => {
     if (channels === null) {
       onGetChannels();
     }
-    if (activeChannel && defaultChannel && defaultChannel?.name !== activeChannel?.name) {
+    if (
+      activeChannel &&
+      defaultChannel &&
+      defaultChannel?.name !== activeChannel?.name
+    ) {
+      debugger;
       localStorage.setItem("channel", JSON.stringify(activeChannel));
-      onGetPlaylist({ id: activeChannel?.id || "1", count: 0 });
-    }
-    if (channels && defaultChannel !== null) {
-      defaultChannel = JSON.parse(localStorage.getItem("channel"));
-      setActiveChannel(defaultChannel);
-      onGetChannelLanguages(defaultChannel.id);
+      onGetChannelLanguages(activeChannel.id);
       getLanguages();
     }
-    if(channels && defaultChannel === null) {
+    if (channels && defaultChannel === null) {
+      debugger;
       localStorage.setItem("channel", JSON.stringify(channels[0]));
       setActiveChannel(channels[0]);
-      onGetPlaylist({ id: activeChannel?.id || "1", count: 0 });
+
+      onGetChannelLanguages(channels[0].id);
+      getLanguages();
+    }
+    if(defaultChannel && activeChannel === null) {
+      debugger
+      onGetChannelLanguages(defaultChannel.id);
+      getLanguages();
     }
   }, [channels, activeChannel, defaultChannel]);
 
   // Set default eng lang
   useEffect(() => {
-    if(defaultChannel && channelLanguages !== null) {
-      if(channelLanguages.length === 0 || channelLanguages["en"] === 0 || !("en" in channelLanguages)) {
+    if (defaultChannel && channelLanguages !== null) {
+      if (
+        channelLanguages.length === 0 ||
+        channelLanguages["en"] === 0 ||
+        !("en" in channelLanguages)
+      ) {
         const all = { ...channelLanguages };
 
         all["en"] = 1;
-        
-        onUpdateChannelLanguages({ channelId: defaultChannel.id, languages: all });
+
+        onUpdateChannelLanguages({
+          channelId: defaultChannel.id,
+          languages: all,
+        });
         setTimeout(() => {
           onGetChannelLanguages(defaultChannel.id);
         }, 1000);
       }
     }
-  }, [channelLanguages, defaultChannel])
-
+  }, [channelLanguages, defaultChannel]);
 
   function toggleFullscreen() {
     if (
@@ -123,9 +135,8 @@ const Header = (props) => {
                     onClick={() => {
                       setActiveChannel(item);
                       localStorage.setItem("channel", JSON.stringify(item));
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 100);
+                      onGetChannelLanguages(item.id);
+                      getLanguages();
                     }}
                   >
                     {item.name}
@@ -235,8 +246,6 @@ const mapDispatchToProps = (dispatch) => ({
   toggleLeftmenu: (value) => dispatch(toggleLeftmenu(value)),
   onGetChannels: () => dispatch(Actions.channels.getChannelsRequest()),
   setActiveChannel: (data) => dispatch(Actions.channels.setActiveChannel(data)),
-  onGetPlaylist: (data) =>
-    dispatch(Actions.playlists.getPlaylistsRequest(data)),
 
   getLanguages: () => dispatch(Actions.languages.getLanguagesRequest()),
   onGetChannelLanguages: (data) =>

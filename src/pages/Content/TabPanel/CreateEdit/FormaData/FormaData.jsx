@@ -32,6 +32,8 @@ const FormaData = (props) => {
     setName(e.target.value);
   };
 
+  characters && console.log(characters.includes())
+
   return (
     <>
     <FormGroup className="w-50 mt-4">

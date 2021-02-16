@@ -104,3 +104,18 @@ export function* watchGetOneVideo(action) {
     yield put(Actions.common.setErrorNotify(response.status + " Server error"));
   }
 }
+
+export function* watchChangeVideoOrder(action) {
+  const response = yield API.videos.changeVideoOrder(action.payload);
+  if (response.status === 200) {
+    if (response.data.status === "error") {
+      yield put(
+        Actions.common.setErrorNotify(response?.data?.message || "Server error")
+      );
+    } else {
+      yield put(Actions.common.setSuccessNotify("Updated successfully"));
+    }
+  } else {
+    yield put(Actions.common.setErrorNotify(response.status + " Server error"));
+  }
+}

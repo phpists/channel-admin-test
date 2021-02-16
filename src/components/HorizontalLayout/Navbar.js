@@ -1,4 +1,4 @@
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   // Row,
   // Col,
@@ -12,9 +12,12 @@ import { withNamespaces } from "react-i18next";
 
 import { connect } from "react-redux";
 
+import Actions from "../../store/actions";
+import selectors from "../../selectors";
+
 const Navbar = (props) => {
-//   const [dashboard, setdashboard] = useState(false);
-//   const [settings, setSettings] = useState(false);
+  //   const [dashboard, setdashboard] = useState(false);
+  //   const [settings, setSettings] = useState(false);
 
   // const [ui, setui] = useState(false);
   // const [product, setProduct] = useState(false);
@@ -33,6 +36,9 @@ const Navbar = (props) => {
   // const [invoice, setinvoice] = useState(false);
   // const [auth, setauth] = useState(false);
   // const [utility, setutility] = useState(false);
+
+  // Get default channel
+  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
 
   useEffect(() => {
     var matchingMenuItem = null;
@@ -90,10 +96,7 @@ const Navbar = (props) => {
             >
               <ul className="navbar-nav">
                 <li className="nav-item dropdown">
-                  <Link
-                    className="nav-link dropdown-toggle arrow-none"
-                    to="#"
-                  >
+                  <Link className="nav-link dropdown-toggle arrow-none" to="#">
                     <i className="bx bx-home-circle mr-2"></i>
                     {props.t("Dashboard")}
                     {props.menuOpen} <span className="arrow-down" />
@@ -107,7 +110,17 @@ const Navbar = (props) => {
 
                 {/* ADD CONTENT PAGE */}
                 <li className="nav-item">
-                  <Link className="nav-link arrow-none" to="/content">
+                  <Link
+                    className="nav-link arrow-none"
+                    to="/content"
+                    onClick={() => {
+                      props.onGetPlaylist({
+                        id: defaultChannel?.id || "1",
+                        count: 0,
+                      });
+                      props.onGetVideos({ id: defaultChannel?.id, count: 0 });
+                    }}
+                  >
                     <i className="bx bx-home-circle mr-2"></i>
                     {props.t("Content")}
                   </Link>
@@ -292,6 +305,12 @@ const mapStatetoProps = (state) => {
   return { leftMenu };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  onGetPlaylist: (data) =>
+    dispatch(Actions.playlists.getPlaylistsRequest(data)),
+  onGetVideos: (data) => dispatch(Actions.videos.getVideosRequest(data)),
+});
+
 export default withRouter(
-  connect(mapStatetoProps, {})(withNamespaces()(Navbar))
+  connect(mapStatetoProps, mapDispatchToProps)(withNamespaces()(Navbar))
 );

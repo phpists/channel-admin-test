@@ -233,7 +233,7 @@ const ChannelSettings = React.memo((props) => {
                 </Card>
                 <Row className="justify-content-end mt-3">
                   <FormGroup>
-                    <Button className="btn-size-130 mr-3" color="secondary">
+                    <Button className="btn-size-130 mr-3" color="secondary" onClick={() => props.history.push("/dashboard")}>
                       Cancel
                     </Button>
                     <Button

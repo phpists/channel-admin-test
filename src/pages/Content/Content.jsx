@@ -47,6 +47,7 @@ const Content = (props) => {
     onePlayist,
     oneVideo,
     onGetOneVideo,
+    onChangeVideoOrder
   } = props;
 
   // State local
@@ -207,14 +208,42 @@ const Content = (props) => {
   };
 
   // Drag playlist or videos
-  function handleOnDragEnd(result, items, setItems) {
+  function handleOnDragEnd(result, items) {
     if (!result.destination) return;
 
     const getItems = Array.from(items);
     const [reorderedItem] = getItems.splice(result.source.index, 1);
     getItems.splice(result.destination.index, 0, reorderedItem);
+    const currentItem = getItems[result.destination.index];
 
-    setItems(getItems);
+    setLoader(true);
+
+    if(activeTab === "1") {
+      onUpdatePlaylist({
+        id: currentItem.id,
+        name: currentItem.name,
+        description: currentItem.description,
+        orderby: (getItems[result.destination.index + 1].orderby - 1)
+      });
+      setTimeout(() => {
+        onGetPlaylist({ id: defaultChannel.id, count: 0 });
+      }, 1000);
+      updateCharacters(null);
+    } else {
+      onChangeVideoOrder({
+        playlist_id: currentItem.playlist_id,
+        video_id: currentItem.id,
+        orderby: (getItems[result.destination.index + 1].orderby - 1)
+      });
+      setTimeout(() => {
+        onGetVideosByPlaylist({
+          id: getPlaylist?.id,
+          channel: defaultChannel?.id,
+          count: 0,
+          // video_id: null
+        });
+      }, 1000);
+    }
   }
 
   // Set & remove checkmark
@@ -253,6 +282,7 @@ const Content = (props) => {
       playlists?.length !== characters?.length ||
       checkName == editName
     ) {
+      debugger;
       updateCharacters(playlists);
     }
     if (getPlaylist !== null) {
@@ -365,6 +395,7 @@ const Content = (props) => {
                       onePlayist,
                       oneVideo,
                       onGetOneVideo,
+                      onChangeVideoOrder
                     }}
                   />
                 </TabPane>
@@ -436,6 +467,7 @@ const Content = (props) => {
                       onePlayist,
                       oneVideo,
                       onGetOneVideo,
+                      onChangeVideoOrder
                     }}
                   />
                 </TabPane>
@@ -494,6 +526,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(Actions.videos.removeVideoFromPlaylistRequest(data)),
   onGetVideos: (data) => dispatch(Actions.videos.getVideosRequest(data)),
   onGetOneVideo: (data) => dispatch(Actions.videos.getOneVideoRequest(data)),
+  onChangeVideoOrder: (data) => dispatch(Actions.videos.changeVideoOrderRequest(data)),
 
   onGetChannelLanguages: (data) =>
     dispatch(Actions.languages.getChannelLanguagesRequest(data)),

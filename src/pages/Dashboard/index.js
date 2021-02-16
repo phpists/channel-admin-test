@@ -50,7 +50,7 @@ const Dashboard = (props) => {
 
 	useEffect(()=>{
 		
-		if (lastLoactionPathname === '/login' || lastLoactionPathname === '/' && channels?.length === 0) {
+		if ((lastLoactionPathname === '/login' || lastLoactionPathname === '/') && channels?.length === 0) {
 			history.push('/channels/create')
 		}
 	}, [channels])

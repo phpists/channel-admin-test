@@ -6,8 +6,6 @@ const LanguagesTabs = (props) => {
   const {
     languagesAll,
     channelLanguages,
-    onGetChannelLanguages,
-    getLanguages,
     onePlayist,
     setDescLang,
     descLang,
@@ -19,12 +17,9 @@ const LanguagesTabs = (props) => {
     onChangeForma,
     valueButton,
     oneVideo,
-    onGetOnePlaylist,
-    onGetOneVideo,
   } = props;
   const [langs, setLangs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
-  const defaultChannel = JSON.parse(localStorage.getItem("channel"));
   const [currLang, setCurrLang] = useState("en");
 
   // On toggle languages

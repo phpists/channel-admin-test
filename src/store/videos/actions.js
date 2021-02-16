@@ -14,6 +14,8 @@ export const Types = {
   REMOVE_VIDEO_FROM_PLAYLIST_REQUEST: "REMOVE_VIDEO_FROM_PLAYLIST_REQUEST",
 
   UPDATE_VIDEO_REQUEST: "UPDATE_VIDEO_REQUEST",
+
+  CHANGE_VIDEO_ORDER_REQUEST: "CHANGE_VIDEO_ORDER_REQUEST"
 };
 
 const addVideoToPlaylistRequest = (payload) => ({
@@ -65,6 +67,11 @@ const updateVideoRequest = (payload) => ({
   payload,
 });
 
+const changeVideoOrderRequest = (payload) => ({
+  type: Types.CHANGE_VIDEO_ORDER_REQUEST,
+  payload,
+});
+
 export default {
   addVideoToPlaylistRequest,
   addVideoToPlaylistSuccess,
@@ -76,4 +83,5 @@ export default {
   getVideoByPlaylistSuccess,
   removeVideoFromPlaylistRequest,
   updateVideoRequest,
+  changeVideoOrderRequest
 };

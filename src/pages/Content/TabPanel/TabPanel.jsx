@@ -76,6 +76,7 @@ const TabPanel = (props) => {
     onePlayist,
     oneVideo,
     onGetOneVideo,
+    onChangeVideoOrder
   } = props;
 
 
@@ -131,7 +132,7 @@ const TabPanel = (props) => {
         <CardBody className="w-100">
           <CardTitle>{activeTab === "1" ? "Playlists" : "Videos"}</CardTitle>
           <CardSubtitle className="mb-3">
-            {activeTab === "1" ? characters?.length : dragVIdeo?.length || 0}{" "}
+            {activeTab === "1" ? characters?.filter(c => c.active === 1)?.length : dragVIdeo?.length || 0}{" "}
             Total
           </CardSubtitle>
           {activeTab === "1" ? (
@@ -208,6 +209,10 @@ const TabPanel = (props) => {
                     setLoader,
                     onGetOnePlaylist,
                     onGetOneVideo,
+                    activeTab,
+                    onChangeVideoOrder,
+                    onUpdatePlaylist,
+                    onGetPlaylist
                   }}
                 />
                 <PaginationVideos
@@ -256,6 +261,9 @@ const TabPanel = (props) => {
                   setLoader,
                   onGetOnePlaylist,
                   onGetOneVideo,
+                  onChangeVideoOrder,
+                  onUpdatePlaylist,
+                  onGetPlaylist
                 }}
               />
               {countVideosByPlaylist > 25 || getPlaylist === null ? (
