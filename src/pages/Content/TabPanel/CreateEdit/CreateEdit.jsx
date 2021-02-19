@@ -58,7 +58,7 @@ const CreateEdit = (props) => {
     onGetOnePlaylist,
     onGetOneVideo,
     playlistsByVideo,
-    onRemoveVideoFromPlaylist
+    onRemoveVideoFromPlaylist,
   } = props;
   // State local
   const [require, setRequire] = useState(false);
@@ -100,20 +100,20 @@ const CreateEdit = (props) => {
           break;
         case "editVideo":
           onUpdateVideo(
-            getPlaylist ? 
-            {
-            id: checkId,
-            name: descLang["en"]?.name || editName,
-            description: JSON.stringify(descLang),
-            channel_id: defaultChannel?.id,
-            playlist_id: playlistId || getPlaylist?.id
-          } :
-          {
-            id: checkId,
-            name: descLang["en"]?.name || editName,
-            description: JSON.stringify(descLang),
-            channel_id: defaultChannel?.id,
-          }
+            getPlaylist
+              ? {
+                  id: checkId,
+                  name: descLang["en"]?.name || editName,
+                  description: JSON.stringify(descLang),
+                  channel_id: defaultChannel?.id,
+                  playlist_id: playlistId || getPlaylist?.id,
+                }
+              : {
+                  id: checkId,
+                  name: descLang["en"]?.name || editName,
+                  description: JSON.stringify(descLang),
+                  channel_id: defaultChannel?.id,
+                }
           );
           setTimeout(() => {
             onGetVideosByPlaylist({
@@ -151,8 +151,8 @@ const CreateEdit = (props) => {
       setChekedItems([]);
       setSelectedPage(1);
       setDescLang({});
-      onGetOnePlaylist({id: null});
-      onGetOneVideo({id: null});
+      onGetOnePlaylist({ id: null });
+      onGetOneVideo({ id: null });
     }
   }
 
@@ -168,22 +168,14 @@ const CreateEdit = (props) => {
     setMetaKeyword("");
     setMetaDesc("");
     setDescLang({});
-    onGetOnePlaylist({id: null});
-    onGetOneVideo({id: null});
+    onGetOnePlaylist({ id: null });
+    onGetOneVideo({ id: null });
   };
-
-  useEffect(() => {
-    if (checkName !== editName) {
-      window.onbeforeunload = () => true;
-    } else {
-      window.onbeforeunload = undefined;
-    }
-  }, [checkName, editName]);
 
   return (
     <Card>
       <Prompt
-        when={checkName !== editName}
+        when={descLang}
         message="You have unsaved data. You want to leave the page?"
       />
       <AvForm onValidSubmit={onSubmit}>
@@ -225,7 +217,7 @@ const CreateEdit = (props) => {
               playlistsByVideo,
               onAddVideoToPlaylist,
               onRemoveVideoFromPlaylist,
-              oneVideo
+              oneVideo,
             }}
           />
         </CardBody>
