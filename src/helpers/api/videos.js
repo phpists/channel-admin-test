@@ -183,7 +183,6 @@ export const videos = {
       params: {
         cid: data.channel,
         pid: data.id,
-        // , vid: data.video_id
       },
       offset: data.count,
       count: 25,

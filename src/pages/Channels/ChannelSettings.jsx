@@ -57,7 +57,7 @@ const ChannelSettings = React.memo((props) => {
       subdomain: channelSubDomain.replace(/\s/g, ""),
     });
   };
-  // Test
+  // Default languages on current channel
   const defaultLang =
     channelLanguages &&
     languagesAll?.filter((l) => channelLanguages[l.id] === 1);

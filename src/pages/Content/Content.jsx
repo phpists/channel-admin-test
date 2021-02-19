@@ -47,7 +47,9 @@ const Content = (props) => {
     onePlayist,
     oneVideo,
     onGetOneVideo,
-    onChangeVideoOrder
+    onChangeVideoOrder,
+    onGetPlaylistsByVideo,
+    playlistsByVideo
   } = props;
 
   // State local
@@ -95,6 +97,7 @@ const Content = (props) => {
       setCheckDesc(JSON.parse(p.description)["en"]["description"] || "");
       setCheckId(p.id);
       setChangePage(true);
+      onGetPlaylistsByVideo({channel: defaultChannel?.id, video_id: p.id})
     } else {
       setEditName(
           JSON.parse(p.description)["en"]["name"] || ""
@@ -175,6 +178,7 @@ const Content = (props) => {
         setCheckDesc(JSON.parse(itemVideos[0].description)["en"]["description"] || "");
         setCheckId(itemVideos[0].id);
         onGetOneVideo({id: itemVideos[0].id})
+        onGetPlaylistsByVideo({channel: defaultChannel?.id, video_id: itemVideos[0].id})
         break;
       default:
         break;
@@ -240,7 +244,6 @@ const Content = (props) => {
           id: getPlaylist?.id,
           channel: defaultChannel?.id,
           count: 0,
-          // video_id: null
         });
       }, 1000);
     }
@@ -266,10 +269,6 @@ const Content = (props) => {
   }, [activeChannel]);
 
   useEffect(() => {
-    onGetOnePlaylist({ id: 1227 });
-  }, []);
-
-  useEffect(() => {
     if (playlists === null) {
       onGetPlaylist({ id: defaultChannel?.id || "1", count: 0 });
     }
@@ -282,7 +281,6 @@ const Content = (props) => {
       playlists?.length !== characters?.length ||
       checkName == editName
     ) {
-      debugger;
       updateCharacters(playlists);
     }
     if (getPlaylist !== null) {
@@ -395,7 +393,8 @@ const Content = (props) => {
                       onePlayist,
                       oneVideo,
                       onGetOneVideo,
-                      onChangeVideoOrder
+                      onChangeVideoOrder,
+                      playlistsByVideo
                     }}
                   />
                 </TabPane>
@@ -467,7 +466,8 @@ const Content = (props) => {
                       onePlayist,
                       oneVideo,
                       onGetOneVideo,
-                      onChangeVideoOrder
+                      onChangeVideoOrder,
+                      playlistsByVideo
                     }}
                   />
                 </TabPane>
@@ -495,6 +495,7 @@ const mapStatetoProps = (state) => ({
   playlists: selectors.playlists.playlists(state),
   onePlayist: selectors.playlists.onePlaylist(state),
   countPlaylists: selectors.playlists.count(state),
+  playlistsByVideo: selectors.playlists.playlistsByVideo(state),
 
   videos: selectors.videos.videos(state),
   videosByPlaylist: selectors.videos.videosByPlaylist(state),
@@ -516,6 +517,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(Actions.playlists.getPlaylistsRequest(data)),
   onGetOnePlaylist: (data) =>
     dispatch(Actions.playlists.getOnePlaylistRequest(data)),
+  onGetPlaylistsByVideo: (data) => dispatch(Actions.playlists.getPlaylistsByVideoRequest(data)),
 
   onUpdateVideo: (data) => dispatch(Actions.videos.updateVideoRequest(data)),
   onAddVideoToPlaylist: (data) =>

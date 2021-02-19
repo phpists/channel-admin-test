@@ -4,6 +4,7 @@ const initialState = {
   playlists: null,
   count: null,
   onePlaylist: null,
+  playlistsByVideo: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -13,7 +14,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         ...{
           playlists: action.payload.playlists,
-          count: action.payload.count
+          count: action.payload.count,
         },
       };
     }
@@ -22,6 +23,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         ...{
           onePlaylist: action.payload,
+        },
+      };
+    }
+    case Types.GET_PLAYLISTS_BY_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        ...{
+          playlistsByVideo: action.payload,
         },
       };
     }

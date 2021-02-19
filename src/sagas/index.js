@@ -29,6 +29,7 @@ import {
   watchDeletePlaylist,
   watchUpdatePlaylist,
   watchGetOnePlaylist,
+  watchGetPlaylistsByVideo
 } from "./playlists";
 
 import {
@@ -67,6 +68,7 @@ export function* rootSaga() {
     takeLatest(PlaylistsTypes.DELETE_PLAYLIST_REQUEST, watchDeletePlaylist),
     takeLatest(PlaylistsTypes.UPDATE_PLAYLIST_REQUEST, watchUpdatePlaylist),
     takeLatest(PlaylistsTypes.GET_ONE_PLAYLIST_REQUEST, watchGetOnePlaylist),
+    takeLatest(PlaylistsTypes.GET_PLAYLISTS_BY_VIDEO_REQUEST, watchGetPlaylistsByVideo),
 
     takeLatest(
       VideosTypes.ADD_VIDEO_TO_PLAYLIST_REQUEST,

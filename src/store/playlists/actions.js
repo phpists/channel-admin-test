@@ -8,6 +8,9 @@ export const Types = {
   GET_ONE_PLAYLIST_REQUEST: "GET_ONE_PLAYLIST_REQUEST",
   GET_ONE_PLAYLIST_SUCCESS: "GET_ONE_PLAYLIST_SUCCESS",
 
+  GET_PLAYLISTS_BY_VIDEO_REQUEST: "GET_PLAYLISTS_BY_VIDEO_REQUEST",
+  GET_PLAYLISTS_BY_VIDEO_SUCCESS: "GET_PLAYLISTS_BY_VIDEO_SUCCESS",
+
   DELETE_PLAYLIST_REQUEST: "DELETE_PLAYLIST_REQUEST",
 
   UPDATE_PLAYLIST_REQUEST: "UPDATE_PLAYLIST_REQUEST",
@@ -32,15 +35,25 @@ const getPlaylistsSuccess = (payload) => ({
   payload,
 });
 
+const getPlaylistsByVideoRequest = (payload) => ({
+  type: Types.GET_PLAYLISTS_BY_VIDEO_REQUEST,
+  payload,
+});
+
+const getPlaylistsByVideoSuccess = (payload) => ({
+  type: Types.GET_PLAYLISTS_BY_VIDEO_SUCCESS,
+  payload,
+});
+
 const getOnePlaylistRequest = (payload) => ({
   type: Types.GET_ONE_PLAYLIST_REQUEST,
-  payload
-})
+  payload,
+});
 
 const getOnePlaylistSuccess = (payload) => ({
   type: Types.GET_ONE_PLAYLIST_SUCCESS,
-  payload
-})
+  payload,
+});
 
 const deletePlaylistRequest = (payload) => ({
   type: Types.DELETE_PLAYLIST_REQUEST,
@@ -61,4 +74,6 @@ export default {
   getOnePlaylistSuccess,
   deletePlaylistRequest,
   updatePlaylistRequest,
+  getPlaylistsByVideoRequest,
+  getPlaylistsByVideoSuccess,
 };

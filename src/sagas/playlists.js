@@ -17,7 +17,9 @@ export function* watchAddPlaylist(action) {
       const state = yield select();
       const activeChannel = selectors.channels.activeChannel(state);
 
-      yield put(Actions.playlists.getPlaylistsRequest({id: activeChannel.id || '1'}));
+      yield put(
+        Actions.playlists.getPlaylistsRequest({ id: activeChannel.id || "1" })
+      );
       yield put(Actions.common.setSuccessNotify("Created successfully"));
     }
   } else {
@@ -36,7 +38,9 @@ export function* watchDeletePlaylist(action) {
       const state = yield select();
       const activeChannel = selectors.channels.activeChannel(state);
 
-      yield put(Actions.playlists.getPlaylistsRequest({id: activeChannel.id || '1'}));
+      yield put(
+        Actions.playlists.getPlaylistsRequest({ id: activeChannel.id || "1" })
+      );
       yield put(Actions.common.setSuccessNotify("Deleted successfully"));
     }
   } else {
@@ -56,7 +60,9 @@ export function* watchUpdatePlaylist(action) {
       const state = yield select();
       const activeChannel = selectors.channels.activeChannel(state);
 
-      yield put(Actions.playlists.getPlaylistsRequest({id: activeChannel.id || '1'}));
+      yield put(
+        Actions.playlists.getPlaylistsRequest({ id: activeChannel.id || "1" })
+      );
       yield put(Actions.common.setSuccessNotify("Updated successfully"));
     }
   } else {
@@ -72,9 +78,7 @@ export function* watchGetPlaylists(action) {
         Actions.common.setErrorNotify(response?.data?.message || "Server error")
       );
     } else {
-      yield put(
-        Actions.playlists.getPlaylistsSuccess(response?.data)
-      );
+      yield put(Actions.playlists.getPlaylistsSuccess(response?.data));
     }
   } else {
     yield put(Actions.common.setErrorNotify(response.status + " Server error"));
@@ -92,6 +96,21 @@ export function* watchGetOnePlaylist(action) {
       yield put(
         Actions.playlists.getOnePlaylistSuccess(response?.data?.playlists[0])
       );
+    }
+  } else {
+    yield put(Actions.common.setErrorNotify(response.status + " Server error"));
+  }
+}
+
+export function* watchGetPlaylistsByVideo(action) {
+  const response = yield API.playlists.getPlaylistByVideo(action.payload);
+  if (response.status === 200) {
+    if (response.data.status === "error") {
+      yield put(
+        Actions.common.setErrorNotify(response?.data?.message || "Server error")
+      );
+    } else {
+      yield put(Actions.playlists.getPlaylistsByVideoSuccess(response?.data?.videos));
     }
   } else {
     yield put(Actions.common.setErrorNotify(response.status + " Server error"));

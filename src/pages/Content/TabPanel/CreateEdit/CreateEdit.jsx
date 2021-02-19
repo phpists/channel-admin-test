@@ -57,6 +57,8 @@ const CreateEdit = (props) => {
     oneVideo,
     onGetOnePlaylist,
     onGetOneVideo,
+    playlistsByVideo,
+    onRemoveVideoFromPlaylist
   } = props;
   // State local
   const [require, setRequire] = useState(false);
@@ -219,7 +221,11 @@ const CreateEdit = (props) => {
               setEditDescription,
               characters,
               require,
-              getPlaylist
+              getPlaylist,
+              playlistsByVideo,
+              onAddVideoToPlaylist,
+              onRemoveVideoFromPlaylist,
+              oneVideo
             }}
           />
         </CardBody>

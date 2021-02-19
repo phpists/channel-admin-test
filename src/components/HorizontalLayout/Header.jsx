@@ -40,13 +40,11 @@ const Header = (props) => {
       defaultChannel &&
       defaultChannel?.name !== activeChannel?.name
     ) {
-      debugger;
       localStorage.setItem("channel", JSON.stringify(activeChannel));
       onGetChannelLanguages(activeChannel.id);
       getLanguages();
     }
     if (channels && defaultChannel === null) {
-      debugger;
       localStorage.setItem("channel", JSON.stringify(channels[0]));
       setActiveChannel(channels[0]);
 
@@ -54,7 +52,6 @@ const Header = (props) => {
       getLanguages();
     }
     if(defaultChannel && activeChannel === null) {
-      debugger
       onGetChannelLanguages(defaultChannel.id);
       getLanguages();
     }

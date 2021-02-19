@@ -76,7 +76,8 @@ const TabPanel = (props) => {
     onePlayist,
     oneVideo,
     onGetOneVideo,
-    onChangeVideoOrder
+    onChangeVideoOrder,
+    playlistsByVideo
   } = props;
 
 
@@ -125,6 +126,8 @@ const TabPanel = (props) => {
               onGetOnePlaylist,
               onGetOneVideo,
               onGetVideos,
+              playlistsByVideo,
+              onRemoveVideoFromPlaylist
             }}
           />
         </CardBody>

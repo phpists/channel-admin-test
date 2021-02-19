@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { AvField } from "availity-reactstrap-validation";
-import {
-  FormGroup,
-} from "reactstrap";
+import { FormGroup } from "reactstrap";
+import { Multiselect } from "multiselect-react-dropdown";
 
 const FormaData = (props) => {
   const {
@@ -14,72 +13,82 @@ const FormaData = (props) => {
     setEditDescription,
     characters,
     require,
-    getPlaylist
+    getPlaylist,
+    playlistsByVideo,
+    onAddVideoToPlaylist,
+    onRemoveVideoFromPlaylist,
+    oneVideo
   } = props;
 
-  // On submit
-  const getPlailistId = (e) => {
-    const name = e.target.value;
-    const arr = characters?.filter((c) => c.name == name);
-    const id = arr[0]?.id;
-    setPlaylistId(id);
-  };
-
-  // Modal window (Save changes)
+  // --- default playlist on current video ---
+  const values = playlistsByVideo?.map(p => p.playlist_id);
+  const defaultPalylists = playlistsByVideo && characters?.filter(c => {
+      return values.includes(c.id)
+  });
+  // --- end ---
 
   // On chnage global function
   const onChanged = (setName) => (e) => {
     setName(e.target.value);
   };
+  // Select languages
+  const selectLang = (selectedList, selectedItem) => {
+    const id = selectedItem.id;
+    // setPlaylistId(id);
 
-  characters && console.log(characters.includes())
+    onAddVideoToPlaylist({
+      playlist_id: id,
+      video_id: oneVideo.id,
+    });
+  };
+  // Remove languages
+  const removeLang = (selectedList, selectedItem) => {
+    const id = selectedItem.id;
+    // setPlaylistId(null);
+    onRemoveVideoFromPlaylist({
+      playlist_id: id,
+      video_id: oneVideo.id,
+    })
+  };
 
   return (
     <>
-    <FormGroup className="w-50 mt-4">
-      <AvField
-        name="title"
-        className="form-control"
-        placeholder="title"
-        type="text"
-        required={require}
-        label="Title"
-        value={editName}
-        onChange={onChanged(setEditName)}
-      />
-      <AvField
-        className="form-control"
-        type="textarea"
-        rows="5"
-        label="Description"
-        name="description"
-        required={require}
-        placeholder="description"
-        value={editDescription}
-        onChange={onChanged(setEditDescription)}
-      />
-      {valueButton === "editVideo" || valueButton === "newVideo" ? (
+      <FormGroup className="w-100 mt-4">
         <AvField
-          type="select"
-          name="select"
-          label="Chose playlist"
-          onChange={(e) => getPlailistId(e)}
-          value={getPlaylist?.name || "Choose playlist..."}
-        >
-          <option>Choose playlist...</option>
-          {characters?.map((c) => {
-            return (
-              <option
-                key={c.id}
-                value={c.name}
-              >
-                {c.name}
-              </option>
-            );
-          })}
-        </AvField>
-      ) : null}
-    </FormGroup>
+          name="title"
+          className="form-control"
+          placeholder="title"
+          type="text"
+          required={require}
+          label="Title"
+          value={editName}
+          onChange={onChanged(setEditName)}
+          className="w-50"
+        />
+        <AvField
+          className="form-control"
+          type="textarea"
+          rows="5"
+          label="Description"
+          name="description"
+          required={require}
+          placeholder="description"
+          value={editDescription}
+          onChange={onChanged(setEditDescription)}
+          className="w-50"
+        />
+        {valueButton === "editVideo" || valueButton === "newVideo" ? (
+          <Multiselect
+            options={characters}
+            selectedValues={defaultPalylists}
+            displayValue="name"
+            onSelect={selectLang}
+            onRemove={removeLang}
+            closeIcon="cancel"
+            placeholder="Select playlist"
+          />
+        ) : null}
+      </FormGroup>
     </>
   );
 };

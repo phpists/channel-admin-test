@@ -150,4 +150,39 @@ export const playlists = {
       })
       .catch((error) => ({ error }));
   },
+
+  getPlaylistByVideo: async (data) => {
+    const authData = sessionStorage.getItem("bringStreamAuth")
+      ? JSON.parse(sessionStorage.getItem("bringStreamAuth"))
+      : null;
+    if (!authData) return false;
+    const queryString = `action=GetVideosByPlaylists&openKey=${authData.openKey}`;
+    const jsonData = JSON.stringify({
+      where: "channel_id = :cid and id = :vid",
+      params: {
+        cid: data.channel,
+        vid: data.video_id
+      },
+      fields: ['playlist_id'],
+      order: "orderby"
+    });
+    const signature = sha1(queryString + authData.privateKey + jsonData);
+    const formData = new FormData();
+
+    formData.append("jsonData", jsonData);
+    formData.append("signature", signature);
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    return await axiosInstance
+      .post(`?${queryString}`, formData, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => ({ error }));
+  },
 };
+
