@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../../content.scss";
 import {
   Card,
@@ -60,6 +60,7 @@ const CreateEdit = (props) => {
     playlistsByVideo,
     onRemoveVideoFromPlaylist,
   } = props;
+
   // State local
   const [require, setRequire] = useState(false);
   const [playlistId, setPlaylistId] = useState("");
@@ -175,8 +176,16 @@ const CreateEdit = (props) => {
   return (
     <Card>
       <Prompt
-        when={descLang}
-        message="You have unsaved data. You want to leave the page?"
+        message={(location) => {
+          if (
+            location.pathname.startsWith("/content")
+          ) {
+            setModalSave(true);
+          } else {
+            setModalSave(true);
+            return false
+          }
+        }}
       />
       <AvForm onValidSubmit={onSubmit}>
         <CardBody>
